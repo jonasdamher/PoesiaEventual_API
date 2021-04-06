@@ -1,0 +1,46 @@
+{
+  "name": "poesiaeventual_api",
+  "version": "1.0.0",
+  "description": "API para obtener poesía en español usando mongoDB.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jonasdamher/PoesiaEventual_API.git"
+  },
+  "keywords": [
+    "Poesía",
+    "en",
+    "español",
+    "API",
+    "poems",
+    "API",
+    "poems",
+    "in",
+    "spanish"
+  ],
+  "author": "jonasdamher",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jonasdamher/PoesiaEventual_API/issues"
+  },
+  "homepage": "https://github.com/jonasdamher/PoesiaEventual_API#readme",
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "fs": "0.0.1-security",
+    "generate-password": "^1.6.0",
+    "jsonwebtoken": "^8.5.1",
+    "moment": "^2.29.1",
+    "mongoose": "^5.12.3",
+    "nodemon": "^2.0.7",
+    "passport": "^0.4.1",
+    "passport-jwt": "^4.0.0"
+  }
+}
