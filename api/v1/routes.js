@@ -2,7 +2,7 @@
 
 const router = require('express').Router()
 const auth = require('./middlewares/auth')
-
+ 
 // CONTROLLERS
 const userController = require('./controllers/user-controller')
 const authorController = require('./controllers/author-controller')
@@ -18,6 +18,8 @@ router.patch('/user/:id', auth.authAdmin, userController.update)
 //AUTHOR
 router.get('/author/get/:id', authorController.getAuthorWithId)
 router.get('/author/search/:search', authorController.getSearchAuthor)
+router.get('/author/random', authorController.getAuthorRandom)
+
 router.get('/author/poems/:id', authorController.getPoemsList)
 
 router.post('/author/create', auth.authAdmin, authorController.createAuthor)
@@ -25,6 +27,11 @@ router.patch('/author/update/:id', auth.authAdmin, authorController.update)
 
 //POEM
 router.get('/poem/get/:id', poemController.getPoemWithId)
+router.get('/poem/search/:search', poemController.getSearchPoem)
+
+router.get('/poem/random', poemController.getPoemRandom)
+router.get('/poem/all', poemController.getAll)
+
 router.post('/poem/create', auth.authAdmin, poemController.createPoem)
 router.patch('/poem/update/:id', auth.authAdmin, poemController.update)
 
