@@ -6,6 +6,7 @@ const POEM = require('../models/poem-model')
 module.exports = {
     getAuthorWithId,
     getSearchAuthor,
+    getAuthorRandom,
     getPoemsList,
     createAuthor,
     update
@@ -37,7 +38,7 @@ async function getSearchAuthor(req, res) {
     let pageNum = page
     --page
     let limit = await limitPageAuthor(search, perPage)
- 
+
     AUTHOR.find({ name: { $regex: '.*' + search + '.*', $options: 'i' } })
         .skip(perPage * page).limit(perPage).sort('name')
         .then(authorResponse => {
@@ -46,8 +47,8 @@ async function getSearchAuthor(req, res) {
                 authors: authorResponse
             }
 
-            if (limit>pageNum) {
-                data.pagination = { perPage: perPage, page: ++pageNum }
+            if (limit > pageNum) {
+                data.pagination = { perPage: perPage, page: ++pageNum,lastPage:limit }
             }
             return res.status(200).json(data)
         }).catch(err => {
@@ -57,6 +58,20 @@ async function getSearchAuthor(req, res) {
         })
 }
 
+async function getAuthorRandom(req, res) {
+    AUTHOR.countDocuments().exec(function (err, count) {
+
+        const random = Math.floor(Math.random() * count)
+
+        AUTHOR.findOne().skip(random).then(author => {
+            return res.status(200).json(author)
+        }).catch(err => {
+
+            console.log(err)
+            return res.status(400).json(err)
+        })
+    })
+}
 async function getPoemsList(req, res) {
 
     POEM.find({ id_author: req.params.id }).populate('author').limit(6).then(authorResponse => {
