@@ -4,35 +4,33 @@ const router = require('express').Router()
 const auth = require('./middlewares/auth')
  
 // CONTROLLERS
-const userController = require('./controllers/user-controller')
-const authorController = require('./controllers/author-controller')
-const poemController = require('./controllers/poem-controller')
+const user = require('./controllers/user-controller')
+const author = require('./controllers/author-controller')
+const poem = require('./controllers/poem-controller')
 
 // ROUTES
 // USER
-router.post('/auth/login', userController.login)
-router.post('/auth/signup', userController.signup)
-router.post('/auth/refresh-token', auth.authAdmin, userController.refreshToken)
-router.patch('/user/:id', auth.authAdmin, userController.update)
+router.post('/auth/login', user.login)
+router.post('/auth/signup', user.signup)
+
+router.post('/auth/refresh-token', auth.authAdmin, user.refreshToken)
+router.patch('/user/:id', auth.authAdmin, user.update)
 
 //AUTHOR
-router.get('/author/get/:id', authorController.getAuthorWithId)
-router.get('/author/search/:search', authorController.getSearchAuthor)
-router.get('/author/random', authorController.getAuthorRandom)
+router.get('/author/get/:id', author.getWithId)
+router.get('/author/search/:search', author.searchAuthor)
+router.get('/author/random', author.random)
+router.get('/author/poems/:id', author.getPoemsList)
 
-router.get('/author/poems/:id', authorController.getPoemsList)
-
-router.post('/author/create', auth.authAdmin, authorController.createAuthor)
-router.patch('/author/update/:id', auth.authAdmin, authorController.update)
+router.post('/author/create', auth.authAdmin, author.create)
+router.patch('/author/update/:id', auth.authAdmin, author.update)
 
 //POEM
-router.get('/poem/get/:id', poemController.getPoemWithId)
-router.get('/poem/search/:search', poemController.getSearchPoem)
+router.get('/poem/get/:id', poem.getWithId)
+router.get('/poem/search/:search', poem.searchPoem)
+router.get('/poem/random', poem.random)
 
-router.get('/poem/random', poemController.getPoemRandom)
-router.get('/poem/all', poemController.getAll)
-
-router.post('/poem/create', auth.authAdmin, poemController.createPoem)
-router.patch('/poem/update/:id', auth.authAdmin, poemController.update)
+router.post('/poem/create', auth.authAdmin, poem.create)
+router.patch('/poem/update/:id', auth.authAdmin, poem.update)
 
 module.exports = router
