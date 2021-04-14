@@ -4,17 +4,18 @@ const AUTHOR = require('../models/author-model')
 const POEM = require('../models/poem-model')
 
 module.exports = {
-    getAuthorWithId,
-    getSearchAuthor,
-    getAuthorRandom,
+    getWithId,
+    searchAuthor,
+    random,
     getPoemsList,
-    createAuthor,
+    create,
     update
 }
 
-async function getAuthorWithId(req, res) {
+async function getWithId(req, res) {
 
     AUTHOR.findById(req.params.id).then(authorResponse => {
+
         return res.status(200).json(authorResponse)
     }).catch(err => {
 
@@ -23,59 +24,68 @@ async function getAuthorWithId(req, res) {
     })
 }
 
-async function limitPageAuthor(search, perPage) {
-    return await AUTHOR.find({ name: { $regex: '.*' + search + '.*', $options: 'i' } }).countDocuments().then(res => {
-        let limit = Math.ceil(res / perPage)
-        return limit
-    })
-}
-
-async function getSearchAuthor(req, res) {
+async function searchAuthor(req, res) {
 
     const search = req.params.search.trim().toLowerCase()
     const perPage = parseInt(req.query.perpage)
     let page = Math.max(0, parseInt(req.query.page))
     let pageNum = page
     --page
-    let limit = await limitPageAuthor(search, perPage)
 
-    AUTHOR.find({ name: { $regex: '.*' + search + '.*', $options: 'i' } })
-        .skip(perPage * page).limit(perPage).sort('name')
-        .then(authorResponse => {
+    AUTHOR.find({ name: { $regex: '.*' + search + '.*', $options: 'i' } }).countDocuments().then(count => {
 
-            let data = {
-                authors: authorResponse
-            }
+        const limit = Math.ceil(count / perPage)
 
-            if (limit > pageNum) {
-                data.pagination = { perPage: perPage, page: ++pageNum,lastPage:limit }
-            }
-            return res.status(200).json(data)
-        }).catch(err => {
+        AUTHOR.find({ name: { $regex: '.*' + search + '.*', $options: 'i' } }).skip(perPage * page).limit(perPage).sort('name')
+            .then(authorResponse => {
 
-            console.log(err)
-            return res.status(400).json(err)
-        })
+                let data = {
+                    authors: authorResponse
+                }
+
+                if (limit > pageNum) {
+                    data.pagination = { perPage: perPage, page: ++pageNum, lastPage: limit }
+                }
+                return res.status(200).json(data)
+            }).catch(err => {
+
+                console.log(err)
+                return res.status(400).json(err)
+            })
+
+    }).catch(err => {
+
+        console.log(err)
+        return res.status(400).json(err)
+    })
 }
 
-async function getAuthorRandom(req, res) {
-    AUTHOR.countDocuments().exec(function (err, count) {
+async function random(req, res) {
+
+    AUTHOR.find().countDocuments().then(count => {
 
         const random = Math.floor(Math.random() * count)
 
         AUTHOR.findOne().skip(random).then(author => {
+
             return res.status(200).json(author)
         }).catch(err => {
 
             console.log(err)
             return res.status(400).json(err)
         })
+
+    }).catch(err => {
+
+        console.log(err)
+        return res.status(400).json(err)
     })
 }
+
 async function getPoemsList(req, res) {
 
-    POEM.find({ id_author: req.params.id }).populate('author').limit(6).then(authorResponse => {
-        console.log(authorResponse)
+    POEM.find({ author: req.params.id }).populate('author').limit(6).then(authorResponse => {
+
         return res.status(200).json(authorResponse)
     }).catch(err => {
 
@@ -84,12 +94,11 @@ async function getPoemsList(req, res) {
     })
 }
 
-async function createAuthor(req, res) {
+async function create(req, res) {
 
     AUTHOR.create(req.body).then(poem => {
 
         return res.status(201).json(poem)
-
     }).catch(err => {
 
         console.log(err)
@@ -99,14 +108,12 @@ async function createAuthor(req, res) {
 
 async function update(req, res) {
 
-    AUTHOR.findByIdAndUpdate(req.params.id, req.body, { new: true })
-        .then(authorResponse => {
+    AUTHOR.findByIdAndUpdate(req.params.id, req.body, { new: true }).then(authorResponse => {
 
-            return res.status(200).json(authorResponse)
+        return res.status(200).json(authorResponse)
+    }).catch(err => {
 
-        }).catch(err => {
-
-            console.log(err)
-            return res.status(400).json(err)
-        })
+        console.log(err)
+        return res.status(400).json(err)
+    })
 }
