@@ -27,8 +27,8 @@ async function getWithId(req, res) {
 async function searchAuthor(req, res) {
 
     const search = req.params.search.trim().toLowerCase()
-    const perPage = parseInt(req.query.perpage)
-    let page = Math.max(0, parseInt(req.query.page))
+    const perPage = parseInt(req.query.perpage ?? 4)
+    let page = Math.max(0, parseInt(req.query.page ?? 1))
     let pageNum = page
     --page
 
@@ -40,12 +40,10 @@ async function searchAuthor(req, res) {
             .then(authorResponse => {
 
                 let data = {
-                    authors: authorResponse
+                    authors: authorResponse,
+                    pagination: { perPage: perPage, page: pageNum, lastPage: limit, total: count }
                 }
 
-                if (limit > pageNum) {
-                    data.pagination = { perPage: perPage, page: ++pageNum, lastPage: limit }
-                }
                 return res.status(200).json(data)
             }).catch(err => {
 
@@ -83,10 +81,26 @@ async function random(req, res) {
 }
 
 async function getPoemsList(req, res) {
+    const perPage = parseInt(req.query.perpage ?? 4)
+    let page = Math.max(0, parseInt(req.query.page ?? 1))
+    let pageNum = page
+    --page
+    POEM.find({ author: req.params.id }).countDocuments().then(count => {
+        const limit = Math.ceil(count / perPage)
 
-    POEM.find({ author: req.params.id }).populate('author').limit(6).then(authorResponse => {
+        POEM.find({ author: req.params.id }).populate('author').skip(perPage * page).limit(perPage).sort('title').then(poemList => {
 
-        return res.status(200).json(authorResponse)
+            let data = {
+                poems: poemList,
+                pagination: { perPage: perPage, page: pageNum, lastPage: limit, total: count }
+            }
+
+            return res.status(200).json(data)
+        }).catch(err => {
+
+            console.log(err)
+            return res.status(400).json(err)
+        })
     }).catch(err => {
 
         console.log(err)
