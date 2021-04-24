@@ -13,7 +13,7 @@ module.exports = {
 async function getWithId(req, res) {
 
     POEM.findById({ _id: req.params.id }).populate('author', 'name').then(poem => {
-      
+
         return res.status(200).json(poem)
     }).catch(err => {
 
@@ -25,25 +25,23 @@ async function getWithId(req, res) {
 async function searchPoem(req, res) {
 
     const search = req.params.search.trim().toLowerCase()
-    const perPage = parseInt(req.query.perpage)
-    let page = Math.max(0, parseInt(req.query.page))
+    const perPage = parseInt(req.query.perpage ?? 4)
+    let page = Math.max(0, parseInt(req.query.page ?? 1))
     let pageNum = page
     --page
 
     POEM.find({ title: { $regex: '.*' + search + '.*', $options: 'i' } }).countDocuments().then(count => {
-        
+
         const limit = Math.ceil(count / perPage)
 
-        POEM.find({ title: { $regex: '.*' + search + '.*', $options: 'i' } }).skip(perPage * page).limit(perPage).sort('title')
-            .then(authorResponse => {
+        POEM.find({ title: { $regex: '.*' + search + '.*', $options: 'i' } }).populate('author').skip(perPage * page).limit(perPage).sort('title')
+            .then(poems => {
 
                 let data = {
-                    poems: authorResponse
+                    poems: poems,
+                    pagination: { perPage: perPage, page: pageNum, lastPage: limit, total: count }
                 }
 
-                if (limit > pageNum) {
-                    data.pagination = { perPage: perPage, page: ++pageNum }
-                }
                 return res.status(200).json(data)
             }).catch(err => {
 
