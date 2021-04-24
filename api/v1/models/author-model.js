@@ -14,12 +14,6 @@ const authorSchema = mongoose.Schema({
         },
         required: [true, 'Es obligatorio introducir un nombre.'],
         unique: [true, 'El nombre introducido ya existe.']
-    },
-    url: {
-        type: String,
-        min: 2,
-        required: true,
-        unique: true
     }
 })
 
