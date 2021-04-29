@@ -32,7 +32,8 @@ mongoose.connect(process.env.MONGODB_URI, {
 }).then(() => {
     try {
         app.listen(process.env.PORT)
-     } catch (error) {
+        console.log(`STARTING SERVER ON http://localhost:${process.env.PORT}/api/${process.env.API_VERSION}/`)
+    } catch (error) {
         console.log(error)
     }
 }).catch(err => {
