@@ -10,4 +10,4 @@ API para obtener poesía en español usando mongoDB.
 ```npm run start```
 
 ### Iniciar proyecto dev
-```npm run dev````
+```npm run dev```
