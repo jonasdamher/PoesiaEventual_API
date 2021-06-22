@@ -12,15 +12,11 @@
     "url": "git+https://github.com/jonasdamher/PoesiaEventual_API.git"
   },
   "keywords": [
+    "API",
     "Poesía",
-    "en",
-    "español",
-    "API",
-    "poems",
-    "API",
-    "poems",
-    "in",
-    "spanish"
+    "Poems",
+    "Español",
+    "Spanish"
   ],
   "author": "jonasdamher",
   "license": "ISC",
