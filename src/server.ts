@@ -11,11 +11,11 @@ mongoose.connect(config.mongo_uri, {
 }).then(() => {
     try {
         app.listen(config.port);
-    } catch (error:unknown) {
+    } catch (error: unknown) {
         console.log(error);
         process.exit(1);
     }
-}).catch((err: unknown) => {
+}).catch((err: Error) => {
     console.log(err);
     process.exit(1);
 })
