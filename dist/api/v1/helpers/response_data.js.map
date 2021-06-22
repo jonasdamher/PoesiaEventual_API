@@ -1,0 +1,1 @@
+{"version":3,"file":"response_data.js","sourceRoot":"","sources":["../../../../src/api/v1/helpers/response_data.ts"],"names":[],"mappings":"AAAA,YAAY,CAAC;;AAIb,SAAwB,aAAa;IACjC,OAAO;QACH,OAAO,EAAE,SAAS;QAClB,MAAM,EAAE,GAAG;QACX,IAAI,EAAE,IAAI;QACV,QAAQ,EAAE,KAAK;KAClB,CAAA;AACL,CAAC;AAPD,gCAOC"}

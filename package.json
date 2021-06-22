@@ -4,7 +4,8 @@
   "description": "API para obtener poesía en español usando mongoDB.",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node ./dist/server.js",
+    "build": "tsc"
   },
   "repository": {
     "type": "git",
@@ -35,11 +36,23 @@
     "express": "^4.17.1",
     "generate-password": "^1.6.0",
     "helmet": "^4.4.1",
+    "joi": "^17.4.0",
     "jsonwebtoken": "^8.5.1",
     "moment": "^2.29.1",
     "mongoose": "^5.12.3",
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
     "rate-limiter-flexible": "^2.2.1"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^5.0.0",
+    "@types/compression": "^1.7.0",
+    "@types/cors": "^2.8.10",
+    "@types/express": "^4.17.12",
+    "@types/mongoose": "^5.11.97",
+    "@types/node": "^15.12.2",
+    "@types/passport": "^1.0.6",
+    "@types/passport-jwt": "^3.0.5",
+    "typescript": "^4.3.2"
   }
 }
