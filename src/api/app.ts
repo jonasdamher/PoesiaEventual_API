@@ -4,12 +4,10 @@ import express, { NextFunction, Request, Response } from 'express';
 import compression from 'compression';
 import helmet from 'helmet';
 import cors from 'cors';
-import moment from 'moment';
 
 import limit_mongo from './v1/middlewares/limit-mongo';
 import routes from './v1/routes';
 
-moment.locale('es');
 const app = express();
  
 app.use(compression());
