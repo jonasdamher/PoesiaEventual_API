@@ -8,9 +8,7 @@ import Response_data from '../../types/Response_data';
 export {
     getWithId,
     searchPoem,
-    random,
-    create,
-    update
+    random
 }
 
 async function getWithId(req: Request, res: Response) {
@@ -36,22 +34,5 @@ async function searchPoem(req: Request, res: Response) {
 async function random(req: Request, res: Response) {
 
     const poem: Response_data = await service.random();
-    return res.status(poem.status).json(poem);
-}
-
-async function create(req: Request, res: Response) {
-
-    const data_body = req.body;
-
-    const poem: Response_data = await service.create(data_body);
-    return res.status(poem.status).json(poem);
-}
-
-async function update(req: Request, res: Response) {
-
-    const id = req.params.id;
-    const data_body = req.body;
-
-    const poem: Response_data = await service.update(id, data_body);
     return res.status(poem.status).json(poem);
 }

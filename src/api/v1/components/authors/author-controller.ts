@@ -9,9 +9,7 @@ export {
     getWithId,
     searchAuthor,
     random,
-    getPoemsList,
-    create,
-    update
+    getPoemsList
 }
 
 async function getWithId(req: Request, res: Response) {
@@ -48,22 +46,5 @@ async function getPoemsList(req: Request, res: Response) {
     let current_perpage = Number(perpage ?? 4);
 
     const author: Response_data = await service.getPoemsList(current_page, current_perpage, id);
-    return res.status(author.status).json(author);
-}
-
-async function create(req: Request, res: Response) {
-
-    const body = req.body;
-
-    const author: Response_data = await service.create(body);
-    return res.status(author.status).json(author);
-}
-
-async function update(req: Request, res: Response) {
-
-    const id = req.params.id;
-    const body = req.body;
-
-    const author: Response_data = await service.update(id, body);
     return res.status(author.status).json(author);
 }

@@ -10,9 +10,7 @@ import { Schema } from 'mongoose';
 export {
     getWithId,
     searchPoem,
-    random,
-    create,
-    update
+    random
 }
 
 function getWithId(id: string): Promise<Response_data> {
@@ -99,47 +97,6 @@ function random(): Promise<Response_data> {
                 reject(response)
             })
 
-        }).catch((err: any) => {
-
-            response.status = 400;
-            response.data = err;
-            reject(response)
-        })
-    })
-}
-
-function create(data_body: any): Promise<Response_data> {
-    return new Promise((resolve, reject) => {
-
-        const response = response_data();
-
-        const poem: Poem = new POEM(data_body);
-
-        poem.save().then(poem => {
-
-            response.status = 201;
-            response.is_valid = true;
-            response.data = poem;
-            resolve(response)
-        }).catch((err: any) => {
-
-            response.status = 400;
-            response.data = err;
-            reject(response)
-        })
-    })
-}
-
-function update(id: string, data_body: any): Promise<Response_data> {
-    return new Promise((resolve, reject) => {
-
-        const response = response_data();
-
-        POEM.findByIdAndUpdate(id, data_body, { new: true }).then((authorResponse: any) => {
-
-            response.is_valid = true;
-            response.data = authorResponse;
-            resolve(response)
         }).catch((err: any) => {
 
             response.status = 400;
