@@ -13,9 +13,7 @@ export {
     getWithId,
     searchAuthor,
     random,
-    getPoemsList,
-    create,
-    update
+    getPoemsList
 }
 
 function getWithId(id: string): Promise<Response_data> {
@@ -165,42 +163,4 @@ function getPoemsList(page: number, perpage: number, id: any): Promise<Response_
             reject(response);
         })
     });
-}
-
-function create(data_body: any): Promise<Response_data> {
-    return new Promise((resolve, reject) => {
-        const response = response_data();
-
-        let author: Author = new AUTHOR(data_body);
-
-        author.save().then((poem: any) => {
-
-            response.status = 400;
-            response.data = { _id: poem._id };
-            resolve(response);
-        }).catch((err: any) => {
-
-            response.status = 400;
-            response.data = err;
-            reject(response);
-        })
-    })
-}
-
-function update(id: string, data_body: any): Promise<Response_data> {
-    return new Promise((resolve, reject) => {
-        const response = response_data();
-
-        AUTHOR.findByIdAndUpdate(id, data_body, { new: true }).then((authorResponse: any) => {
-
-            response.is_valid = true;
-            response.data = authorResponse;
-            resolve(response);
-        }).catch((err: any) => {
-
-            response.status = 400;
-            response.data = err;
-            reject(response);
-        })
-    })
 }
