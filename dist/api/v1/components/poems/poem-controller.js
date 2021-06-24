@@ -28,8 +28,23 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+<<<<<<< HEAD
 exports.random = exports.searchPoem = exports.getWithId = void 0;
 const service = __importStar(require("./poem-service"));
+=======
+exports.random = exports.searchPoem = exports.getWithId = exports.getAll = void 0;
+const service = __importStar(require("./poem-service"));
+function getAll(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const { page, perpage } = req.query;
+        let current_page = Number(page !== null && page !== void 0 ? page : 1);
+        let current_perpage = Number(perpage !== null && perpage !== void 0 ? perpage : 10);
+        const poem = yield service.getAll(current_page, current_perpage);
+        return res.status(poem.status).json(poem);
+    });
+}
+exports.getAll = getAll;
+>>>>>>> staging
 function getWithId(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         const id = req.params.id;
@@ -43,7 +58,11 @@ function searchPoem(req, res) {
         const { page, perpage } = req.query;
         const search = req.params.search.trim().toLowerCase();
         let current_page = Number(page !== null && page !== void 0 ? page : 1);
+<<<<<<< HEAD
         let current_perpage = Number(perpage !== null && perpage !== void 0 ? perpage : 4);
+=======
+        let current_perpage = Number(perpage !== null && perpage !== void 0 ? perpage : 10);
+>>>>>>> staging
         const poem = yield service.searchPoem(current_page, current_perpage, search);
         return res.status(poem.status).json(poem);
     });
