@@ -26,10 +26,7 @@ const express_1 = __importDefault(require("express"));
 const validation = __importStar(require("./poem-validation"));
 const poems = __importStar(require("./poem-controller"));
 const router = express_1.default.Router();
-<<<<<<< HEAD
-=======
 router.get('/', validation.getAll, poems.getAll);
->>>>>>> staging
 router.get('/get/:id', validation.getWithId, poems.getWithId);
 router.get('/search/:search', validation.searchPoem, poems.searchPoem);
 router.get('/random', poems.random);

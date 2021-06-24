@@ -26,10 +26,7 @@ const express_1 = __importDefault(require("express"));
 const validation = __importStar(require("./author-validation"));
 const author = __importStar(require("./author-controller"));
 const router = express_1.default.Router();
-<<<<<<< HEAD
-=======
 router.get('/', validation.getAll, author.getAll);
->>>>>>> staging
 router.get('/get/:id', validation.getWithId, author.getWithId);
 router.get('/search/:search', validation.searchAuthor, author.searchAuthor);
 router.get('/random', author.random);

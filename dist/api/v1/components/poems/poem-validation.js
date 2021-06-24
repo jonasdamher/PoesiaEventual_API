@@ -12,10 +12,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-<<<<<<< HEAD
-exports.searchPoem = exports.getWithId = void 0;
-const joi_1 = __importDefault(require("joi"));
-=======
 exports.searchPoem = exports.getWithId = exports.getAll = void 0;
 const joi_1 = __importDefault(require("joi"));
 function getAll(req, res, next) {
@@ -34,7 +30,6 @@ function getAll(req, res, next) {
     });
 }
 exports.getAll = getAll;
->>>>>>> staging
 function getWithId(req, res, next) {
     return __awaiter(this, void 0, void 0, function* () {
         const schema = joi_1.default.object({
@@ -52,11 +47,7 @@ function searchPoem(req, res, next) {
         const schema = joi_1.default.object({
             search: joi_1.default.string().required(),
             page: joi_1.default.number().integer(),
-<<<<<<< HEAD
-            perpage: joi_1.default.number().integer()
-=======
             perpage: joi_1.default.number().integer().min(1).max(10)
->>>>>>> staging
         });
         const data = {
             search: req.params.search,

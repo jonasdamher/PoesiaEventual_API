@@ -3,12 +3,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-<<<<<<< HEAD
-exports.random = exports.searchPoem = exports.getWithId = void 0;
-const poem_model_1 = __importDefault(require("./poem-model"));
-// Ayudantes
-const response_data_1 = __importDefault(require("../../helpers/response_data"));
-=======
 exports.random = exports.searchPoem = exports.getWithId = exports.getAll = void 0;
 const poem_model_1 = __importDefault(require("./poem-model"));
 // Ayudantes
@@ -51,7 +45,6 @@ function getAll(page, perpage) {
     });
 }
 exports.getAll = getAll;
->>>>>>> staging
 function getWithId(id) {
     return new Promise((resolve, reject) => {
         let response = response_data_1.default();
