@@ -6,8 +6,8 @@ API para obtener poesía en español usando mongoDB.
 
 ### Renombrar archivo ```.dev-env``` a ```.env``` y añadir credenciales necesarias.
 
+### Compilar proyecto
+```npm run build```
+
 ### Iniciar proyecto
 ```npm run start```
-
-### Iniciar proyecto dev
-```npm run dev```
