@@ -28,8 +28,23 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+<<<<<<< HEAD
 exports.getPoemsList = exports.random = exports.searchAuthor = exports.getWithId = void 0;
 const service = __importStar(require("./author-service"));
+=======
+exports.getPoemsList = exports.random = exports.searchAuthor = exports.getWithId = exports.getAll = void 0;
+const service = __importStar(require("./author-service"));
+function getAll(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const { page, perpage } = req.query;
+        let current_page = Number(page !== null && page !== void 0 ? page : 1);
+        let current_perpage = Number(perpage !== null && perpage !== void 0 ? perpage : 10);
+        const author = yield service.getAll(current_page, current_perpage);
+        return res.status(author.status).json(author);
+    });
+}
+exports.getAll = getAll;
+>>>>>>> staging
 function getWithId(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         const id = req.params.id;
@@ -43,7 +58,11 @@ function searchAuthor(req, res) {
         const { page, perpage } = req.query;
         const search = req.params.search.trim().toLowerCase();
         let current_page = Number(page !== null && page !== void 0 ? page : 1);
+<<<<<<< HEAD
         let current_perpage = Number(perpage !== null && perpage !== void 0 ? perpage : 4);
+=======
+        let current_perpage = Number(perpage !== null && perpage !== void 0 ? perpage : 10);
+>>>>>>> staging
         const author = yield service.searchAuthor(current_page, current_perpage, search);
         return res.status(author.status).json(author);
     });
@@ -61,7 +80,11 @@ function getPoemsList(req, res) {
         const { page, perpage } = req.query;
         const id = req.params.id;
         let current_page = Number(page !== null && page !== void 0 ? page : 1);
+<<<<<<< HEAD
         let current_perpage = Number(perpage !== null && perpage !== void 0 ? perpage : 4);
+=======
+        let current_perpage = Number(perpage !== null && perpage !== void 0 ? perpage : 10);
+>>>>>>> staging
         const author = yield service.getPoemsList(current_page, current_perpage, id);
         return res.status(author.status).json(author);
     });
