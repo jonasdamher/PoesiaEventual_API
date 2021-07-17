@@ -4,13 +4,19 @@ import config from '../types/config';
 import dotenv from 'dotenv';
 dotenv.config();
 
+const url_version = '/api/' + process.env.API_VERSION ?? '';
+const url_domain = process.env.DOMAIN ?? '';
+
 const configuration: config = {
     app: {
-        version: process.env.API_VERSION ?? '',
-        mongo_uri: process.env.MONGODB_URI ?? '',
+        version: url_version,
+        domain: url_domain,
+        url_api: url_domain + url_version,
         port: process.env.PORT ?? '',
-        url: process.env.BASE_URL ?? '',
         node_env: process.env.NODE_ENV ?? ''
+    },
+    db: {
+        mongo_uri: process.env.MONGODB_URI ?? '',
     },
     nodemailer: {
         email: process.env.NODEMAILER_EMAIL ?? '',

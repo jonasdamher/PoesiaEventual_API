@@ -2,10 +2,14 @@
 
 type app = {
     version: string;
-    mongo_uri: string;
+    domain: string;
+    url_api: string;
     port: string;
-    url: string;
     node_env: string;
+}
+
+type db = {
+    mongo_uri: string;
 }
 
 type nodemailer = {
@@ -20,6 +24,7 @@ type jwt = {
 
 type config = {
     app: app;
+    db: db;
     nodemailer: nodemailer;
     jwt: jwt;
 }
