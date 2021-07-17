@@ -5,8 +5,9 @@ import compression from 'compression';
 import helmet from 'helmet';
 import cors from 'cors';
 import moment from 'moment';
-import { logger_app } from './helpers/logger';
 
+import config from './config';
+import { logger_app } from './helpers/logger';
 import limit_mongo from './middlewares/limit-mongo';
 import routes from './routes';
 
@@ -26,6 +27,6 @@ app.use(express.json({ limit: '90kb' }), (err: Error, req: Request, res: Respons
 app.use(express.urlencoded({ extended: false }));
 app.use(limit_mongo);
 
-app.use('/api/v2', routes);
+app.use(config.app.version, routes);
 
 export default app;

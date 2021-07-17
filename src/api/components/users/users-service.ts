@@ -92,7 +92,7 @@ function create(data: any): Promise<Response_data> {
             email.subject = 'Verifica tu cuenta de usuario';
             email.text = 'Hola,\n' +
                 'Por favor, verifica tu cuenta de usuario haciendo clic en:\n' +
-                config.app.url + 'users\/confirm_account\/' + verify_token.token + '.\n';
+                config.app.url_api + 'users\/confirm_account\/' + verify_token.token + '.\n';
 
             email.send();
 

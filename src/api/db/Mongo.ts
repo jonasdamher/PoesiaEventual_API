@@ -13,7 +13,7 @@ class Mongo {
                 useUnifiedTopology: true
             };
 
-            mongoose.connect(config.app.mongo_uri, options).then(() => resolve(true))
+            mongoose.connect(config.db.mongo_uri, options).then(() => resolve(true))
                 .catch((error: Error) => reject(error))
         })
     }
