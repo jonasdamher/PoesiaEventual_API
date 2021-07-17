@@ -1,13 +1,14 @@
 # PoesiaEventual_API
-API para obtener poesía en español usando mongoDB.
+APi para obtener información sobre editoriales, poesía, libros y sus autores.
 
-### Instalar las librerías necesarias
+### :books: Instalar las librerías necesarias.
 ```npm install```
 
-### Renombrar archivo ```.dev-env``` a ```.env``` y añadir credenciales necesarias.
+### :page_with_curl: Archivo .env.
+Renombrar archivo ```.dev-env``` a ```.env``` y añadir credenciales necesarias.
 
-### Compilar proyecto
+### :gear: Compilar proyecto.
 ```npm run build```
 
-### Iniciar proyecto
+### :heavy_check_mark: Iniciar proyecto
 ```npm run start```
