@@ -1,21 +1,20 @@
 'use strict';
 
-import mongoose from 'mongoose';
 import app from './api/app';
-import config from './api/v1/config';
+import Mongo from './api/v2/db/Mongo';
+import config from './api/v2/config';
+import { logger_app } from './api/v2/helpers/logger';
 
-mongoose.connect(config.mongo_uri, {
-    useNewUrlParser: true,
-    useCreateIndex: true,
-    useUnifiedTopology: true
-}).then(() => {
+Mongo.connect().then(() => {
     try {
-        app.listen(config.port);
+        app.listen(config.app.port);
+        console.log(config.app.url);
+
     } catch (error: unknown) {
-        console.log(error);
+        logger_app.info({ error }, 'Run app')
         process.exit(1);
     }
-}).catch((err: Error) => {
-    console.log(err);
+}).catch((error: unknown) => {
+    logger_app.error({ error }, 'Mongoose, connect to db')
     process.exit(1);
 })
