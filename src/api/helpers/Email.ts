@@ -2,6 +2,7 @@
 
 import nodemailer from 'nodemailer';
 import config from '../config';
+import { logger_email } from './logger';
 
 export default class Email {
 
@@ -40,11 +41,7 @@ export default class Email {
 
         mail_transporter.sendMail(mail_details, function (err, data) {
             if (err) {
-                console.log('Error Occurs');
-                console.log(err);
-
-            } else {
-                console.log('Email sent successfully');
+                logger_email.info({ err }, 'error to send');
             }
         });
     }

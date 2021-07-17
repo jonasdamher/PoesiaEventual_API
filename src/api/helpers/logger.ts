@@ -29,12 +29,18 @@ export const logger_poems = pino(pino.destination({
     ...commons_options
 })).child({ component: 'poems' })
 
-export const logger_recognitions= pino(pino.destination({
+export const logger_recognitions = pino(pino.destination({
     dest: './logs/components/recognitions.json',
     ...commons_options
 })).child({ component: 'recognitions' })
 
-// FINAL - FOR MODULES
+// FINAL - FOR COMPONENTS
+
+export const logger_email = pino(pino.destination({
+    dest: './logs/emails.json',
+    ...commons_options
+})).child({ component: 'email' })
+
 
 export const logger_app = pino(pino.destination({
     dest: './logs/app.json',
@@ -47,11 +53,11 @@ const logger_node = pino(pino.destination({
 })).child({ component: 'node' })
 
 process.on('uncaughtException', pino.final(logger_node, (err, finalLogger) => {
-    finalLogger.error({err}, 'uncaughtException')
+    finalLogger.error({ err }, 'uncaughtException')
     process.exit(1)
 }))
 
 process.on('unhandledRejection', pino.final(logger_node, (err, finalLogger) => {
-    finalLogger.error({err}, 'unhandledRejection')
+    finalLogger.error({ err }, 'unhandledRejection')
     process.exit(1)
 }))
