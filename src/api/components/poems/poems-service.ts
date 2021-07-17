@@ -238,8 +238,7 @@ function create(data: any): Promise<Response_data> {
 
         const response = response_data();
         
-        const text = new Text();
-        data.meta.url = text.url(data.title);
+         data.meta.url = Text.url(data.title);
 
         const poem: Poem = new POEM(data);
 

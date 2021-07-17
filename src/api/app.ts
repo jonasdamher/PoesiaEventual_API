@@ -5,10 +5,10 @@ import compression from 'compression';
 import helmet from 'helmet';
 import cors from 'cors';
 import moment from 'moment';
-import { logger_app } from './v2/helpers/logger';
+import { logger_app } from './helpers/logger';
 
-import limit_mongo from './v2/middlewares/limit-mongo';
-import routes from './v2/routes';
+import limit_mongo from './middlewares/limit-mongo';
+import routes from './routes';
 
 const app = express();
 

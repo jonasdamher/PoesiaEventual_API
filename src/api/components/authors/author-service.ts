@@ -225,11 +225,10 @@ function create(data: any): Promise<Response_data> {
     return new Promise((resolve, reject) => {
 
         const response = response_data();
-        const text = new Text();
-
+ 
         data.personal.full_name = data.personal.name.trim() + ' ' + data.personal.lastname.trim();
 
-        data.meta.url = text.url(data.personal.full_name);
+        data.meta.url = Text.url(data.personal.full_name);
 
         const author: Author = new AUTHOR(data);
 
@@ -253,23 +252,22 @@ function update(id: any, data: any): Promise<Response_data> {
     return new Promise(async (resolve, reject) => {
 
         const response = response_data();
-        const text = new Text();
-
+ 
         // const current_user = await get_by_id(id);
 
         // if (data.personal.name && data.personal.lastname) {
         //     data.personal.full_name = data.personal.name.trim() + ' ' + data.personal.lastname.trim();
-        //     data.meta.url = text.url(data.personal.full_name);
+        //     data.meta.url = Text.url(data.personal.full_name);
         // }
 
         // if (data.personal.name) {
         //     data.personal.full_name = data.personal.name.trim() + ' ' + current_user.data.personal.lastname;
-        //     data.meta.url = text.url(data.personal.full_name);
+        //     data.meta.url = Text.url(data.personal.full_name);
         // }
 
         // if (data.personal.lastname) {
         //     data.personal.full_name = current_user.data.personal.name.trim() + ' ' + data.personal.lastname;
-        //     data.meta.url = text.url(data.personal.full_name);
+        //     data.meta.url = Text.url(data.personal.full_name);
         // }
 
         AUTHOR.findByIdAndUpdate(id, data).then((authorResponse: any) => {

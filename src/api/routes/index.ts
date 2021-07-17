@@ -3,16 +3,16 @@
 import express from 'express';
 const router = express.Router()
 // Import routes
-import authors from './components/authors';
-import books from './components/books';
-import editorials from './components/editorials';
-import literary_genres from './components/literary_genres';
-import occupations from './components/occupations';
-import poems from './components/poems';
-import recognitions from './components/recognitions';
+import authors from '../components/authors';
+import books from '../components/books';
+import editorials from '../components/editorials';
+import literary_genres from '../components/literary_genres';
+import occupations from '../components/occupations';
+import poems from '../components/poems';
+import recognitions from '../components/recognitions';
 
-import users from './components/users';
-import countries from './components/countries';
+import users from '../components/users';
+import countries from '../components/countries';
 
 router.use('/authors', authors);
 router.use('/books', books);

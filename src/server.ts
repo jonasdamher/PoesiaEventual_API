@@ -1,9 +1,9 @@
 'use strict';
 
 import app from './api/app';
-import Mongo from './api/v2/db/Mongo';
-import config from './api/v2/config';
-import { logger_app } from './api/v2/helpers/logger';
+import Mongo from './api/db/Mongo';
+import config from './api/config';
+import { logger_app } from './api/helpers/logger';
 
 Mongo.connect().then(() => {
     try {

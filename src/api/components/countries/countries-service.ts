@@ -3,7 +3,6 @@
 import COUNTRY, { Country } from './countries-model';
 // Ayudantes
 import { logger_recognitions } from '../../helpers/logger';
-import Text from '../../helpers/Text';
 import response_data from '../../utils/response_data';
 // Tipos
 import Response_data from '../../types/Response_data';
@@ -11,8 +10,8 @@ import { Schema } from 'mongoose';
 
 export {
     getAll,
-     getWithId,
-     create
+    getWithId,
+    create
 }
 
 function getAll(page: number, perpage: number): Promise<Response_data> {
@@ -28,7 +27,7 @@ function getAll(page: number, perpage: number): Promise<Response_data> {
 
             const limit = Math.ceil(count / perpage)
 
-            COUNTRY.find({language:'es'})
+            COUNTRY.find({ language: 'es' })
                 .skip(perpage * current_page)
                 .limit(perpage)
                 .sort('name')
@@ -44,21 +43,21 @@ function getAll(page: number, perpage: number): Promise<Response_data> {
                         }
                     };
 
-                    response.result= data;
+                    response.result = data;
                     response.is_valid = true;
                     resolve(response);
 
                 }).catch((err: any) => {
 
                     response.status = 400;
-                    response.result= err;
+                    response.result = err;
                     reject(response);
                 });
 
         }).catch((err: any) => {
 
             response.status = 400;
-            response.result= err;
+            response.result = err;
             reject(response);
         });
     });
@@ -71,11 +70,11 @@ function getWithId(id: string): Promise<Response_data> {
 
         COUNTRY.findById({ _id: id }).then((poem: any) => {
             response.is_valid = true;
-            response.result= poem;
+            response.result = poem;
             resolve(response);
         }).catch((err: any) => {
             response.status = 400;
-            response.result= err;
+            response.result = err;
             reject(response)
         })
     })
@@ -85,20 +84,20 @@ function create(data: any): Promise<Response_data> {
     return new Promise((resolve, reject) => {
 
         const response = response_data();
- 
+
         const country: Country = new COUNTRY(data);
 
         country.save().then((new_poem: Country) => {
 
             response.status = 201;
             response.is_valid = true;
-            response.result= new_poem;
+            response.result = new_poem;
             resolve(response)
 
         }).catch((err: any) => {
 
             response.status = 400;
-            response.result= err;
+            response.result = err;
             reject(response)
         })
     })

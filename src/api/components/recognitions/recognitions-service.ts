@@ -154,9 +154,8 @@ function create(data: any): Promise<Response_data> {
     return new Promise((resolve, reject) => {
 
         const response = response_data();
-        const text = new Text();
-
-        data.meta.url = text.url(data.title);
+ 
+        data.meta.url = Text.url(data.title);
         const poem: Recognition = new RECOG(data);
 
         poem.save().then((new_poem: Recognition) => {

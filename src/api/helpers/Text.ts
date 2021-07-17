@@ -3,7 +3,7 @@
 /**
  * Sirve para darle formato a texto. 
  */
-export default class Text {
+class Text {
 
     /**
      * Transforma un texto con acentos, mayusculas a minusculas y elimina los caracteres especiales.
@@ -18,3 +18,4 @@ export default class Text {
         return this.#normalize(text.trim().replace(/ /g, '-'));
     }
 }
+export default new Text();
