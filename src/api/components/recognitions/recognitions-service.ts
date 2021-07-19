@@ -5,7 +5,7 @@ import RECOG, { Recognition } from './recognitions-model';
 import { logger_recognitions } from '../../helpers/logger';
 import Text from '../../helpers/Text';
 import response_data from '../../utils/response_data';
-import { get_pagination } from '../../utils/pagination';
+import { get_pagination ,paginate} from '../../utils/pagination';
 // Tipos
 import Response_data from '../../types/Response_data';
 import { Schema } from 'mongoose';
@@ -25,12 +25,7 @@ export default class RecogService {
 
                         let data = {
                             authors: authorResponse,
-                            pagination: {
-                                page: pagination.page,
-                                lastPage: pagination.lastPage,
-                                perPage: pagination.perpage,
-                                total: pagination.total
-                            }
+                            pagination:paginate(pagination)
                         };
 
                         response.result = data;
@@ -83,12 +78,7 @@ export default class RecogService {
 
                         let data = {
                             poems: poems,
-                            pagination: {
-                                page: pagination.page,
-                                lastPage: pagination.lastPage,
-                                perPage: pagination.perpage,
-                                total: pagination.total
-                            }
+                            pagination: paginate(pagination)
                         }
 
                         response.result = data;
