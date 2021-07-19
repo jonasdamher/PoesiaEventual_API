@@ -25,7 +25,7 @@ class Routes {
         this.routes.use('/literary_genres', literary_genres);
         this.routes.use('/occupations', occupations);
         this.routes.use('/poems', poems);
-        this.routes.use('/recognitions', recognitions);
+        this.routes.use('/recognitions', recognitions.routes());
 
         this.routes.use('/users', users.routes());
         this.routes.use('/countries', countries);
