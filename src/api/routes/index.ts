@@ -19,7 +19,7 @@ class Routes {
 
     public load(): Router {
 
-        this.routes.use('/authors', authors);
+        this.routes.use('/authors', authors.routes());
         this.routes.use('/books', books);
         this.routes.use('/editorials', editorials);
         this.routes.use('/literary_genres', literary_genres);
