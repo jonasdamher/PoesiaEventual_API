@@ -13,10 +13,11 @@ class Mongo {
                 useUnifiedTopology: true
             };
 
-            mongoose.connect(config.db.mongo_uri, options).then(() => resolve(true))
+            mongoose.connect(config.db.mongo_uri, options)
+                .then(() => resolve(true))
                 .catch((error: Error) => reject(error))
         })
     }
 }
 
-export default new Mongo;
+export default new Mongo();
