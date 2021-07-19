@@ -5,7 +5,7 @@ import AUTHOR, { Author } from './author-model';
 // Otros servicios
 import * as books from '../books/books-service';
 import * as poems from '../poems/poems-service';
-import * as recognitions from '../recognitions/recognitions-service';
+import RecogService from '../recognitions/recognitions-service';
 
 // Ayudantes
 import Text from '../../helpers/Text';
@@ -92,13 +92,13 @@ function get_by_name(name: string): Promise<Response_data> {
             .populate({ path: 'personal.country', select: 'name' })
             .then(async (current_author: any) => {
 
+                let recog = new RecogService();
                 response.result= {
                     author: current_author,
                     books: await books.get_books_of_author(current_author._id),
                     poems: await poems.get_poems_of_author(current_author._id),
-                    recognitions: await recognitions.get_recognitions_of_author(current_author._id)
+                    recognitions: await recog.get_recognitions_of_author(current_author._id)
                 };
-
                 
                 resolve(response)
             }).catch((err: any) => {
