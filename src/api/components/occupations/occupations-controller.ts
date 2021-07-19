@@ -1,37 +1,40 @@
 'use strict';
 
 import { Request, Response } from 'express';
-import * as service from './occupations-service';
-// Tipos
-import Response_data from '../../types/Response_data';
+import OccupationService from './occupations-service';
+ 
+ 
+class OccupationsController extends OccupationService {
 
-export {
-    get_all,
-    get_with_id,
-    create
+    async get_all(req: Request, res: Response) {
+        try {
+            const result = await this.get_all_occupations();
+            return res.status(result.status).json(result);
+        } catch (error: any) {
+            return res.status(error.status).json(error);
+        }
+    }
+
+    async get_with_id(req: Request, res: Response) {
+        try {
+            const id = req.params.id;
+
+            const result = await this.get_occupation_by_id(id);
+            return res.status(result.status).json(result);
+        } catch (error: any) {
+            return res.status(error.status).json(error);
+        }
+    }
+
+    async create(req: Request, res: Response) {
+        try {
+            const data_body = req.body;
+
+            const result = await this.create_occupation(data_body);
+            return res.status(result.status).json(result);
+        } catch (error: any) {
+            return res.status(error.status).json(error);
+        }
+    }
 }
-
-async function get_all(req: Request, res: Response) {
-
-    service.get_all()
-        .then((ok: Response_data) => res.status(ok.status).json(ok))
-        .catch((err: Response_data) => res.status(err.status).json(err))
-}
-
-async function get_with_id(req: Request, res: Response) {
-
-    const id = req.params.id;
-
-    service.get_with_id(id)
-        .then((ok: Response_data) => res.status(ok.status).json(ok))
-        .catch((err: Response_data) => res.status(err.status).json(err))
-}
-
-async function create(req: Request, res: Response) {
-
-    const data_body = req.body;
-
-    service.create(data_body)
-        .then((ok: Response_data) => res.status(ok.status).json(ok))
-        .catch((err: Response_data) => res.status(err.status).json(err))
-}
+export default new OccupationsController();
