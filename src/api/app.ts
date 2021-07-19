@@ -1,6 +1,6 @@
 'use strict';
 
-import express, { NextFunction, Request, Response } from 'express';
+import express, { Router, Application, NextFunction, Request, Response } from 'express';
 import compression from 'compression';
 import helmet from 'helmet';
 import cors from 'cors';
@@ -9,24 +9,36 @@ import moment from 'moment';
 import config from './config';
 import { logger_app } from './helpers/logger';
 import limit_mongo from './middlewares/limit-mongo';
-import routes from './routes';
 
-const app = express();
+import Routes from './routes';
 
-moment.locale('es');
-app.use(compression());
-app.use(helmet());
-app.use(cors());
-app.use(express.json({ limit: '90kb' }), (err: Error, req: Request, res: Response, next: NextFunction) => {
-    if (err) {
-        logger_app.info({ err }, 'limit kb body request');
-        return res.sendStatus(400);
+
+class App {
+
+    public app: Application = express();
+
+    public constructor() {
+        this.configuration();
     }
-    next();
-});
-app.use(express.urlencoded({ extended: false }));
-app.use(limit_mongo);
 
-app.use(config.app.version, routes);
+    private configuration(): void {
 
-export default app;
+        moment.locale('es');
+        this.app.use(compression());
+        this.app.use(helmet());
+        this.app.use(cors());
+        this.app.use(express.json({ limit: '90kb' }), (err: Error, req: Request, res: Response, next: NextFunction) => {
+            if (err) {
+                logger_app.info({ err }, 'limit kb body request');
+                return res.sendStatus(400);
+            }
+            next();
+        });
+        this.app.use(express.urlencoded({ extended: false }));
+        this.app.use(limit_mongo);
+
+        this.app.use(config.app.version, Routes);
+    }
+}
+
+export default new App().app;

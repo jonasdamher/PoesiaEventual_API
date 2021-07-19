@@ -1,7 +1,7 @@
 'use strict';
 
-import express from 'express';
-const router = express.Router()
+import express, { Router } from 'express';
+
 // Import routes
 import authors from '../components/authors';
 import books from '../components/books';
@@ -10,19 +10,28 @@ import literary_genres from '../components/literary_genres';
 import occupations from '../components/occupations';
 import poems from '../components/poems';
 import recognitions from '../components/recognitions';
-
 import users from '../components/users';
 import countries from '../components/countries';
 
-router.use('/authors', authors);
-router.use('/books', books);
-router.use('/editorials', editorials);
-router.use('/literary_genres', literary_genres);
-router.use('/occupations', occupations);
-router.use('/poems', poems);
-router.use('/recognitions', recognitions);
+class Routes {
 
-router.use('/users', users);
-router.use('/countries', countries);
+    private routes: Router = express.Router();
 
-export default router;
+    public load(): Router {
+
+        this.routes.use('/authors', authors);
+        this.routes.use('/books', books);
+        this.routes.use('/editorials', editorials);
+        this.routes.use('/literary_genres', literary_genres);
+        this.routes.use('/occupations', occupations);
+        this.routes.use('/poems', poems);
+        this.routes.use('/recognitions', recognitions);
+
+        this.routes.use('/users', users.routes());
+        this.routes.use('/countries', countries);
+
+        return this.routes;
+    }
+}
+
+export default new Routes().load();
