@@ -24,3 +24,12 @@ export async function get_pagination(model: any, page: number, perpage: number, 
         });
     });
 }
+
+export function paginate(pagination:any){
+    return {
+        page: pagination.page,
+        lastPage: pagination.lastPage,
+        perPage: pagination.perpage,
+        total: pagination.total
+    }
+}
