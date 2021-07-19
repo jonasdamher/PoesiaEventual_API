@@ -6,7 +6,6 @@ import AUTHOR, { Author } from './author-model';
 import * as books from '../books/books-service';
 import PoemsService from '../poems/poems-service';
 import RecogService from '../recognitions/recognitions-service';
-
 // Ayudantes
 import Text from '../../helpers/Text';
 import response_data from '../../utils/response_data';
@@ -24,22 +23,17 @@ export default class AuthorService {
 
             get_pagination(AUTHOR, page, perpage).then((pagination: any) => {
 
-                AUTHOR.find()
-                    .skip(pagination.page_range)
-                    .limit(pagination.perpage)
+                AUTHOR.find().skip(pagination.page_range).limit(pagination.perpage)
                     .sort('personal.full_name')
                     .select('personal.full_name short_description portrait meta.url')
                     .populate({ path: 'professional.occupations', select: 'name' })
                     .populate({ path: 'professional.literary_genres', select: 'name' })
                     .then((authorResponse: any) => {
 
-                        let data = {
+                        response.result = {
                             authors: authorResponse,
                             pagination: paginate(pagination)
                         };
-
-                        response.result = data;
-
                         resolve(response);
 
                     }).catch((err: any) => {
@@ -171,7 +165,6 @@ export default class AuthorService {
 
                 AUTHOR.findOne().skip(random).then((author: any) => {
 
-
                     response.result = author;
                     resolve(response);
                 }).catch((err: any) => {
@@ -198,7 +191,6 @@ export default class AuthorService {
             const response = response_data();
 
             data.personal.full_name = data.personal.name.trim() + ' ' + data.personal.lastname.trim();
-
             data.meta.url = Text.url(data.personal.full_name);
 
             const author: Author = new AUTHOR(data);
