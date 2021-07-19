@@ -50,7 +50,7 @@ function get_all(page: number, perpage: number): Promise<Response_data> {
                     };
 
                     response.result = data;
-                    response.is_valid = true;
+                    
                     resolve(response);
 
                 }).catch((err: any) => {
@@ -80,7 +80,7 @@ function get_by_id(id: string): Promise<Response_data> {
             .populate({ path: 'editorial', select: 'name' })
             .populate({ path: 'literary_genre', select: 'name' })
             .then((poem: any) => {
-                response.is_valid = true;
+                
                 response.result = poem;
                 resolve(response);
             }).catch((err: any) => {
@@ -140,7 +140,7 @@ function search(page: number, perpage: number, search: string): Promise<Response
                         pagination: { perPage: perpage, page: pageNum, lastPage: limit, total: count }
                     }
 
-                    response.is_valid = true;
+                    
                     response.result = data;
                     resolve(response)
 
@@ -167,7 +167,7 @@ function create(data: any): Promise<Response_data> {
         const book: Book = new BOOK(data);
 
         book.save().then((poem: any) => {
-            response.is_valid = true;
+            
             response.result = poem;
             resolve(response);
         }).catch((err: any) => {

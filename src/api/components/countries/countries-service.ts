@@ -44,7 +44,7 @@ function getAll(page: number, perpage: number): Promise<Response_data> {
                     };
 
                     response.result = data;
-                    response.is_valid = true;
+                    
                     resolve(response);
 
                 }).catch((err: any) => {
@@ -69,7 +69,7 @@ function getWithId(id: string): Promise<Response_data> {
         let response = response_data();
 
         COUNTRY.findById({ _id: id }).then((poem: any) => {
-            response.is_valid = true;
+            
             response.result = poem;
             resolve(response);
         }).catch((err: any) => {
@@ -90,7 +90,7 @@ function create(data: any): Promise<Response_data> {
         country.save().then((new_poem: Country) => {
 
             response.status = 201;
-            response.is_valid = true;
+            
             response.result = new_poem;
             resolve(response)
 

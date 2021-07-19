@@ -22,7 +22,7 @@ export default class UsersService {
             USER.findById(id).select('name lastname email').then((res: any) => {
 
                 response.result = res;
-                response.is_valid = true;
+                
                 resolve(response)
             }).catch((err: any) => {
 
@@ -50,7 +50,7 @@ export default class UsersService {
 
                     const token = jwt.create_token(current_user, 'user');
 
-                    response.is_valid = true;
+                    
                     response.result = token;
                     resolve(response);
                 }).catch((not_match: any) => {
@@ -92,7 +92,7 @@ export default class UsersService {
                 response.result = { _id: res._id };
                 response.message = 'Created';
                 response.status = 201;
-                response.is_valid = true;
+                
                 resolve(response)
             }).catch((err: any) => {
 
@@ -116,7 +116,7 @@ export default class UsersService {
                 USER.findByIdAndUpdate(user._id, { verified: true, $unset: { expire_at: 1 } }).then((res: any) => {
 
                     response.message = 'Account verified!!';
-                    response.is_valid = true;
+                    
                     resolve(response);
                 }).catch((err: any) => {
 
@@ -146,7 +146,7 @@ export default class UsersService {
 
                 response.message = 'Update';
                 response.status = 200;
-                response.is_valid = true;
+                
                 resolve(response);
             }).catch((err: any) => {
 

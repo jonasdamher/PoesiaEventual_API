@@ -47,7 +47,7 @@ function getAll(page: number, perpage: number): Promise<Response_data> {
                     };
 
                     response.result= data;
-                    response.is_valid = true;
+                    
                     resolve(response);
 
                 }).catch((err: any) => {
@@ -72,7 +72,7 @@ function getWithId(id: string): Promise<Response_data> {
         let response = response_data();
 
         RECOG.findById({ _id: id }).populate('author', 'name').then((poem: any) => {
-            response.is_valid = true;
+            
             response.result= poem;
             resolve(response);
         }).catch((err: any) => {
@@ -108,7 +108,7 @@ function search(page: number, perpage: number, search: string): Promise<Response
                         pagination: { perPage: perpage, page: pageNum, lastPage: limit, total: count }
                     }
 
-                    response.is_valid = true;
+                    
                     response.result= data;
                     resolve(response)
 
@@ -161,7 +161,7 @@ function create(data: any): Promise<Response_data> {
         poem.save().then((new_poem: Recognition) => {
 
             response.status = 201;
-            response.is_valid = true;
+            
             response.result= new_poem;
             resolve(response)
 

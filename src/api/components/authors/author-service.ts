@@ -57,7 +57,7 @@ function get_all(page: number, perpage: number): Promise<Response_data> {
                     };
 
                     response.result= data;
-                    response.is_valid = true;
+                    
                     resolve(response);
 
                 }).catch((err: any) => {
@@ -99,7 +99,7 @@ function get_by_name(name: string): Promise<Response_data> {
                     recognitions: await recognitions.get_recognitions_of_author(current_author._id)
                 };
 
-                response.is_valid = true;
+                
                 resolve(response)
             }).catch((err: any) => {
 
@@ -120,7 +120,7 @@ function get_by_id(id: string): Promise<Response_data> {
         AUTHOR.findById(id).then((authorResponse: any) => {
 
             response.result= authorResponse;
-            response.is_valid = true;
+            
             resolve(response)
         }).catch((err: any) => {
 
@@ -166,7 +166,7 @@ function search(page: number, perpage: number, search: string): Promise<Response
                         };
 
                         response.result= data;
-                        response.is_valid = true;
+                        
                         resolve(response);
 
                     }).catch((err: any) => {
@@ -200,7 +200,7 @@ function random(): Promise<Response_data> {
 
             AUTHOR.findOne().skip(random).then((author: any) => {
 
-                response.is_valid = true;
+                
                 response.result= author;
                 resolve(response);
             }).catch((err: any) => {
@@ -236,7 +236,7 @@ function create(data: any): Promise<Response_data> {
             response.message = 'Created';
             response.status = 201;
             response.result= authorResponse;
-            response.is_valid = true;
+            
             resolve(response)
         }).catch((err: any) => {
             response.message = 'BadRequest';
@@ -273,7 +273,7 @@ function update(id: any, data: any): Promise<Response_data> {
         AUTHOR.findByIdAndUpdate(id, data).then((authorResponse: any) => {
 
             response.result= authorResponse;
-            response.is_valid = true;
+            
             resolve(response)
         }).catch((err: any) => {
             response.message = 'BadRequest';

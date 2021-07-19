@@ -2,7 +2,7 @@
 
 import express, { Router } from 'express';
 import * as validate_common from '../common/common-validate';
-import * as validation from './users-validation';
+import validation from './users-validation';
 import Users from './Users-controller';
 import * as auth from '../../middlewares/auth';
 

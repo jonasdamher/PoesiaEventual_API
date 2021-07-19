@@ -6,7 +6,6 @@ export default function response_data(): Response_data {
     return {
         message: 'Success',
         status: 200,
-        is_valid: false,
         result: null
     }
 }

@@ -104,7 +104,7 @@ function get_all_poems_of_author(page: number, perpage: number, id: any): Promis
                         }
                     }
 
-                    response.is_valid = true;
+                    
                     response.result = data;
                     resolve(response);
                 }).catch((err: any) => {
@@ -128,7 +128,7 @@ function get_by_id(id: string): Promise<Response_data> {
         let response = response_data();
 
         POEM.findById({ _id: id }).populate('author', 'name').then((poem: any) => {
-            response.is_valid = true;
+            
             response.result = poem;
             resolve(response);
         }).catch((err: any) => {
@@ -196,7 +196,7 @@ function random(): Promise<Response_data> {
 
             POEM.findOne().populate('author', 'name').skip(random).then(poem => {
 
-                response.is_valid = true;
+                
                 response.result = poem;
                 resolve(response)
 
@@ -228,7 +228,7 @@ function create(data: any): Promise<Response_data> {
         poem.save().then((new_poem: Poem) => {
 
             response.status = 201;
-            response.is_valid = true;
+            
             response.result = new_poem;
             resolve(response)
 

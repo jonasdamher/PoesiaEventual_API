@@ -21,7 +21,7 @@ function get_all(): Promise<Response_data> {
         GENRE.find().sort('name').then((res: any) => {
 
             response.result= res;
-            response.is_valid = true;
+            
             resolve(response);
 
         }).catch((err: any) => {
@@ -41,7 +41,7 @@ function get_with_id(id: string): Promise<Response_data> {
         GENRE.findById(id).then((res: any) => {
 
             response.result= res;
-            response.is_valid = true;
+            
             resolve(response)
         }).catch((err: any) => {
 
@@ -63,7 +63,7 @@ function create(data: any): Promise<Response_data> {
             
             response.status = 201;
             response.result= res;
-            response.is_valid = true;
+            
             resolve(response)
         }).catch((err: any) => {
 
