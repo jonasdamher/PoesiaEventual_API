@@ -1,60 +1,74 @@
 'use strict';
 
 import { Request, Response } from 'express';
-import * as service from './users-service';
-// Tipos
-import Response_data from '../../types/Response_data';
+import UsersService from './users-service';
+ 
+class UsersController extends UsersService {
 
-export {
-    get_by_id,
-    login,
-    create,
-    confirm_account,
-    update
+    public async get_by_id(req: Request, res: Response) {
+        try {
+            const id = req.params.id;
+
+            const result = await this.get_user_by_id(id);
+            return res.status(result.status).json(result);
+
+        } catch (error: any) {
+            return res.status(error.status).json(error);
+        }
+    }
+
+    public async login(req: Request, res: Response) {
+        try {
+
+            const { email, password } = req.body;
+
+            const result = await this.user_login(email, password);
+            return res.status(result.status).json(result);
+
+        } catch (error: any) {
+            return res.status(error.status).json(error);
+        }
+    }
+
+    public async create(req: Request, res: Response) {
+        try {
+
+            const data_body = req.body;
+
+            const result = await this.user_create(data_body);
+            return res.status(result.status).json(result);
+
+        } catch (error: any) {
+            return res.status(error.status).json(error);
+        }
+    }
+
+    public async confirm_account(req: Request, res: Response) {
+        try {
+
+            const { token } = req.params;
+
+            const result = await this.confirm_account_by_token(token);
+            return res.status(result.status).json(result);
+
+        } catch (error: any) {
+            return res.status(error.status).json(error);
+        }
+    }
+
+    public async update(req: Request, res: Response) {
+        try {
+
+            const id = req.params.id;
+            const data_body = req.body;
+
+            const result = await this.update_user_by_id(id, data_body);
+            return res.status(result.status).json(result);
+
+        } catch (error: any) {
+            return res.status(error.status).json(error);
+        }
+    }
 }
 
-async function get_by_id(req: Request, res: Response) {
-
-    const id = req.params.id;
-
-    service.get_by_id(id)
-        .then((ok: Response_data) => res.status(ok.status).json(ok))
-        .catch((err: Response_data) => res.status(err.status).json(err))
-}
-
-async function login(req: Request, res: Response) {
-
-    const { email, password } = req.body;
-
-    service.login(email, password)
-        .then((ok: Response_data) => res.status(ok.status).json(ok))
-        .catch((err: Response_data) => res.status(err.status).json(err))
-}
-
-async function create(req: Request, res: Response) {
-
-    const data_body = req.body;
-
-    service.create(data_body)
-        .then((ok: Response_data) => res.status(ok.status).json(ok))
-        .catch((err: Response_data) => res.status(err.status).json(err))
-}
-
-async function confirm_account(req: Request, res: Response) {
-
-    const { token } = req.params;
-
-    service.confirm_account(token)
-        .then((ok: Response_data) => res.status(ok.status).json(ok))
-        .catch((err: Response_data) => res.status(err.status).json(err))
-}
-
-async function update(req: Request, res: Response) {
-
-    const id = req.params.id;
-    const data_body = req.body;
-
-    service.update(id, data_body)
-        .then((ok: Response_data) => res.status(ok.status).json(ok))
-        .catch((err: Response_data) => res.status(err.status).json(err))
-}
+export default new UsersController();

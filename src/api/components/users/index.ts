@@ -1,16 +1,25 @@
 'use strict';
 
-import express from 'express';
+import express, { Router } from 'express';
+import * as validate_common from '../common/common-validate';
 import * as validation from './users-validation';
-import * as users from './users-controller';
+import Users from './Users-controller';
 import * as auth from '../../middlewares/auth';
 
-const router = express.Router();
+class RouterUsers {
 
-router.get('/:id', auth.user, validation.get_by_id, users.get_by_id);
-router.patch('/update/:id', auth.user, validation.update, users.update);
-router.post('/', validation.create, users.create);
-router.post('/login', validation.login, users.login);
-router.get('/confirm_account/:token', users.confirm_account);
+    private router: Router = express.Router();
 
-export default router;
+    public routes(): Router {
+
+        this.router.get('/:id', auth.user, validate_common.get_by_id, Users.get_by_id);
+        this.router.patch('/update/:id', auth.user, validation.update, Users.update);
+        this.router.post('/', validation.create, Users.create);
+        this.router.post('/login', validation.login, Users.login);
+        this.router.get('/confirm_account/:token', Users.confirm_account);
+
+        return this.router;
+    }
+}
+
+export default new RouterUsers();

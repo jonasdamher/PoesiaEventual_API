@@ -6,26 +6,9 @@ import * as regex from '../../utils/regex';
 import { logger_users } from '../../helpers/logger';
 
 export {
-    get_by_id,
-    login,
+     login,
     create,
     update
-}
-
-async function get_by_id(req: Request, res: Response, next: NextFunction) {
-
-    const schema = Joi.object({
-        id: Joi.string().hex().required()
-    });
-
-    const param = { id: req.params.id };
-
-    schema.validateAsync(param)
-        .then(() => next())
-        .catch((err: Error) => {
-            logger_users.info({ err }, 'validation')
-            return res.status(400).json(err)
-        })
 }
 
 async function login(req: Request, res: Response, next: NextFunction) {
