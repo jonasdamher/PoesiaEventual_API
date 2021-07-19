@@ -23,7 +23,7 @@ class Routes {
         this.routes.use('/books', books);
         this.routes.use('/editorials', editorials);
         this.routes.use('/literary_genres', literary_genres);
-        this.routes.use('/occupations', occupations);
+        this.routes.use('/occupations', occupations.routes());
         this.routes.use('/poems', poems.routes());
         this.routes.use('/recognitions', recognitions.routes());
         this.routes.use('/users', users.routes());
