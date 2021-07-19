@@ -1,16 +1,23 @@
 'use strict';
 
-import express from 'express';
+import express, { Router } from 'express';
 import * as validate_common from '../common/common-validate';
 import * as validation from './recognitions-validation';
-import * as recognitions from './recognitions-controller';
+import recognitions from './recognitions-controller';
 import * as auth from '../../middlewares/auth';
 
-const router = express.Router()
+class RouterRecog {
 
-router.get('/', validate_common.get_all, recognitions.getAll)
-router.get('/:id', validate_common.get_by_id, recognitions.getWithId)
-router.get('/search/:search', validate_common.search, recognitions.search)
-router.post('/', auth.user, validation.create, recognitions.create)
+    private router: Router = express.Router();
 
-export default router;
+    public routes(): Router {
+
+        this.router.get('/', validate_common.get_all, recognitions.get_all);
+        this.router.get('/:id', validate_common.get_by_id, recognitions.get_by_id);
+        this.router.get('/search/:search', validate_common.search, recognitions.search);
+        this.router.post('/', auth.user, validation.create, recognitions.create);
+        return this.router;
+    }
+}
+
+export default new RouterRecog();
