@@ -6,47 +6,8 @@ import * as regex from '../../utils/regex';
 import { logger_authors } from '../../helpers/logger';
 
 export {
-    get_all,
-    get_by_id,
     get_by_name,
-    search,
     create
-}
-
-async function get_all(req: Request, res: Response, next: NextFunction) {
-
-    const schema = Joi.object({
-        page: Joi.number().integer(),
-        perpage: Joi.number().integer().min(1).max(10)
-    });
-
-    const data = {
-        page: req.query.page,
-        perpage: req.query.perpage
-    }
-
-    schema.validateAsync(data)
-        .then(() => next())
-        .catch((err: Error) => {
-            logger_authors.info({ err }, 'validation')
-            return res.status(400).json(err)
-        })
-}
-
-async function get_by_id(req: Request, res: Response, next: NextFunction) {
-
-    const schema = Joi.object({
-        id: Joi.string().hex().required()
-    });
-
-    const param = { id: req.params.id };
-
-    schema.validateAsync(param)
-        .then(() => next())
-        .catch((err: Error) => {
-            logger_authors.info({ err }, 'validation')
-            return res.status(400).json(err)
-        })
 }
 
 async function get_by_name(req: Request, res: Response, next: NextFunction) {
@@ -58,27 +19,6 @@ async function get_by_name(req: Request, res: Response, next: NextFunction) {
     const param = { name: req.params.name };
 
     schema.validateAsync(param)
-        .then(() => next())
-        .catch((err: Error) => {
-            logger_authors.info({ err }, 'validation')
-            return res.status(400).json(err)
-        })
-}
-async function search(req: Request, res: Response, next: NextFunction) {
-
-    const schema = Joi.object({
-        search: Joi.string().required(),
-        page: Joi.number().integer(),
-        perpage: Joi.number().integer().min(1).max(10)
-    });
-
-    const data = {
-        search: req.params.search,
-        page: req.query.page,
-        perpage: req.query.perpage
-    }
-
-    schema.validateAsync(data)
         .then(() => next())
         .catch((err: Error) => {
             logger_authors.info({ err }, 'validation')
