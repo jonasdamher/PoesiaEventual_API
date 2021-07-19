@@ -1,18 +1,25 @@
 'use strict';
 
-import express from 'express';
+import express, { Router } from 'express';
 import * as validate_common from '../common/common-validate';
-import * as validation from './poems-validation';
-import * as poems from './poems-controller';
+import  validation from './poems-validation';
+import poems from './poems-controller';
 import * as auth from '../../middlewares/auth';
 
-const router = express.Router();
+class RouterPoem {
 
-router.get('/', validate_common.get_all, poems.get_all);
-router.get('/author/:id', poems.get_all_poems_of_author, poems.get_all_poems_of_author);
-router.get('/:id', validate_common.get_by_id, poems.get_by_id);
-router.get('/search/:search', validate_common.search, poems.search);
-router.get('/random', poems.random);
-router.post('/', auth.user, validation.create, poems.create);
+    private router: Router = express.Router();
 
-export default router;
+    public routes(): Router {
+        this.router.get('/', validate_common.get_all, poems.get_all);
+        this.router.get('/author/:id', poems.get_all_poems_of_author, poems.get_all_poems_of_author);
+        this.router.get('/:id', validate_common.get_by_id, poems.get_by_id);
+        this.router.get('/search/:search', validate_common.search, poems.search);
+        this.router.get('/random', poems.random);
+        this.router.post('/', auth.user, validation.create, poems.create);
+
+        return this.router;
+    }
+}
+
+export default new RouterPoem();

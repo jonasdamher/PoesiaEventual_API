@@ -4,7 +4,7 @@
 import AUTHOR, { Author } from './author-model';
 // Otros servicios
 import * as books from '../books/books-service';
-import * as poems from '../poems/poems-service';
+import PoemsService from '../poems/poems-service';
 import RecogService from '../recognitions/recognitions-service';
 
 // Ayudantes
@@ -93,6 +93,8 @@ function get_by_name(name: string): Promise<Response_data> {
             .then(async (current_author: any) => {
 
                 let recog = new RecogService();
+                let poems = new PoemsService();
+
                 response.result= {
                     author: current_author,
                     books: await books.get_books_of_author(current_author._id),
