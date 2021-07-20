@@ -13,5 +13,5 @@ Renombrar archivo ```.dev-env``` a ```.env``` y añadir credenciales necesarias.
 ### :gear: Compilar proyecto.
 ```npm run build```
 
-### :heavy_check_mark: Iniciar proyecto
+### :heavy_check_mark: Iniciar proyecto.
 ```npm run start```
