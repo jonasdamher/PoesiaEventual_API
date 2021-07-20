@@ -1,37 +1,41 @@
 'use strict';
 
 import { Request, Response } from 'express';
-import * as service from './editorials-service';
+import EditorialsService from './editorials-service';
 // Tipos
 import Response_data from '../../types/Response_data';
 
-export {
-    get_all,
-    get_with_id,
-    create
+class EditorialsController extends EditorialsService {
+
+    async get_all(req: Request, res: Response) {
+        try {
+            const result = await this.get_all_editorials();
+            return res.status(result.status).json(result);
+        } catch (error: any) {
+            return res.status(error.status).json(error);
+        }
+    }
+
+    async get_with_id(req: Request, res: Response) {
+        try {
+            const id = req.params.id;
+
+            const result = await this.get_editorial_by_id(id);
+            return res.status(result.status).json(result);
+        } catch (error: any) {
+            return res.status(error.status).json(error);
+        }
+    }
+
+    async create(req: Request, res: Response) {
+        try {
+            const data_body = req.body;
+
+            const result = await this.create_editorial(data_body);
+            return res.status(result.status).json(result);
+        } catch (error: any) {
+            return res.status(error.status).json(error);
+        }
+    }
 }
-
-async function get_all(req: Request, res: Response) {
-
-    service.get_all()
-        .then((ok: Response_data) => res.status(ok.status).json(ok))
-        .catch((err: Response_data) => res.status(err.status).json(err))
-}
-
-async function get_with_id(req: Request, res: Response) {
-
-    const id = req.params.id;
-
-    service.get_with_id(id)
-        .then((ok: Response_data) => res.status(ok.status).json(ok))
-        .catch((err: Response_data) => res.status(err.status).json(err))
-}
-
-async function create(req: Request, res: Response) {
-
-    const data_body = req.body;
-
-    service.create(data_body)
-        .then((ok: Response_data) => res.status(ok.status).json(ok))
-        .catch((err: Response_data) => res.status(err.status).json(err))
-}
+export default new EditorialsController();

@@ -1,15 +1,21 @@
 'use strict';
 
-import express from 'express';
+import express, { Router } from 'express';
 import * as validate_common from '../common/common-validate';
-import * as validation from './editorials-validation';
-import * as editorials from './editorials-controller';
+import validation from './editorials-validation';
+import editorials from './editorials-controller';
 import * as auth from '../../middlewares/auth';
 
-const router = express.Router()
+class RouterOcup {
 
-router.get('/', editorials.get_all)
-router.get('/:id', validate_common.get_by_id, editorials.get_with_id)
-router.post('/', auth.user, validation.create, editorials.create)
+    private router: Router = express.Router();
 
-export default router;
+    public routes(): Router {
+        this.router.get('/', editorials.get_all)
+        this.router.get('/:id', validate_common.get_by_id, editorials.get_with_id)
+        this.router.post('/', auth.user, validation.create, editorials.create)
+        return this.router;
+    }
+}
+
+export default new RouterOcup();
