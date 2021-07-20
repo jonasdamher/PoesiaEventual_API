@@ -21,7 +21,7 @@ class Routes {
 
         this.routes.use('/authors', authors.routes());
         this.routes.use('/books', books.routes());
-        this.routes.use('/editorials', editorials);
+        this.routes.use('/editorials', editorials.routes());
         this.routes.use('/literary_genres', literary_genres.routes());
         this.routes.use('/occupations', occupations.routes());
         this.routes.use('/poems', poems.routes());
