@@ -4,53 +4,46 @@ import POEM, { Poem } from './poems-model';
 // Ayudantes
 import { logger_poems } from '../../helpers/logger';
 import Text from '../../helpers/Text';
-import response_data from '../../utils/response_data';
-import { get_pagination ,paginate} from '../../utils/pagination';
+import ResponseHandler from '../../helpers/ResponseHandler';
+import { get_pagination, paginate } from '../../utils/pagination';
 // Tipos
 import Response_data from '../../types/Response_data';
 import { Schema } from 'mongoose';
 
-export default class PoemsService {
+export default class PoemsService extends ResponseHandler {
 
     get_all_poems(page: number, perpage: number): Promise<Response_data> {
         return new Promise((resolve, reject) => {
 
-            const response = response_data();
-
             get_pagination(POEM, page, perpage).then((pagination: any) => {
 
-                POEM.find()
-                    .skip(pagination.page_range)
-                    .limit(pagination.perpage)
-                    .sort('name')
+                POEM.find().skip(pagination.page_range).limit(pagination.perpage).sort('name')
                     .then((authorResponse: any) => {
 
-                        let data = {
+                        let result = {
                             authors: authorResponse,
-                            pagination:paginate(pagination)
+                            pagination: paginate(pagination)
                         };
 
-                        response.result = data;
-                        resolve(response);
+                        this.result(result);
+                        resolve(this.response());
 
                     }).catch((err: any) => {
 
-                        response.status = 400;
-                        response.result = err;
-                        reject(response);
+                        this.status(400).message('BadRequest').result(err);
+                        reject(this.response());
                     });
             }).catch((err: any) => {
 
-                response.status = 400;
-                response.result = err;
-                reject(response);
+                this.status(400).message('BadRequest').result(err);
+                reject(this.response());
             });
-
         });
     }
 
     get_poems_of_author(id: any) {
         return new Promise((resolve, reject) => {
+
             const current_id: Schema.Types.ObjectId = id;
 
             POEM.findOne({ author: current_id }).select('title meta.url').then((poems: any) => {
@@ -67,8 +60,6 @@ export default class PoemsService {
     get_all_poems_of_author_by_id(page: number, perpage: number, id: any): Promise<Response_data> {
         return new Promise((resolve, reject) => {
 
-            const response = response_data();
-
             const current_id: Schema.Types.ObjectId = id;
             let query = { author: current_id };
 
@@ -81,24 +72,22 @@ export default class PoemsService {
                     .sort('title')
                     .then(poemList => {
 
-                        let data = {
+                        let result = {
                             poems: poemList,
                             pagination: paginate(pagination)
                         }
 
-                        response.result = data;
-                        resolve(response);
+                        this.result(result);
+                        resolve(this.response());
                     }).catch((err: any) => {
 
-                        response.status = 400;
-                        response.result = err;
-                        reject(response);
+                        this.status(400).message('BadRequest').result(err);
+                        reject(this.response());
                     })
             }).catch((err: any) => {
 
-                response.status = 400;
-                response.result = err;
-                reject(response);
+                this.status(400).message('BadRequest').result(err);
+                reject(this.response());
             })
         });
     }
@@ -106,24 +95,20 @@ export default class PoemsService {
     get_poem_by_id_(id: string): Promise<Response_data> {
         return new Promise((resolve, reject) => {
 
-            let response = response_data();
 
             POEM.findById({ _id: id }).populate('author', 'name').then((poem: any) => {
 
-                response.result = poem;
-                resolve(response);
-            }).catch((err: any) => {
-                response.status = 400;
-                response.result = err;
-                reject(response)
+                this.result(poem);
+                resolve(this.response());
+             }).catch((err: any) => {
+                this.status(400).message('BadRequest').result(err);
+                reject(this.response());
             })
         })
     }
 
     search_poem(page: number, perpage: number, search: string): Promise<Response_data> {
         return new Promise((resolve, reject) => {
-
-            const response = response_data();
 
             let query = { title: { $regex: '.*' + search + '.*', $options: 'i' } };
 
@@ -133,26 +118,24 @@ export default class PoemsService {
                     POEM.find(query).populate('author').skip(pagination.page_range).limit(pagination.perpage).sort('title')
                         .then((poems: any) => {
 
-                            let data = {
+                            let result = {
                                 poems: poems,
                                 pagination: paginate(pagination)
                             }
 
-                            response.result = data;
-                            resolve(response)
+                            this.result(result);
+                            resolve(this.response());
 
                         }).catch((err: any) => {
 
-                            response.status = 400;
-                            response.result = err;
-                            reject(response)
+                            this.status(400).message('BadRequest').result(err);
+                            reject(this.response());
                         })
 
                 }).catch((err: any) => {
 
-                    response.status = 400;
-                    response.result = err;
-                    reject(response)
+                    this.status(400).message('BadRequest').result(err);
+                    reject(this.response());
                 })
         })
     }
@@ -160,30 +143,25 @@ export default class PoemsService {
     random_poem(): Promise<Response_data> {
         return new Promise((resolve, reject) => {
 
-            const response = response_data();
-
             POEM.find().countDocuments().then(count => {
 
                 const random = Math.floor(Math.random() * count)
 
-                POEM.findOne().populate('author', 'name').skip(random).then(poem => {
+                POEM.findOne().populate('author', 'name').skip(random).then((poem: any) => {
 
-
-                    response.result = poem;
-                    resolve(response)
+                    this.result(poem);
+                    resolve(this.response());
 
                 }).catch((err: any) => {
 
-                    response.status = 400;
-                    response.result = err;
-                    reject(response)
+                    this.status(400).message('BadRequest').result(err);
+                    reject(this.response());
                 })
 
             }).catch((err: any) => {
 
-                response.status = 400;
-                response.result = err;
-                reject(response)
+                this.status(400).message('BadRequest').result(err);
+                reject(this.response());
             })
         })
     }
@@ -191,24 +169,19 @@ export default class PoemsService {
     create_poem(data: any): Promise<Response_data> {
         return new Promise((resolve, reject) => {
 
-            const response = response_data();
-
             data.meta.url = Text.url(data.title);
 
             const poem: Poem = new POEM(data);
 
             poem.save().then((new_poem: Poem) => {
 
-                response.status = 201;
-
-                response.result = new_poem;
-                resolve(response)
+                this.status(201).message('Created').result(new_poem);
+                resolve(this.response());
 
             }).catch((err: any) => {
 
-                response.status = 400;
-                response.result = err;
-                reject(response)
+                this.status(400).message('BadRequest').result(err);
+                reject(this.response());
             })
         })
     }
