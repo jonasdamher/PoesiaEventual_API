@@ -3,7 +3,7 @@
 // Modelos
 import AUTHOR, { Author } from './author-model';
 // Otros servicios
-import * as books from '../books/books-service';
+import BooksService from '../books/books-service';
 import PoemsService from '../poems/poems-service';
 import RecogService from '../recognitions/recognitions-service';
 // Ayudantes
@@ -70,6 +70,7 @@ export default class AuthorService {
 
                     let recog = new RecogService();
                     let poems = new PoemsService();
+                    let books = new BooksService();
 
                     response.result = {
                         author: current_author,
