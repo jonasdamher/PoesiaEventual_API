@@ -5,44 +5,39 @@ import RECOG, { Recognition } from './recognitions-model';
 import { logger_recognitions } from '../../helpers/logger';
 import Text from '../../helpers/Text';
 import response_data from '../../utils/response_data';
-import { get_pagination ,paginate} from '../../utils/pagination';
+import ResponseHandler from '../../helpers/ResponseHandler';
+import { get_pagination, paginate } from '../../utils/pagination';
 // Tipos
 import Response_data from '../../types/Response_data';
 import { Schema } from 'mongoose';
 
-export default class RecogService {
+export default class RecogService extends ResponseHandler {
 
     get_all_recog(page: number, perpage: number): Promise<Response_data> {
         return new Promise((resolve, reject) => {
-
-            const response = response_data();
-
 
             get_pagination(RECOG, page, perpage).then((pagination: any) => {
 
                 RECOG.find().skip(pagination.page_range).limit(pagination.perpage).sort('name')
                     .then((authorResponse: any) => {
 
-                        let data = {
+                        let result = {
                             authors: authorResponse,
-                            pagination:paginate(pagination)
+                            pagination: paginate(pagination)
                         };
 
-                        response.result = data;
-                        resolve(response);
-
+                        this.result(result);
+                        resolve(this.response());
                     }).catch((err: any) => {
 
-                        response.status = 400;
-                        response.result = err;
-                        reject(response);
+                        this.status(400).message('BadRequest').result(err);
+                        reject(this.response());
                     });
 
             }).catch((err: any) => {
 
-                response.status = 400;
-                response.result = err;
-                reject(response);
+                this.status(400).message('BadRequest').result(err);
+                reject(this.response());
             });
         });
     }
@@ -54,12 +49,11 @@ export default class RecogService {
 
             RECOG.findById(id).populate('author', 'name').then((poem: any) => {
 
-                response.result = poem;
-                resolve(response);
+                this.result(poem);
+                resolve(this.response());
             }).catch((err: any) => {
-                response.status = 400;
-                response.result = err;
-                reject(response)
+                this.status(400).message('BadRequest').result(err);
+                reject(this.response());
             })
         })
     }
@@ -76,26 +70,23 @@ export default class RecogService {
                 RECOG.find(query).populate('author').skip(pagination.page_range).limit(pagination.perpage).sort('title')
                     .then((poems: any) => {
 
-                        let data = {
+                        let result = {
                             poems: poems,
                             pagination: paginate(pagination)
                         }
 
-                        response.result = data;
-                        resolve(response)
-
+                        this.result(result);
+                        resolve(this.response())
                     }).catch((err: any) => {
 
-                        response.status = 400;
-                        response.result = err;
-                        reject(response)
+                        this.status(400).message('BadRequest').result(err);
+                        reject(this.response());
                     })
 
             }).catch((err: any) => {
 
-                response.status = 400;
-                response.result = err;
-                reject(response)
+                this.status(400).message('BadRequest').result(err);
+                reject(this.response());
             })
         })
     }
@@ -124,22 +115,17 @@ export default class RecogService {
     create_recog(data: any): Promise<Response_data> {
         return new Promise((resolve, reject) => {
 
-            const response = response_data();
-
             data.meta.url = Text.url(data.title);
             const poem: Recognition = new RECOG(data);
 
             poem.save().then((new_poem: Recognition) => {
 
-                response.status = 201;
-                response.result = new_poem;
-                resolve(response)
-
+                this.status(201).result(new_poem);
+                resolve(this.response());
             }).catch((err: any) => {
 
-                response.status = 400;
-                response.result = err;
-                reject(response)
+                this.status(400).message('BadRequest').result(err);
+                reject(this.response());
             })
         })
     }
