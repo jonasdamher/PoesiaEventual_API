@@ -1,15 +1,22 @@
 'use strict';
 
-import express from 'express';
+import express, { Router } from 'express';
 import * as validate_common from '../common/common-validate';
-import * as validation from './genres-validation';
-import * as author from './genres-controller';
+import validation from './genres-validation';
+import author from './genres-controller';
 import * as auth from '../../middlewares/auth';
 
-const router = express.Router()
+class RouterGenres {
 
-router.get('/', author.get_all)
-router.get('/:id', validate_common.get_by_id, author.get_with_id)
-router.post('/', auth.user, validation.create, author.create)
+    private router: Router = express.Router();
 
-export default router;
+    public routes(): Router {
+        this.router.get('/', author.get_all)
+        this.router.get('/:id', validate_common.get_by_id, author.get_with_id)
+        this.router.post('/', auth.user, validation.create, author.create)
+
+        return this.router;
+    }
+}
+
+export default new RouterGenres();

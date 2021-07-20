@@ -1,37 +1,42 @@
 'use strict';
 
 import { Request, Response } from 'express';
-import * as service from './genres-service';
+import GenresService from './genres-service';
 // Tipos
 import Response_data from '../../types/Response_data';
 
-export {
-    get_all,
-    get_with_id,
-    create
+class GenresController extends GenresService {
+
+    async get_all(req: Request, res: Response) {
+        try {
+            const result = await this.get_all_genres();
+            return res.status(result.status).json(result);
+
+        } catch (err: any) {
+            return res.status(err.status).json(err);
+        }
+    }
+
+    async get_with_id(req: Request, res: Response) {
+        try {
+            const id = req.params.id;
+
+            const result = await this.get_genre_by_id(id);
+            return res.status(result.status).json(result);
+        } catch (err: any) {
+            return res.status(err.status).json(err);
+        }
+    }
+
+    async create(req: Request, res: Response) {
+        try {
+            const data_body = req.body;
+
+            const result = await this.create_genre(data_body);
+            return res.status(result.status).json(result);
+        } catch (err: any) {
+            return res.status(err.status).json(err);
+        }
+    }
 }
-
-async function get_all(req: Request, res: Response) {
-
-    service.get_all()
-        .then((ok: Response_data) => res.status(ok.status).json(ok))
-        .catch((err: Response_data) => res.status(err.status).json(err))
-}
-
-async function get_with_id(req: Request, res: Response) {
-
-    const id = req.params.id;
-
-    service.get_with_id(id)
-        .then((ok: Response_data) => res.status(ok.status).json(ok))
-        .catch((err: Response_data) => res.status(err.status).json(err))
-}
-
-async function create(req: Request, res: Response) {
-
-    const data_body = req.body;
-
-    service.create(data_body)
-        .then((ok: Response_data) => res.status(ok.status).json(ok))
-        .catch((err: Response_data) => res.status(err.status).json(err))
-}
+export default new GenresController();
