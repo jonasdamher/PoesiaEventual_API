@@ -3,84 +3,149 @@
 import BOOK, { Book } from './books-model';
 // Ayudantes
 import { logger_books } from '../../helpers/logger';
+import { get_pagination, paginate } from '../../utils/pagination';
 import response_data from '../../utils/response_data';
 // Tipos
 import Response_data from '../../types/Response_data';
 import { Schema } from 'mongoose';
 
-export {
-    get_all,
-    get_by_id,
-    get_books_of_author,
-    search,
-    create
-}
+export default class BooksService {
 
-function get_all(page: number, perpage: number): Promise<Response_data> {
-    return new Promise((resolve, reject) => {
+    get_all_books(page: number, perpage: number): Promise<Response_data> {
+        return new Promise((resolve, reject) => {
 
-        const response = response_data();
+            const response = response_data();
 
-        let current_page = Math.max(0, page)
-        let pageNum = current_page
-        --current_page
+            get_pagination(BOOK, page, perpage).then((pagination: any) => {
 
-        BOOK.find().countDocuments().then((count: any) => {
+                BOOK.find()
+                    .skip(pagination.page_range)
+                    .limit(pagination.perpage)
+                    .sort('title')
+                    .select('title')
+                    .populate({ path: 'author', select: 'personal.full_name meta.url' })
+                    .populate({ path: 'editorial', select: 'name' })
+                    .populate({ path: 'literary_genre', select: 'name' })
+                    .then((book_list: any) => {
 
-            const limit = Math.ceil(count / perpage)
+                        let data = {
+                            books: book_list,
+                            pagination: paginate(pagination)
+                        };
 
-            BOOK.find()
-                .skip(perpage * current_page)
-                .limit(perpage)
-                .sort('title')
+                        response.result = data;
+                        resolve(response);
+
+                    }).catch((err: any) => {
+
+                        response.status = 400;
+                        response.result = err;
+                        reject(response);
+                    });
+
+            }).catch((err: any) => {
+
+                response.status = 400;
+                response.result = err;
+                reject(response);
+            });
+        });
+    }
+
+    get_book_by_id(id: string): Promise<Response_data> {
+        return new Promise((resolve, reject) => {
+
+            let response = response_data();
+
+            BOOK.findById({ _id: id })
                 .select('title')
                 .populate({ path: 'author', select: 'personal.full_name meta.url' })
                 .populate({ path: 'editorial', select: 'name' })
                 .populate({ path: 'literary_genre', select: 'name' })
-                .then((book_list: any) => {
+                .then((poem: any) => {
 
-                    let data = {
-                        books: book_list,
-                        pagination: {
-                            perPage: perpage,
-                            page: pageNum,
-                            lastPage: limit,
-                            total: count
-                        }
-                    };
-
-                    response.result = data;
-                    
+                    response.result = poem;
                     resolve(response);
-
                 }).catch((err: any) => {
-
                     response.status = 400;
                     response.result = err;
-                    reject(response);
-                });
+                    reject(response)
+                })
+        })
+    }
 
-        }).catch((err: any) => {
+    get_books_of_author(id: any) {
+        return new Promise((resolve, reject) => {
+            const current_id: Schema.Types.ObjectId = id;
 
-            response.status = 400;
-            response.result = err;
-            reject(response);
-        });
-    });
-}
+            BOOK.findOne({ author: current_id })
+                .select('title meta.url published posthumous')
+                .populate({ path: 'editorial', select: 'name' })
+                .populate({ path: 'literary_genre', select: 'name' })
+                .then((books: any) => {
+                    if (!books) {
+                        resolve([]);
+                    }
+                    if (books.length > 1) {
+                        resolve(books);
+                    }
+                    resolve([books]);
 
-function get_by_id(id: string): Promise<Response_data> {
-    return new Promise((resolve, reject) => {
+                }).catch((err: any) => {
+                    logger_books.info(err, 'service');
+                    reject([])
+                })
+        })
+    }
 
-        let response = response_data();
+    search_book(page: number, perpage: number, search: string): Promise<Response_data> {
+        return new Promise((resolve, reject) => {
 
-        BOOK.findById({ _id: id })
-            .select('title')
-            .populate({ path: 'author', select: 'personal.full_name meta.url' })
-            .populate({ path: 'editorial', select: 'name' })
-            .populate({ path: 'literary_genre', select: 'name' })
-            .then((poem: any) => {
-                
+            const response = response_data();
+
+            const query = { title: { $regex: '.*' + search + '.*', $options: 'i' } };
+
+            get_pagination(BOOK, page, perpage, query).then((pagination: any) => {
+
+                BOOK.find(query)
+                    .skip(pagination.page_range)
+                    .limit(pagination.perpage)
+                    .sort('title')
+                    .populate('author editorial literary_genre')
+                    .then((poems: any) => {
+
+                        let data = {
+                            poems: poems,
+                            pagination: paginate(pagination)
+                        }
+
+                        response.result = data;
+                        resolve(response)
+
+                    }).catch((err: any) => {
+
+                        response.status = 400;
+                        response.result = err;
+                        reject(response)
+                    })
+
+            }).catch((err: any) => {
+
+                response.status = 400;
+                response.result = err;
+                reject(response)
+            })
+        })
+    }
+
+    create_book(data: any): Promise<Response_data> {
+        return new Promise((resolve, reject) => {
+
+            let response = response_data();
+            const book: Book = new BOOK(data);
+
+            book.save().then((poem: any) => {
+
                 response.result = poem;
                 resolve(response);
             }).catch((err: any) => {
@@ -88,92 +153,6 @@ function get_by_id(id: string): Promise<Response_data> {
                 response.result = err;
                 reject(response)
             })
-    })
-}
-
-function get_books_of_author(id: any) {
-    return new Promise((resolve, reject) => {
-        const current_id: Schema.Types.ObjectId = id;
-
-        BOOK.findOne({ author: current_id })
-            .select('title meta.url published posthumous')
-            .populate({ path: 'editorial', select: 'name' })
-            .populate({ path: 'literary_genre', select: 'name' })
-            .then((books: any) => {
-                if (!books) {
-                    resolve([]);
-                }
-                if (books.length > 1) {
-                    resolve(books);
-                }
-                resolve([books]);
-
-            }).catch((err: any) => {
-                logger_books.info(err, 'service');
-                reject([])
-            })
-    })
-}
-
-function search(page: number, perpage: number, search: string): Promise<Response_data> {
-    return new Promise((resolve, reject) => {
-
-        const response = response_data();
-
-        let current_page = Math.max(0, page)
-        let pageNum = current_page
-        --current_page
-
-        BOOK.find({ title: { $regex: '.*' + search + '.*', $options: 'i' } }).countDocuments().then(count => {
-
-            const limit = Math.ceil(count / perpage)
-
-            BOOK.find({ title: { $regex: '.*' + search + '.*', $options: 'i' } })
-                .skip(perpage * current_page)
-                .limit(perpage)
-                .sort('title')
-                .populate('author editorial literary_genre')
-                .then((poems: any) => {
-
-                    let data = {
-                        poems: poems,
-                        pagination: { perPage: perpage, page: pageNum, lastPage: limit, total: count }
-                    }
-
-                    
-                    response.result = data;
-                    resolve(response)
-
-                }).catch((err: any) => {
-
-                    response.status = 400;
-                    response.result = err;
-                    reject(response)
-                })
-
-        }).catch((err: any) => {
-
-            response.status = 400;
-            response.result = err;
-            reject(response)
         })
-    })
-}
-
-function create(data: any): Promise<Response_data> {
-    return new Promise((resolve, reject) => {
-
-        let response = response_data();
-        const book: Book = new BOOK(data);
-
-        book.save().then((poem: any) => {
-            
-            response.result = poem;
-            resolve(response);
-        }).catch((err: any) => {
-            response.status = 400;
-            response.result = err;
-            reject(response)
-        })
-    })
+    }
 }
