@@ -5,40 +5,32 @@ import USER, { User } from './users-model';
 // Ayudantes
 import * as jwt from '../../helpers/jwt';
 import Email from '../../helpers/Email';
-import response_data from '../../utils/response_data';
 import { logger_users } from '../../helpers/logger';
-
+import ResponseHandler from '../../helpers/ResponseHandler';
 // Configuración
 import config from '../../config'
 // Tipos
 import Response_data from '../../types/Response_data';
 
-export default class UsersService {
+export default class UsersService extends ResponseHandler {
     get_user_by_id(id: string): Promise<Response_data> {
         return new Promise((resolve, reject) => {
 
-            const response = response_data();
-
             USER.findById(id).select('name lastname email').then((res: any) => {
 
-                response.result = res;
-                
-                resolve(response)
+                this.result(res);
+                resolve(this.response())
             }).catch((err: any) => {
 
-                response.message = 'Dont found';
-                response.status = 404;
-                response.result = err;
-                logger_users.info({ response }, 'service')
-                reject(response);
+                this.message('Dont found').status(404).result(err);
+                logger_users.info({ ...this.response() }, 'service')
+                reject(this.response());
             })
         });
     }
 
     user_login(email: string, password: string): Promise<Response_data> {
         return new Promise((resolve, reject) => {
-
-            const response = response_data();
 
             USER.findOne({ email: email }).then((current_user: any) => {
 
@@ -50,22 +42,19 @@ export default class UsersService {
 
                     const token = jwt.create_token(current_user, 'user');
 
-                    
-                    response.result = token;
-                    resolve(response);
+                    this.result(token);
+                    resolve(this.response());
                 }).catch((not_match: any) => {
-                    response.message = 'Unauthorized';
-                    response.status = 401;
-                    logger_users.info({ response }, 'service')
-                    reject(response)
+
+                    this.message('Unauthorized').status(401);
+                    logger_users.info({ ...this.response() }, 'service')
+                    reject(this.response());
                 })
             }).catch((err: any) => {
-                response.message = 'Unauthorized';
-                response.status = 401;
-                response.result = err;
-                logger_users.info({ response }, 'service')
 
-                reject(response)
+                this.message('Unauthorized').status(401).result(err);
+                logger_users.info({ ...this.response() }, 'service')
+                reject(this.response());
             })
         });
     }
@@ -73,7 +62,6 @@ export default class UsersService {
     user_create(data: any): Promise<Response_data> {
         return new Promise((resolve, reject) => {
 
-            const response = response_data();
             const user: User = new USER(data);
 
             user.save().then((res: User) => {
@@ -86,22 +74,15 @@ export default class UsersService {
                 email.text = 'Hola,\n' +
                     'Por favor, verifica tu cuenta de usuario haciendo clic en:\n' +
                     config.app.url_api + 'users\/confirm_account\/' + verify_token.token + '.\n';
-
                 email.send();
 
-                response.result = { _id: res._id };
-                response.message = 'Created';
-                response.status = 201;
-                
-                resolve(response)
+                this.status(201).message('Created').result({ _id: res._id });
+                resolve(this.response());
             }).catch((err: any) => {
 
-                response.message = 'BadRequest';
-                response.status = 400;
-                response.result = err;
-
-                logger_users.info({ response }, 'service')
-                reject(response);
+                this.message('BadRequest').status(400).result(err);
+                logger_users.info({ ...this.response() }, 'service')
+                reject(this.response());
             })
         });
     }
@@ -109,30 +90,24 @@ export default class UsersService {
     confirm_account_by_token(token: string): Promise<Response_data> {
         return new Promise((resolve, reject) => {
 
-            const response = response_data();
-
             jwt.confirm_token_new_account(token).then((user: any) => {
 
                 USER.findByIdAndUpdate(user._id, { verified: true, $unset: { expire_at: 1 } }).then((res: any) => {
 
-                    response.message = 'Account verified!!';
-                    
-                    resolve(response);
+                    this.message('Account verified!!');
+                    resolve(this.response());
                 }).catch((err: any) => {
 
-                    response.message = 'BadRequest';
-                    response.status = 400;
-                    response.result = err;
-                    logger_users.info({ response }, 'service')
-                    reject(response);
+                    this.message('BadRequest').status(400).result(err);
+                    logger_users.info({ ...this.response() }, 'service')
+                    reject(this.response());
                 })
 
             }).catch((err: any) => {
 
-                response.status = err.status;
-                response.message = err.message;
-                logger_users.info({ response }, 'service')
-                reject(response);
+                this.message(err.message).status(err.status).result(err);
+                logger_users.info({ ...this.response() }, 'service')
+                reject(this.response());
             })
         });
     }
@@ -140,22 +115,16 @@ export default class UsersService {
     update_user_by_id(id: string, data: any): Promise<Response_data> {
         return new Promise((resolve, reject) => {
 
-            const response = response_data();
 
             USER.findByIdAndUpdate(id, data, { new: true }).select('name lastname email ').then((res: any) => {
 
-                response.message = 'Update';
-                response.status = 200;
-                
-                resolve(response);
+                this.message('Update');
+                resolve(this.response());
             }).catch((err: any) => {
 
-                response.message = 'BadRequest';
-                response.status = 400;
-                response.result = err;
-
-                logger_users.info({ response }, 'service')
-                reject(response);
+                this.message('BadRequest').status(400).result(err);
+                logger_users.info({ ...this.response() }, 'service')
+                reject(this.response());
             })
         });
     }
