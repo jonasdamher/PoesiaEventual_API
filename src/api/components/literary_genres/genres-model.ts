@@ -56,4 +56,4 @@ const genres_schema: Schema<Genre, genres_model> = new Schema({
     }
 })
 
-export default model('literary_genres', genres_schema)
+export default model<Genre, genres_model>('literary_genres', genres_schema)

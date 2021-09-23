@@ -39,4 +39,4 @@ const editorial_schema: Schema<Editorial, editorial_model> = new Schema({
     }
 })
 
-export default model('editorials', editorial_schema)
+export default model<Editorial, editorial_model>('editorials', editorial_schema)

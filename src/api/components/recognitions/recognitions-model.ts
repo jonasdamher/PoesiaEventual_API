@@ -84,4 +84,4 @@ const recognitions_schema: Schema<Recognition, recognitions_model> = new Schema(
     }
 })
 
-export default model('recognitions', recognitions_schema);
+export default model<Recognition, recognitions_model>('recognitions', recognitions_schema);

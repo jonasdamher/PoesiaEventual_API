@@ -6,7 +6,7 @@ import * as regex from '../../utils/regex';
 export interface Book extends Document {
     author: Schema.Types.ObjectId;
     title: string;
-    synopsis:string;
+    synopsis: string;
     portrait: string;
     posthumous: boolean;
     literary_genre: Schema.Types.ObjectId;
@@ -60,4 +60,4 @@ const book_schema: Schema<Book, book_model> = new Schema({
     }
 })
 
-export default model('books', book_schema);
+export default model<Book, book_model>('books', book_schema);

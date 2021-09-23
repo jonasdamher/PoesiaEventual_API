@@ -189,4 +189,4 @@ const author_schema: Schema<Author, author_model> = new Schema({
     }
 })
 
-export default model('authors', author_schema)
+export default model<Author, author_model>('authors', author_schema)

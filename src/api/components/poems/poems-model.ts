@@ -80,4 +80,4 @@ const poem_schema: Schema<Poem, poem_model> = new Schema({
     }
 })
 
-export default model('poems', poem_schema);
+export default model<Poem, poem_model>('poems', poem_schema);

@@ -17,6 +17,7 @@ export interface User extends Document {
     email: string;
     password: string;
     role: roles;
+    verified: Boolean;
     expire_at: Date;
     created_at: number;
     update_at: number;
@@ -27,7 +28,7 @@ interface user_model extends Model<User> {
     compare_password(password: string): Promise<Boolean>;
 }
 
-const user_schema: Schema<User, user_model> = new Schema({
+let user_schema: Schema<User, user_model> = new Schema({
     name: {
         type: String,
         trim: true,
@@ -63,10 +64,6 @@ const user_schema: Schema<User, user_model> = new Schema({
         unique: true,
         required: [true, 'Es obligatorio introducir un nombre.'],
     },
-    verified: {
-        type: Boolean,
-        default: false
-    },
     password: {
         type: String,
         validate: {
@@ -85,6 +82,10 @@ const user_schema: Schema<User, user_model> = new Schema({
             'ROLE_BASIC'
         ],
         required: true
+    },
+    verified: {
+        type: Boolean,
+        default: false
     },
     expire_at: {
         type: Date,
@@ -130,4 +131,4 @@ user_schema.methods.compare_password = async function (password: string) {
     });
 }
 
-export default model('users', user_schema)
+export default model<User,user_model>('users', user_schema);

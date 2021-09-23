@@ -26,4 +26,4 @@ const countries_schema: Schema<Country, countries_model> = new Schema({
     }
 })
 
-export default model('countries', countries_schema);
+export default model<Country, countries_model> ('countries', countries_schema);

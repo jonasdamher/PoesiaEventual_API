@@ -39,4 +39,4 @@ const occupations_schema: Schema<Occupation, occupations_model> = new Schema({
     }
 })
 
-export default model('occupations', occupations_schema)
+export default model<Occupation, occupations_model>('occupations', occupations_schema)
