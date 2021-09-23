@@ -19,15 +19,16 @@ class Routes {
 
     public load(): Router {
 
-        this.routes.use('/authors', authors.routes());
-        this.routes.use('/books', books.routes());
-        this.routes.use('/editorials', editorials.routes());
-        this.routes.use('/literary_genres', literary_genres.routes());
-        this.routes.use('/occupations', occupations.routes());
-        this.routes.use('/poems', poems.routes());
-        this.routes.use('/recognitions', recognitions.routes());
-        this.routes.use('/users', users.routes());
-        this.routes.use('/countries', countries);
+        this.routes
+            .use('/authors', authors.routes())
+            .use('/books', books.routes())
+            .use('/editorials', editorials.routes())
+            .use('/literary_genres', literary_genres.routes())
+            .use('/occupations', occupations.routes())
+            .use('/poems', poems.routes())
+            .use('/recognitions', recognitions.routes())
+            .use('/users', users.routes())
+            .use('/countries', countries);
 
         return this.routes;
     }
