@@ -18,23 +18,23 @@ export default class UsersService extends ResponseHandler {
 
             USER.findById(id).select('name lastname email').then((res: any) => {
 
-                this.result(res);
-                resolve(this.response())
+                super.result(res);
+                resolve(super.response())
             }).catch((err: any) => {
 
-                this.message('Dont found').status(404).result(err);
-                logger_users.info({ ...this.response() }, 'service')
-                reject(this.response());
+                super.message('Dont found').status(404).result(err);
+                logger_users.info({ ...super.response() }, 'service')
+                reject(super.response());
             })
         });
     }
 
-    user_login(email: string, password: string): Promise<Response_data> {
+    user_login(email: string, password: string): Promise<any> {
         return new Promise((resolve, reject) => {
 
             USER.findOne({ email: email }).then((current_user: any) => {
 
-                if (!current_user.verified) {
+                 if (!current_user.verified) {
                     throw new Error('user not verified');
                 }
 
@@ -42,19 +42,15 @@ export default class UsersService extends ResponseHandler {
 
                     const token = jwt.create_token(current_user, 'user');
 
-                    this.result(token);
-                    resolve(this.response());
+                    resolve({ status: 200, result: { ...token } });
                 }).catch((not_match: any) => {
-
-                    this.message('Unauthorized').status(401);
-                    logger_users.info({ ...this.response() }, 'service')
-                    reject(this.response());
+                    logger_users.info({ status: 401, result: null, message: 'Unauthorized' }, 'service')
+                    reject({ status: 401, result: null, message: 'Unauthorized' });
                 })
             }).catch((err: any) => {
 
-                this.message('Unauthorized').status(401).result(err);
-                logger_users.info({ ...this.response() }, 'service')
-                reject(this.response());
+                logger_users.info({ status: 401, result: err, message: 'Unauthorized' }, 'service')
+                reject({ status: 401, result: err, message: 'Unauthorized' });
             })
         });
     }
@@ -64,7 +60,7 @@ export default class UsersService extends ResponseHandler {
 
             const user: User = new USER(data);
 
-            user.save().then((res: User) => {
+            user.save().then((res: any) => {
 
                 const verify_token = jwt.create_token(res, 'verify_account');
 
@@ -76,13 +72,13 @@ export default class UsersService extends ResponseHandler {
                     config.app.url_api + 'users\/confirm_account\/' + verify_token.token + '.\n';
                 email.send();
 
-                this.status(201).message('Created').result({ _id: res._id });
-                resolve(this.response());
+                super.status(201).message('Created').result({ _id: res._id });
+                resolve(super.response());
             }).catch((err: any) => {
 
-                this.message('BadRequest').status(400).result(err);
-                logger_users.info({ ...this.response() }, 'service')
-                reject(this.response());
+                super.message('BadRequest').status(400).result(err);
+                logger_users.info({ ...super.response() }, 'service')
+                reject(super.response());
             })
         });
     }
@@ -94,20 +90,20 @@ export default class UsersService extends ResponseHandler {
 
                 USER.findByIdAndUpdate(user._id, { verified: true, $unset: { expire_at: 1 } }).then((res: any) => {
 
-                    this.message('Account verified!!');
-                    resolve(this.response());
+                    super.message('Account verified!!');
+                    resolve(super.response());
                 }).catch((err: any) => {
 
-                    this.message('BadRequest').status(400).result(err);
-                    logger_users.info({ ...this.response() }, 'service')
-                    reject(this.response());
+                    super.message('BadRequest').status(400).result(err);
+                    logger_users.info({ ...super.response() }, 'service')
+                    reject(super.response());
                 })
 
             }).catch((err: any) => {
 
-                this.message(err.message).status(err.status).result(err);
-                logger_users.info({ ...this.response() }, 'service')
-                reject(this.response());
+                super.message(err.message).status(err.status).result(err);
+                logger_users.info({ ...super.response() }, 'service')
+                reject(super.response());
             })
         });
     }
@@ -118,13 +114,13 @@ export default class UsersService extends ResponseHandler {
 
             USER.findByIdAndUpdate(id, data, { new: true }).select('name lastname email ').then((res: any) => {
 
-                this.message('Update');
-                resolve(this.response());
+                super.message('Update');
+                resolve(super.response());
             }).catch((err: any) => {
 
-                this.message('BadRequest').status(400).result(err);
-                logger_users.info({ ...this.response() }, 'service')
-                reject(this.response());
+                super.message('BadRequest').status(400).result(err);
+                logger_users.info({ ...super.response() }, 'service')
+                reject(super.response());
             })
         });
     }

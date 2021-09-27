@@ -14,7 +14,7 @@ export interface Editorial extends Document {
 // Para añadir funciones extras con mongoose
 interface editorial_model extends Model<Editorial> { }
 
-const editorial_schema: Schema<Editorial, editorial_model> = new Schema({
+const editorial_schema = new Schema<Editorial, editorial_model>({
     name: {
         type: String,
         validate: {

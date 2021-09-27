@@ -25,7 +25,7 @@ export interface Recognition extends Document {
 // Para añadir funciones extras con mongoose
 interface recognitions_model extends Model<Recognition> { }
 
-const recognitions_schema: Schema<Recognition, recognitions_model> = new Schema({
+const recognitions_schema = new Schema<Recognition, recognitions_model> ({
     author: {
         type: Schema.Types.ObjectId,
         ref: 'authors'
@@ -84,4 +84,4 @@ const recognitions_schema: Schema<Recognition, recognitions_model> = new Schema(
     }
 })
 
-export default model<Recognition, recognitions_model>('recognitions', recognitions_schema);
+export default model<Recognition, recognitions_model> ('recognitions', recognitions_schema);

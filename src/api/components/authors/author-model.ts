@@ -44,7 +44,7 @@ export interface Author extends Document {
 // Para añadir funciones extras con mongoose
 interface author_model extends Model<Author> { }
 
-const author_schema: Schema<Author, author_model> = new Schema({
+const author_schema = new Schema<Author, author_model>({
     personal: {
         name: {
             type: String,

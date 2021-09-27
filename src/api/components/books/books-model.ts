@@ -19,7 +19,7 @@ export interface Book extends Document {
 // Para añadir funciones extras con mongoose
 interface book_model extends Model<Book> { }
 
-const book_schema: Schema<Book, book_model> = new Schema({
+const book_schema = new Schema<Book, book_model>({
     author: {
         type: Schema.Types.ObjectId,
         ref: 'authors'

@@ -20,7 +20,7 @@ export interface Genre extends Document {
 // Para añadir funciones extras con mongoose
 interface genres_model extends Model<Genre> { }
 
-const genres_schema: Schema<Genre, genres_model> = new Schema({
+const genres_schema = new Schema<Genre, genres_model>({
     name: {
         type: String,
         validate: {

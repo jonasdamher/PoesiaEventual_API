@@ -11,7 +11,7 @@ export interface Country extends Document {
 // Para añadir funciones extras con mongoose
 interface countries_model extends Model<Country> { }
 
-const countries_schema: Schema<Country, countries_model> = new Schema({
+const countries_schema  = new Schema<Country, countries_model>({
     name: {
         type: String,
         required: true
@@ -26,4 +26,4 @@ const countries_schema: Schema<Country, countries_model> = new Schema({
     }
 })
 
-export default model<Country, countries_model> ('countries', countries_schema);
+export default model<Country, countries_model>('countries', countries_schema);

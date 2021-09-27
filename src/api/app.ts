@@ -24,21 +24,20 @@ class App {
     private configuration(): void {
 
         moment.locale('es');
+        this.app.use(compression());
+        this.app.use(helmet());
+        this.app.use(cors());
+        this.app.use(express.json({ limit: '90kb' }), (err: Error, req: Request, res: Response, next: NextFunction) => {
+            if (err) {
+                logger_app.info({ err }, 'limit kb body request');
+                return res.sendStatus(400);
+            }
+            next();
+        });
+        this.app.use(express.urlencoded({ extended: false }));
+        this.app.use(limit_mongo);
 
-        this.app
-            .use(compression())
-            .use(helmet())
-            .use(cors())
-            .use(express.json({ limit: '90kb' }), (err: Error, req: Request, res: Response, next: NextFunction) => {
-                if (err) {
-                    logger_app.info({ err }, 'limit kb body request');
-                    return res.sendStatus(400);
-                }
-                next();
-            })
-            .use(express.urlencoded({ extended: false }))
-            .use(limit_mongo)
-            .use(config.app.version, Routes);
+        this.app.use(config.app.version, Routes);
     }
 }
 

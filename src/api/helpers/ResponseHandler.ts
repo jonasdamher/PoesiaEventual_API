@@ -2,30 +2,38 @@
 
 export default class ResponseHandler {
 
-    private res_message: string = 'Success';
-    private res_status: number = 200;
-    private res_result: any = null;
+    resMessage: string;
+    resStatus: number;
+    resResult: any;
 
-    public message(message: string) {
-        this.res_message = message;
+    constructor() {
+        this.resMessage = 'Success';
+        this.resStatus = 200;
+        this.resResult = null;
+    }
+    message(message: string) {
+        console.log(message)
+        console.log(this.resMessage)
+
+        this.resMessage = message;
         return this;
     }
 
-    public status(status: number) {
-        this.res_status = status;
+    status(status: number) {
+        this.resStatus = status;
         return this;
     }
 
-    public result(result: any) {
-        this.res_result = result;
+    result(result: any) {
+        this.resResult = result;
         return this;
     }
 
-    public response() {
+    response() {
         return {
-            message: this.res_message,
-            status: this.res_status,
-            result: this.res_result
+            message: this.resMessage,
+            status: this.resStatus,
+            result: this.resResult
         }
     }
 }

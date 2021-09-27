@@ -143,7 +143,7 @@ export default class PoemsService extends ResponseHandler {
     random_poem(): Promise<Response_data> {
         return new Promise((resolve, reject) => {
 
-            POEM.find().countDocuments().then((count:any) => {
+            POEM.find().countDocuments().then(count => {
 
                 const random = Math.floor(Math.random() * count)
 

@@ -9,7 +9,7 @@ class UsersController extends UsersService {
         try {
             const id = req.params.id;
 
-            const result = await this.get_user_by_id(id);
+            const result = await super.get_user_by_id(id);
             return res.status(result.status).json(result);
 
         } catch (error: any) {
@@ -21,8 +21,10 @@ class UsersController extends UsersService {
         try {
 
             const { email, password } = req.body;
+            console.log('login')
+            const result = await super.user_login(email, password);
+            console.log('login')
 
-            const result = await this.user_login(email, password);
             return res.status(result.status).json(result);
 
         } catch (error: any) {
@@ -35,7 +37,7 @@ class UsersController extends UsersService {
 
             const data_body = req.body;
 
-            const result = await this.user_create(data_body);
+            const result = await super.user_create(data_body);
             return res.status(result.status).json(result);
 
         } catch (error: any) {
@@ -48,7 +50,7 @@ class UsersController extends UsersService {
 
             const { token } = req.params;
 
-            const result = await this.confirm_account_by_token(token);
+            const result = await super.confirm_account_by_token(token);
             return res.status(result.status).json(result);
 
         } catch (error: any) {
@@ -62,7 +64,7 @@ class UsersController extends UsersService {
             const id = req.params.id;
             const data_body = req.body;
 
-            const result = await this.update_user_by_id(id, data_body);
+            const result = await super.update_user_by_id(id, data_body);
             return res.status(result.status).json(result);
 
         } catch (error: any) {

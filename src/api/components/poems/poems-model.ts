@@ -23,7 +23,7 @@ export interface Poem extends Document {
 // Para añadir funciones extras con mongoose
 interface poem_model extends Model<Poem> { }
 
-const poem_schema: Schema<Poem, poem_model> = new Schema({
+const poem_schema = new Schema<Poem, poem_model> ({
     author: {
         type: Schema.Types.ObjectId,
         ref: 'authors'
@@ -80,4 +80,4 @@ const poem_schema: Schema<Poem, poem_model> = new Schema({
     }
 })
 
-export default model<Poem, poem_model>('poems', poem_schema);
+export default model<Poem, poem_model> ('poems', poem_schema);
