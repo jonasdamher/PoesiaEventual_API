@@ -13,7 +13,7 @@ import Response_data from '../../types/Response_data';
 
 export default class UsersService {
 
-    get_user_by_id(id: string): Promise<Response_data> {
+    getUserById(id: string): Promise<Response_data> {
         return new Promise((resolve, reject) => {
             let response: Response_data = { status: 200, result: null, message: '' };
 
@@ -33,7 +33,7 @@ export default class UsersService {
         });
     }
 
-    user_login(email: string, password: string): Promise<Response_data> {
+    userLogin(email: string, password: string): Promise<Response_data> {
         return new Promise((resolve, reject) => {
             let response: Response_data = { status: 200, result: null, message: '' };
 
@@ -68,7 +68,7 @@ export default class UsersService {
         });
     }
 
-    user_create(data: any): Promise<Response_data> {
+    userCreate(data: any): Promise<Response_data> {
         return new Promise((resolve, reject) => {
             let response: Response_data = { status: 200, result: null, message: '' };
 
@@ -83,13 +83,13 @@ export default class UsersService {
                 email.subject = 'Verifica tu cuenta de usuario';
                 email.text = 'Hola,\n' +
                     'Por favor, verifica tu cuenta de usuario haciendo clic en:\n' +
-                    config.app.url_api + 'users\/confirm_account\/' + verify_token.token + '.\n';
+                    config.app.url_api + 'users\/confirmAccount\/' + verify_token.token + '.\n';
                 email.send();
 
                 response.status = 201;
                 response.message = 'Created';
 
-                response.result._id = res._id;
+                response.result = { _id: res._id };
                 resolve(response);
             }).catch((err: any) => {
 
@@ -104,7 +104,7 @@ export default class UsersService {
         });
     }
 
-    confirm_account_by_token(token: string): Promise<Response_data> {
+    confirmAccountWithToken(token: string): Promise<Response_data> {
         return new Promise((resolve, reject) => {
             let response: Response_data = { status: 200, result: null, message: '' };
 
@@ -138,7 +138,7 @@ export default class UsersService {
         });
     }
 
-    update_user_by_id(id: string, data: any): Promise<Response_data> {
+    updateUserById(id: string, data: any): Promise<Response_data> {
         return new Promise((resolve, reject) => {
             let response: Response_data = { status: 200, result: null, message: '' };
 

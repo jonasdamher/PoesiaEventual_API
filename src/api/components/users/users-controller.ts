@@ -2,14 +2,14 @@
 
 import { Request, Response } from 'express';
 import UsersService from './users-service';
- 
+
 class UsersController extends UsersService {
 
-    public async get_by_id(req: Request, res: Response) {
+    public async getById(req: Request, res: Response) {
         try {
             const id = req.params.id;
 
-            const result = await super.get_user_by_id(id);
+            const result = await super.getUserById(id);
             return res.status(result.status).json(result);
 
         } catch (error: any) {
@@ -21,9 +21,8 @@ class UsersController extends UsersService {
         try {
 
             const { email, password } = req.body;
-            console.log('login')
-            const result = await super.user_login(email, password);
-            console.log('login')
+
+            const result = await super.userLogin(email, password);
 
             return res.status(result.status).json(result);
 
@@ -37,7 +36,7 @@ class UsersController extends UsersService {
 
             const data_body = req.body;
 
-            const result = await super.user_create(data_body);
+            const result = await super.userCreate(data_body);
             return res.status(result.status).json(result);
 
         } catch (error: any) {
@@ -45,12 +44,12 @@ class UsersController extends UsersService {
         }
     }
 
-    public async confirm_account(req: Request, res: Response) {
+    public async confirmAccount(req: Request, res: Response) {
         try {
 
             const { token } = req.params;
 
-            const result = await super.confirm_account_by_token(token);
+            const result = await super.confirmAccountWithToken(token);
             return res.status(result.status).json(result);
 
         } catch (error: any) {
@@ -64,7 +63,7 @@ class UsersController extends UsersService {
             const id = req.params.id;
             const data_body = req.body;
 
-            const result = await super.update_user_by_id(id, data_body);
+            const result = await super.updateUserById(id, data_body);
             return res.status(result.status).json(result);
 
         } catch (error: any) {

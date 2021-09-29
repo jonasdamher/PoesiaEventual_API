@@ -27,7 +27,7 @@ class App {
         this.app.use(compression());
         this.app.use(helmet());
         this.app.use(cors());
-        this.app.use(express.json({ limit: '90kb' }), (err: Error, req: Request, res: Response, next: NextFunction) => {
+        this.app.use(express.json({ strict: true, limit: '90kb' }), (err: Error, req: Request, res: Response, next: NextFunction) => {
             if (err) {
                 logger_app.info({ err }, 'limit kb body request');
                 return res.sendStatus(400);

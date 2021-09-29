@@ -15,7 +15,7 @@ import users from '../components/users';
 
 class Routes {
 
-    private routes: Router = express.Router();
+    private routes: Router = express.Router({ caseSensitive: true, strict: true });
 
     public load(): Router {
 

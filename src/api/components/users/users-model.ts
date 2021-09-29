@@ -17,18 +17,13 @@ export interface User extends Document {
     email: string;
     password: string;
     role: roles;
-    verified: Boolean;
+    verified?: Boolean;
     expire_at: Date;
     created_at: number;
     update_at: number;
 }
 
-// Para añadir funciones extras con mongoose
-interface user_model extends Model<User> {
-    compare_password(password: string): Promise<Boolean>;
-}
-
-const user_schema = new Schema<User, user_model>({
+const user_schema: Schema<User> = new Schema({
     name: {
         type: String,
         trim: true,
@@ -104,7 +99,7 @@ const user_schema = new Schema<User, user_model>({
     }
 })
 
-user_schema.pre('save', function (this: User, next: any) {
+user_schema.pre<User>('save', function (this: User, next: any) {
 
     if (!this.isModified('password')) return next();
 
@@ -130,6 +125,5 @@ user_schema.methods.compare_password = async function (password: string) {
         });
     });
 }
-
- 
-export default model<User, user_model>('users', user_schema);
+const USER: Model<User> = model('users', user_schema);
+export default USER;

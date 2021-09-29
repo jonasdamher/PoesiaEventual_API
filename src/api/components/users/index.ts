@@ -12,13 +12,13 @@ class RouterUsers {
 
     public routes(): Router {
 
-        this.router.get('/:id', auth.user, validate_common.get_by_id, Users.get_by_id);
-        this.router.patch('/update/:id', auth.user, validation.update, Users.update);
-        this.router.post('/', validation.create, Users.create);
-        this.router.post('/login', validation.login, Users.login);
-        this.router.get('/confirm_account/:token', Users.confirm_account);
+        return this.router
+            .get('/:id', auth.user, validate_common.get_by_id, Users.getUserById)
+            .post('/', validation.create, Users.create)
+            .post('/login', validation.login, Users.login)
+            .get('/confirm_account/:token', Users.confirmAccount)
+            .patch('/update/:id', auth.user, validation.update, Users.update);
 
-        return this.router;
     }
 }
 
