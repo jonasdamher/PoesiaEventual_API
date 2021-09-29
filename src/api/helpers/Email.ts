@@ -4,6 +4,9 @@ import nodemailer from 'nodemailer';
 import config from '../config';
 import { logger_email } from './logger';
 
+/**
+ * Para enviar correos electrónicos
+ */
 export default class Email {
 
     #to: string = '';

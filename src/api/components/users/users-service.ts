@@ -6,57 +6,71 @@ import USER, { User } from './users-model';
 import * as jwt from '../../helpers/jwt';
 import Email from '../../helpers/Email';
 import { logger_users } from '../../helpers/logger';
-import ResponseHandler from '../../helpers/ResponseHandler';
 // Configuración
 import config from '../../config'
 // Tipos
 import Response_data from '../../types/Response_data';
 
-export default class UsersService extends ResponseHandler {
+export default class UsersService {
+
     get_user_by_id(id: string): Promise<Response_data> {
         return new Promise((resolve, reject) => {
+            let response: Response_data = { status: 200, result: null, message: '' };
 
             USER.findById(id).select('name lastname email').then((res: any) => {
 
-                super.result(res);
-                resolve(super.response())
+                response.result = res;
+                resolve(response)
             }).catch((err: any) => {
+                response.message = 'Dont found';
+                response.status = 404;
 
-                super.message('Dont found').status(404).result(err);
-                logger_users.info({ ...super.response() }, 'service')
-                reject(super.response());
+                let responseFail = response;
+                responseFail.result = err;
+                logger_users.info(responseFail, 'service')
+                reject(response);
             })
         });
     }
 
-    user_login(email: string, password: string): Promise<any> {
+    user_login(email: string, password: string): Promise<Response_data> {
         return new Promise((resolve, reject) => {
+            let response: Response_data = { status: 200, result: null, message: '' };
 
             USER.findOne({ email: email }).then((current_user: any) => {
 
-                 if (!current_user.verified) {
-                    throw new Error('user not verified');
-                }
+                if (!current_user.verified) throw new Error('user not verified');
 
                 current_user.compare_password(password).then((match: boolean) => {
 
                     const token = jwt.create_token(current_user, 'user');
 
-                    resolve({ status: 200, result: { ...token } });
+                    response.status = 200;
+                    response.result = token;
+                    resolve(response);
                 }).catch((not_match: any) => {
-                    logger_users.info({ status: 401, result: null, message: 'Unauthorized' }, 'service')
-                    reject({ status: 401, result: null, message: 'Unauthorized' });
+                    response.status = 401;
+                    response.message = 'Unauthorized';
+
+                    logger_users.info(response, 'service')
+                    reject(response);
                 })
             }).catch((err: any) => {
 
-                logger_users.info({ status: 401, result: err, message: 'Unauthorized' }, 'service')
-                reject({ status: 401, result: err, message: 'Unauthorized' });
+                response.status = 401;
+                response.message = 'Unauthorized';
+
+                let responseFail = response;
+                responseFail.result = err;
+                logger_users.info(responseFail, 'service')
+                reject(response);
             })
         });
     }
 
     user_create(data: any): Promise<Response_data> {
         return new Promise((resolve, reject) => {
+            let response: Response_data = { status: 200, result: null, message: '' };
 
             const user: User = new USER(data);
 
@@ -72,55 +86,77 @@ export default class UsersService extends ResponseHandler {
                     config.app.url_api + 'users\/confirm_account\/' + verify_token.token + '.\n';
                 email.send();
 
-                super.status(201).message('Created').result({ _id: res._id });
-                resolve(super.response());
+                response.status = 201;
+                response.message = 'Created';
+
+                response.result._id = res._id;
+                resolve(response);
             }).catch((err: any) => {
 
-                super.message('BadRequest').status(400).result(err);
-                logger_users.info({ ...super.response() }, 'service')
-                reject(super.response());
+                response.status = 400;
+                response.message = 'BadRequest';
+
+                let responseFail = response;
+                responseFail.result = err;
+                logger_users.info(responseFail, 'service')
+                reject(response);
             })
         });
     }
 
     confirm_account_by_token(token: string): Promise<Response_data> {
         return new Promise((resolve, reject) => {
+            let response: Response_data = { status: 200, result: null, message: '' };
 
             jwt.confirm_token_new_account(token).then((user: any) => {
 
                 USER.findByIdAndUpdate(user._id, { verified: true, $unset: { expire_at: 1 } }).then((res: any) => {
 
-                    super.message('Account verified!!');
-                    resolve(super.response());
+                    response.message = 'Account verified!!';
+                    resolve(response);
                 }).catch((err: any) => {
 
-                    super.message('BadRequest').status(400).result(err);
-                    logger_users.info({ ...super.response() }, 'service')
-                    reject(super.response());
+                    response.status = 400;
+                    response.message = 'BadRequest';
+
+                    let responseFail = response;
+                    responseFail.result = err;
+                    logger_users.info(responseFail, 'service')
+                    reject(response);
                 })
 
             }).catch((err: any) => {
 
-                super.message(err.message).status(err.status).result(err);
-                logger_users.info({ ...super.response() }, 'service')
-                reject(super.response());
+                response.status = err.status;
+                response.message = err.message;
+
+                let responseFail = response;
+                responseFail.result = err;
+                logger_users.info(responseFail, 'service')
+                reject(response);
             })
         });
     }
 
     update_user_by_id(id: string, data: any): Promise<Response_data> {
         return new Promise((resolve, reject) => {
+            let response: Response_data = { status: 200, result: null, message: '' };
 
 
             USER.findByIdAndUpdate(id, data, { new: true }).select('name lastname email ').then((res: any) => {
 
-                super.message('Update');
-                resolve(super.response());
+                response.message = 'Update';
+                reject(response);
+
             }).catch((err: any) => {
 
-                super.message('BadRequest').status(400).result(err);
-                logger_users.info({ ...super.response() }, 'service')
-                reject(super.response());
+                response.status = 400;
+                response.message = 'BadRequest';
+
+                let responseFail = response;
+                responseFail.result = err;
+                logger_users.info(responseFail, 'service')
+                reject(response);
             })
         });
     }
