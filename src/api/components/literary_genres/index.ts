@@ -11,11 +11,10 @@ class RouterGenres {
     private router: Router = express.Router();
 
     public routes(): Router {
-        this.router.get('/', author.get_all)
-        this.router.get('/:id', validate_common.get_by_id, author.get_with_id)
-        this.router.post('/', auth.user, validation.create, author.create)
-
-        return this.router;
+        return this.router
+            .get('/', author.get_all)
+            .get('/:id', validate_common.get_by_id, author.get_with_id)
+            .post('/', auth.user, validation.create, author.create);
     }
 }
 

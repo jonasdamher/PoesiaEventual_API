@@ -2,103 +2,96 @@
 
 import COUNTRY, { Country } from './countries-model';
 // Ayudantes
-import { logger_recognitions } from '../../helpers/logger';
 import response_data from '../../utils/response_data';
 // Tipos
 import Response_data from '../../types/Response_data';
-import { Schema } from 'mongoose';
 
-export {
-    getAll,
-    getWithId,
-    create
-}
+export default class CountriesService {
+    getAllCountries(page: number, perpage: number): Promise<Response_data> {
+        return new Promise((resolve, reject) => {
+            let response = response_data();
+ 
+            let current_page = Math.max(0, page)
+            let pageNum = current_page
+            --current_page
 
-function getAll(page: number, perpage: number): Promise<Response_data> {
-    return new Promise((resolve, reject) => {
+            COUNTRY.find().countDocuments().then((count: any) => {
 
-        const response = response_data();
+                const limit = Math.ceil(count / perpage)
 
-        let current_page = Math.max(0, page)
-        let pageNum = current_page
-        --current_page
+                COUNTRY.find({ language: 'es' })
+                    .skip(perpage * current_page)
+                    .limit(perpage)
+                    .sort('name')
+                    .then((authorResponse: any) => {
 
-        COUNTRY.find().countDocuments().then((count: any) => {
+                        let data = {
+                            countries: authorResponse,
+                            pagination: {
+                                perPage: perpage,
+                                page: pageNum,
+                                lastPage: limit,
+                                total: count
+                            }
+                        };
 
-            const limit = Math.ceil(count / perpage)
+                        response.result = data;
 
-            COUNTRY.find({ language: 'es' })
-                .skip(perpage * current_page)
-                .limit(perpage)
-                .sort('name')
-                .then((authorResponse: any) => {
+                        resolve(response);
 
-                    let data = {
-                        countries: authorResponse,
-                        pagination: {
-                            perPage: perpage,
-                            page: pageNum,
-                            lastPage: limit,
-                            total: count
-                        }
-                    };
+                    }).catch((err: any) => {
 
-                    response.result = data;
-                    
-                    resolve(response);
+                        response.status = 400;
+                        response.result = err;
+                        reject(response);
+                    });
 
-                }).catch((err: any) => {
+            }).catch((err: any) => {
 
-                    response.status = 400;
-                    response.result = err;
-                    reject(response);
-                });
-
-        }).catch((err: any) => {
-
-            response.status = 400;
-            response.result = err;
-            reject(response);
+                response.status = 400;
+                response.result = err;
+                reject(response);
+            });
         });
-    });
-}
+    }
 
-function getWithId(id: string): Promise<Response_data> {
-    return new Promise((resolve, reject) => {
+    getByIdCountry(id: string): Promise<Response_data> {
+        return new Promise((resolve, reject) => {
 
-        let response = response_data();
+            let response = response_data();
 
-        COUNTRY.findById({ _id: id }).then((poem: any) => {
-            
-            response.result = poem;
-            resolve(response);
-        }).catch((err: any) => {
-            response.status = 400;
-            response.result = err;
-            reject(response)
+            COUNTRY.findById({ _id: id }).then((poem: any) => {
+
+                response.result = poem;
+                resolve(response);
+            }).catch((err: any) => {
+                response.status = 400;
+                response.result = err;
+                reject(response)
+            })
         })
-    })
-}
+    }
 
-function create(data: any): Promise<Response_data> {
-    return new Promise((resolve, reject) => {
+    createCountry(data: any): Promise<Response_data> {
+        return new Promise((resolve, reject) => {
 
-        const response = response_data();
+            const response = response_data();
 
-        const country: Country = new COUNTRY(data);
+            const country: Country = new COUNTRY(data);
 
-        country.save().then((new_poem: Country) => {
+            country.save().then((new_poem: Country) => {
 
-            response.status = 201;
-            
-            response.result = new_poem;
-            resolve(response)
+                response.status = 201;
 
-        }).catch((err: any) => {
+                response.result = new_poem;
+                resolve(response)
 
-            response.status = 400;
-            response.result = err;
-            reject(response)
+            }).catch((err: any) => {
+
+                response.status = 400;
+                response.result = err;
+                reject(response)
+            })
         })
-    })
+    }
 }

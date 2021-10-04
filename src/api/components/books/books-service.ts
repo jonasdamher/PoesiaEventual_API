@@ -14,7 +14,7 @@ export default class BooksService {
     get_all_books(page: number, perpage: number): Promise<Response_data> {
         return new Promise((resolve, reject) => {
 
-            const response = response_data();
+            let response = response_data();
 
             get_pagination(BOOK, page, perpage).then((pagination: any) => {
 
@@ -46,6 +46,7 @@ export default class BooksService {
             }).catch((err: any) => {
 
                 response.status = 400;
+                response.message = 'BadRequest';
                 response.result = err;
                 reject(response);
             });
@@ -101,7 +102,7 @@ export default class BooksService {
     search_book(page: number, perpage: number, search: string): Promise<Response_data> {
         return new Promise((resolve, reject) => {
 
-            const response = response_data();
+            let response = response_data();
 
             const query = { title: { $regex: '.*' + search + '.*', $options: 'i' } };
 

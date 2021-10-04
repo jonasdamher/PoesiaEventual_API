@@ -11,10 +11,7 @@ export interface Occupation extends Document {
     update_at: number;
 }
 
-// Para añadir funciones extras con mongoose
-interface occupations_model extends Model<Occupation> { }
-
-const occupations_schema = new Schema<Occupation, occupations_model>({
+const occupations_schema: Schema<Occupation> = new Schema({
     name: {
         type: String,
         validate: {
@@ -37,6 +34,7 @@ const occupations_schema = new Schema<Occupation, occupations_model>({
         type: Number,
         default: 0
     }
-})
+});
 
-export default model<Occupation, occupations_model>('occupations', occupations_schema)
+const OCUP: Model<Occupation> = model('occupations', occupations_schema);
+export default OCUP;

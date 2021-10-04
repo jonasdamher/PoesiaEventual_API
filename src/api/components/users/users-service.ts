@@ -6,6 +6,7 @@ import USER, { User } from './users-model';
 import * as jwt from '../../helpers/jwt';
 import Email from '../../helpers/Email';
 import { logger_users } from '../../helpers/logger';
+import response_data from '../../utils/response_data';
 // Configuración
 import config from '../../config'
 // Tipos
@@ -15,7 +16,7 @@ export default class UsersService {
 
     getUserById(id: string): Promise<Response_data> {
         return new Promise((resolve, reject) => {
-            let response: Response_data = { status: 200, result: null, message: '' };
+            let response = response_data();
 
             USER.findById(id).select('name lastname email').then((res: any) => {
 
@@ -35,7 +36,7 @@ export default class UsersService {
 
     userLogin(email: string, password: string): Promise<Response_data> {
         return new Promise((resolve, reject) => {
-            let response: Response_data = { status: 200, result: null, message: '' };
+            let response = response_data();
 
             USER.findOne({ email: email }).then((current_user: any) => {
 
@@ -70,7 +71,7 @@ export default class UsersService {
 
     userCreate(data: any): Promise<Response_data> {
         return new Promise((resolve, reject) => {
-            let response: Response_data = { status: 200, result: null, message: '' };
+            let response = response_data();
 
             const user: User = new USER(data);
 
@@ -106,7 +107,7 @@ export default class UsersService {
 
     confirmAccountWithToken(token: string): Promise<Response_data> {
         return new Promise((resolve, reject) => {
-            let response: Response_data = { status: 200, result: null, message: '' };
+            let response = response_data();
 
             jwt.confirm_token_new_account(token).then((user: any) => {
 
@@ -140,7 +141,7 @@ export default class UsersService {
 
     updateUserById(id: string, data: any): Promise<Response_data> {
         return new Promise((resolve, reject) => {
-            let response: Response_data = { status: 200, result: null, message: '' };
+            let response = response_data();
 
 
             USER.findByIdAndUpdate(id, data, { new: true }).select('name lastname email ').then((res: any) => {

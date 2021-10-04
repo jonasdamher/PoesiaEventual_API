@@ -1,7 +1,6 @@
 'use strict';
 
 import { Model, model, Document, Schema } from 'mongoose';
-import * as regex from '../../utils/regex';
 
 export interface Book extends Document {
     author: Schema.Types.ObjectId;
@@ -14,12 +13,9 @@ export interface Book extends Document {
     published: number;
     created_at: number;
     update_at: number;
-}
+};
 
-// Para añadir funciones extras con mongoose
-interface book_model extends Model<Book> { }
-
-const book_schema = new Schema<Book, book_model>({
+const book_schema: Schema<Book> = new Schema({
     author: {
         type: Schema.Types.ObjectId,
         ref: 'authors'
@@ -58,6 +54,7 @@ const book_schema = new Schema<Book, book_model>({
         type: Number,
         default: 0
     }
-})
+});
 
-export default model<Book, book_model>('books', book_schema);
+const BOOK: Model<Book> = model('books', book_schema);
+export default BOOK;

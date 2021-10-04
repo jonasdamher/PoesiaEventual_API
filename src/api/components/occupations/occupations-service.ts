@@ -3,55 +3,68 @@
 // Modelos
 import OCCUPATION, { Occupation } from './occupations-model';
 // Ayudantes
-import ResponseHandler from '../../helpers/ResponseHandler';
+import response_data from '../../utils/response_data';
 // Tipos
 import Response_data from '../../types/Response_data';
 
-export default class OccupationService extends ResponseHandler {
+export default class OccupationService {
 
     get_all_occupations(): Promise<Response_data> {
         return new Promise((resolve, reject) => {
+            let response = response_data();
 
             OCCUPATION.find().sort('name').then((res: any) => {
 
-                this.result(res);
-                resolve(this.response());
+                response.result = res;
+                resolve(response);
+
             }).catch((err: any) => {
 
-                this.status(400).message('BadRequest').result(err);
-                reject(this.response());
+                response.status = 400;
+                response.message = 'BadRequest';
+                response.result = err;
+                reject(response);
             });
         });
     }
 
     get_occupation_by_id(id: string): Promise<Response_data> {
         return new Promise((resolve, reject) => {
+            let response = response_data();
 
             OCCUPATION.findById(id).then((res: any) => {
 
-                this.result(res);
-                resolve(this.response());
+                response.result = res;
+                resolve(response);
+
             }).catch((err: any) => {
 
-                this.status(400).message('BadRequest').result(err);
-                reject(this.response());
+                response.status = 400;
+                response.message = 'BadRequest';
+                response.result = err;
+                reject(response);
             })
         });
     }
 
     create_occupation(data: any): Promise<Response_data> {
         return new Promise((resolve, reject) => {
-
+            let response = response_data();
             const new_occupation: Occupation = new OCCUPATION(data);
 
             new_occupation.save().then((occupation_created: Occupation) => {
 
-                this.status(201).message('Created').result(occupation_created);
-                resolve(this.response());
+                response.status = 201;
+                response.message = 'Created';
+                response.result = occupation_created;
+                resolve(response);
+
             }).catch((err: any) => {
 
-                this.status(400).message('BadRequest').result(err);
-                reject(this.response());
+                response.status = 400;
+                response.message = 'BadRequest';
+                response.result = err;
+                reject(response);
             })
         });
     }

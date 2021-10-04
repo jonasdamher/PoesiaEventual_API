@@ -14,7 +14,7 @@ class RecogController extends RecogService {
         let current_page = Number(page ?? 1);
         let current_perpage = Number(perpage ?? 10);
 
-        this.get_all_recog(current_page, current_perpage)
+        super.get_all_recog(current_page, current_perpage)
             .then((ok: Response_data) => res.status(ok.status).json(ok))
             .catch((err: Response_data) => res.status(err.status).json(err))
     }
@@ -23,7 +23,7 @@ class RecogController extends RecogService {
 
         const id = req.params.id;
 
-        this.get_recog_by_id(id)
+        super.get_recog_by_id(id)
             .then((ok: Response_data) => res.status(ok.status).json(ok))
             .catch((err: Response_data) => res.status(err.status).json(err))
     }
@@ -36,7 +36,7 @@ class RecogController extends RecogService {
         let current_page = Number(page ?? 1);
         let current_perpage = Number(perpage ?? 10);
 
-        this.search_recogs(current_page, current_perpage, search)
+        super.search_recogs(current_page, current_perpage, search)
             .then((ok: Response_data) => res.status(ok.status).json(ok))
             .catch((err: Response_data) => res.status(err.status).json(err))
     }
@@ -45,7 +45,7 @@ class RecogController extends RecogService {
         try {
             const data_body = req.body;
 
-            const result = await this.create_recog(data_body)
+            const result = await super.create_recog(data_body)
             res.status(result.status).json(result);
 
         } catch (error: any) {

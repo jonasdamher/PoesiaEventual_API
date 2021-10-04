@@ -9,12 +9,9 @@ export interface Editorial extends Document {
     description: string;
     created_at: number;
     update_at: number;
-}
+};
 
-// Para añadir funciones extras con mongoose
-interface editorial_model extends Model<Editorial> { }
-
-const editorial_schema = new Schema<Editorial, editorial_model>({
+const editorial_schema: Schema<Editorial> = new Schema({
     name: {
         type: String,
         validate: {
@@ -37,6 +34,7 @@ const editorial_schema = new Schema<Editorial, editorial_model>({
         type: Number,
         default: 0
     }
-})
+});
 
-export default model<Editorial, editorial_model>('editorials', editorial_schema)
+const EDITOR: Model<Editorial> = model('editorials', editorial_schema);
+export default EDITOR;

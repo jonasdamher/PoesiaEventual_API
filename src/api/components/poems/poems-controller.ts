@@ -12,7 +12,7 @@ class PoemsController extends PoemsService {
             let current_page = Number(page ?? 1);
             let current_perpage = Number(perpage ?? 10);
 
-            const result = await this.get_all_poems(current_page, current_perpage)
+            const result = await super.get_all_poems(current_page, current_perpage)
             return res.status(result.status).json(result);
 
         } catch (error: any) {
@@ -25,7 +25,7 @@ class PoemsController extends PoemsService {
         try {
             const id = req.params.id;
 
-            const result = await this.get_poem_by_id_(id)
+            const result = await super.get_poem_by_id_(id)
             return res.status(result.status).json(result);
 
         } catch (error: any) {
@@ -41,7 +41,7 @@ class PoemsController extends PoemsService {
             let current_page = Number(page ?? 1);
             let current_perpage = Number(perpage ?? 10);
 
-            const result = await this.search_poem(current_page, current_perpage, search);
+            const result = await super.search_poem(current_page, current_perpage, search);
             return res.status(result.status).json(result);
 
         } catch (error: any) {
@@ -53,7 +53,7 @@ class PoemsController extends PoemsService {
     async random(req: Request, res: Response) {
         try {
 
-            const result = await this.random_poem();
+            const result = await super.random_poem();
             return res.status(result.status).json(result);
 
         } catch (error: any) {
@@ -69,7 +69,7 @@ class PoemsController extends PoemsService {
             let current_page = Number(page ?? 1);
             let current_perpage = Number(perpage ?? 10);
 
-            const result = await this.get_all_poems_of_author_by_id(current_page, current_perpage, id)
+            const result = await super.get_all_poems_of_author_by_id(current_page, current_perpage, id)
             return res.status(result.status).json(result);
 
         } catch (error: any) {
@@ -81,7 +81,7 @@ class PoemsController extends PoemsService {
         try {
             const data_body = req.body;
 
-            const result = await this.create_poem(data_body);
+            const result = await super.create_poem(data_body);
             return res.status(result.status).json(result);
 
         } catch (error: any) {

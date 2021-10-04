@@ -10,15 +10,15 @@ import RecogService from '../recognitions/recognitions-service';
 import Text from '../../helpers/Text';
 import response_data from '../../utils/response_data';
 import { logger_authors } from '../../helpers/logger';
-import ResponseHandler from '../../helpers/ResponseHandler';
 import { get_pagination, paginate } from '../../utils/pagination';
 // Tipos
 import Response_data from '../../types/Response_data';
 
-export default class AuthorService extends ResponseHandler {
+export default class AuthorService {
 
     get_all_authors(page: number, perpage: number): Promise<Response_data> {
         return new Promise((resolve, reject) => {
+            let response = response_data();
 
             get_pagination(AUTHOR, page, perpage).then((pagination: any) => {
 
@@ -29,31 +29,35 @@ export default class AuthorService extends ResponseHandler {
                     .populate({ path: 'professional.literary_genres', select: 'name' })
                     .then((authorResponse: any) => {
 
-                        let result = {
+                        response.result = {
                             authors: authorResponse,
                             pagination: paginate(pagination)
                         };
+                        resolve(response);
 
-                        this.result(result);
-                        resolve(this.response());
                     }).catch((err: any) => {
 
-                        this.status(400).message('BadRequest').result(err);
-                        logger_authors.info({ ...this.response() }, 'service');
-                        reject(this.response());
+                        response.status = 400;
+                        response.message = 'BadRequest';
+                        response.result = err;
+                        logger_authors.info({ ...response }, 'service');
+                        reject(response);
                     });
 
             }).catch((err: any) => {
 
-                this.status(400).message('BadRequest').result(err);
-                logger_authors.info({ ...this.response() }, 'service');
-                reject(this.response());
+                response.status = 400;
+                response.message = 'BadRequest';
+                response.result = err;
+                logger_authors.info({ ...response }, 'service');
+                reject(response);
             });
         });
     }
 
     get_author_by_name(name: string): Promise<Response_data> {
         return new Promise((resolve, reject) => {
+            let response = response_data();
 
             AUTHOR.findOne({ 'meta.url': name })
                 .select('personal.full_name biography photos meta.url meta.description meta.keywords')
@@ -66,42 +70,47 @@ export default class AuthorService extends ResponseHandler {
                     let poems = new PoemsService();
                     let books = new BooksService();
 
-                    let result = {
+                    response.result = {
                         author: current_author,
                         books: await books.get_books_of_author(current_author._id),
                         poems: await poems.get_poems_of_author(current_author._id),
                         recognitions: await recog.get_recognitions_of_author(current_author._id)
                     };
+                    resolve(response);
 
-                    this.result(result);
-                    resolve(this.response())
                 }).catch((err: any) => {
 
-                    this.status(400).message('BadRequest').result(err);
-                    logger_authors.info({ ...this.response() }, 'service');
-                    reject(this.response());
+                    response.status = 400;
+                    response.message = 'BadRequest';
+                    response.result = err;
+                    logger_authors.info({ ...response }, 'service');
+                    reject(response);
                 })
         });
     }
 
     get_author_by_id(id: string): Promise<Response_data> {
         return new Promise((resolve, reject) => {
+            let response = response_data();
 
             AUTHOR.findById(id).then((authorResponse: any) => {
 
-                this.result(authorResponse);
-                resolve(this.response())
+                response.result = authorResponse;
+                resolve(response);
             }).catch((err: any) => {
 
-                this.status(400).message('BadRequest').result(err);
-                logger_authors.info({ ...this.response() }, 'service');
-                reject(this.response());
+                response.status = 400;
+                response.message = 'BadRequest';
+                response.result = err;
+                logger_authors.info({ ...response }, 'service');
+                reject(response);
             })
         });
     }
 
     search_author(page: number, perpage: number, search: string): Promise<Response_data> {
         return new Promise((resolve, reject) => {
+            let response = response_data();
 
             const query = { 'personal.full_name': { $regex: '.*' + search + '.*', $options: 'i' } };
 
@@ -114,31 +123,35 @@ export default class AuthorService extends ResponseHandler {
                     .select('personal.full_name short_description portrait meta.url')
                     .then((authorResponse: any) => {
 
-                        let result = {
+                        response.result = {
                             authors: authorResponse,
                             pagination: paginate(pagination)
                         };
+                        resolve(response);
 
-                        this.result(result);
-                        resolve(this.response());
                     }).catch((err: any) => {
 
-                        this.status(400).message('BadRequest').result(err);
-                        logger_authors.info({ ...this.response() }, 'service');
-                        reject(this.response());
+                        response.status = 400;
+                        response.message = 'BadRequest';
+                        response.result = err;
+                        logger_authors.info({ ...response }, 'service');
+                        reject(response);
                     });
 
             }).catch((err: any) => {
 
-                this.status(400).message('BadRequest').result(err);
-                logger_authors.info({ ...this.response() }, 'service');
-                reject(this.response());
+                response.status = 400;
+                response.message = 'BadRequest';
+                response.result = err;
+                logger_authors.info({ ...response }, 'service');
+                reject(response);
             });
         });
     }
 
     random_author(): Promise<Response_data> {
         return new Promise((resolve, reject) => {
+            let response = response_data();
 
             AUTHOR.find().countDocuments().then((count: any) => {
 
@@ -146,26 +159,30 @@ export default class AuthorService extends ResponseHandler {
 
                 AUTHOR.findOne().skip(random).then((author: any) => {
 
-                    this.result(author);
-                    resolve(this.response());
+                    response.result = author;
+                    resolve(response);
                 }).catch((err: any) => {
 
-                    this.status(400).message('BadRequest').result(err);
-                    logger_authors.info({ ...this.response() }, 'service');
-                    reject(this.response());
+                    response.status = 400;
+                    response.message = 'BadRequest';
+                    response.result = err;
+                    logger_authors.info({ ...response }, 'service');
+                    reject(response);
                 })
 
             }).catch((err: any) => {
-
-                this.status(400).message('BadRequest').result(err);
-                logger_authors.info({ ...this.response() }, 'service');
-                reject(this.response());
+                response.status = 400;
+                response.message = 'BadRequest';
+                response.result = err;
+                logger_authors.info({ ...response }, 'service');
+                reject(response);
             })
         })
     }
 
     create_author(data: any): Promise<Response_data> {
         return new Promise((resolve, reject) => {
+            let response = response_data();
 
             data.personal.full_name = data.personal.name.trim() + ' ' + data.personal.lastname.trim();
             data.meta.url = Text.url(data.personal.full_name);
@@ -174,19 +191,24 @@ export default class AuthorService extends ResponseHandler {
 
             author.save().then((authorResponse: Author) => {
 
-                this.status(201).message('Created').result(authorResponse);
-                resolve(this.response())
+                response.status = 201;
+                response.message = 'Created';
+                response.result = authorResponse;
+                resolve(response)
             }).catch((err: any) => {
 
-                this.status(400).message('BadRequest').result(err);
-                logger_authors.info({ ...this.response() }, 'service');
-                reject(this.response());
+                response.status = 400;
+                response.message = 'BadRequest';
+                response.result = err;
+                logger_authors.info({ ...response }, 'service');
+                reject(response);
             })
         });
     }
 
     update_author(id: any, data: any): Promise<Response_data> {
         return new Promise(async (resolve, reject) => {
+            let response = response_data();
 
             // const current_user = await get_by_id(id);
 
@@ -207,13 +229,15 @@ export default class AuthorService extends ResponseHandler {
 
             AUTHOR.findByIdAndUpdate(id, data).then((authorResponse: any) => {
 
-                this.result(authorResponse);
-                resolve(this.response())
+                response.result = authorResponse;
+                resolve(response)
             }).catch((err: any) => {
 
-                this.status(400).message('BadRequest').result(err);
-                logger_authors.info({ ...this.response() }, 'service');
-                reject(this.response());
+                response.status = 400;
+                response.message = 'BadRequest';
+                response.result = err;
+                logger_authors.info({ ...response }, 'service');
+                reject(response);
             })
         });
     }

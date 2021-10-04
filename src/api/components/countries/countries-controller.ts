@@ -1,42 +1,46 @@
 'use strict';
 
 import { Request, Response } from 'express';
-import * as service from './countries-service';
+import CountriesService from './countries-service';
 // Tipos
 import Response_data from '../../types/Response_data';
 
-export {
-    getAll,
-    getWithId,
-    create
+class CountriesController extends CountriesService {
+    async getAll(req: Request, res: Response) {
+        try {
+            const { page, perpage } = req.query;
+
+            let current_page = Number(page ?? 1);
+            let current_perpage = Number(perpage ?? 10);
+
+            const result = await super.getAllCountries(current_page, current_perpage);
+
+            return res.status(result.status).json(result);
+        } catch (error: any) {
+            return res.status(error.status).json(error);
+        }
+    }
+
+    async getWithId(req: Request, res: Response) {
+        try {
+            const id = req.params.id;
+
+            const result = await super.getByIdCountry(id);
+            return res.status(result.status).json(result);
+        } catch (error: any) {
+            return res.status(error.status).json(error);
+        }
+    }
+
+    async create(req: Request, res: Response) {
+        try {
+            const data_body = req.body;
+
+            const result = await super.createCountry(data_body);
+            return res.status(result.status).json(result);
+        } catch (error: any) {
+            return res.status(error.status).json(error);
+        }
+    }
 }
-
-async function getAll(req: Request, res: Response) {
-
-    const { page, perpage } = req.query;
-
-    let current_page = Number(page ?? 1);
-    let current_perpage = Number(perpage ?? 10);
-
-    service.getAll(current_page, current_perpage)
-        .then((ok: Response_data) => res.status(ok.status).json(ok))
-        .catch((err: Response_data) => res.status(err.status).json(err))
-}
-
-async function getWithId(req: Request, res: Response) {
-
-    const id = req.params.id;
-
-    service.getWithId(id)
-        .then((ok: Response_data) => res.status(ok.status).json(ok))
-        .catch((err: Response_data) => res.status(err.status).json(err))
-}
-
-async function create(req: Request, res: Response) {
-
-    const data_body = req.body;
-
-    service.create(data_body)
-        .then((ok: Response_data) => res.status(ok.status).json(ok))
-        .catch((err: Response_data) => res.status(err.status).json(err))
-}
+export default new CountriesController();

@@ -11,10 +11,10 @@ class RouterOcup {
     private router: Router = express.Router();
 
     public routes(): Router {
-        this.router.get('/', editorials.get_all)
-        this.router.get('/:id', validate_common.get_by_id, editorials.get_with_id)
-        this.router.post('/', auth.user, validation.create, editorials.create)
-        return this.router;
+        return this.router
+            .get('/', editorials.get_all)
+            .get('/:id', validate_common.get_by_id, editorials.get_with_id)
+            .post('/', auth.user, validation.create, editorials.create);
     }
 }
 

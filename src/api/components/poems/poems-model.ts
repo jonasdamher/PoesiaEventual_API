@@ -20,28 +20,25 @@ export interface Poem extends Document {
     update_at: number;
 }
 
-// Para añadir funciones extras con mongoose
-interface poem_model extends Model<Poem> { }
-
-const poem_schema = new Schema<Poem, poem_model> ({
+const poem_schema: Schema<Poem> = new Schema({
     author: {
         type: Schema.Types.ObjectId,
         ref: 'authors'
     },
     title: {
         type: String,
-        trim:true,
+        trim: true,
         required: [true, 'Es obligatorio introducir un título del poema.'],
     },
     text: {
         type: String,
-        trim:true,
+        trim: true,
         required: [true, 'Es obligatorio introducir un cuerpo del poema.'],
     },
     meta: {
         url: {
             type: String,
-            trim:true,
+            trim: true,
             validate: {
                 validator: function (v: any) {
                     return regex.url_name.test(v);
@@ -55,7 +52,7 @@ const poem_schema = new Schema<Poem, poem_model> ({
             type: String,
             min: 70,
             maxLength: 155,
-            trim:true,
+            trim: true,
             required: [true, 'Es obligatorio introducir una descripción.'],
         },
         keywords: [
@@ -80,4 +77,5 @@ const poem_schema = new Schema<Poem, poem_model> ({
     }
 })
 
-export default model<Poem, poem_model> ('poems', poem_schema);
+const POEM: Model<Poem> = model('poems', poem_schema);
+export default POEM;
