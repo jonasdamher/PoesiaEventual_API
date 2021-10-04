@@ -137,8 +137,9 @@ function confirm_token(token: string) {
                     reject({ status: 401, message: 'TokenExpired' });
                 });
             });
+        } else {
+            reject({ status: 400, message: 'BadRequest' });
         }
-        reject({ status: 400, message: 'BadRequest' });
     });
 }
 
@@ -150,7 +151,9 @@ function confirm_token_new_account(token: string) {
 
                 if (err) reject({ status: 401, message: 'TokenExpired' });
 
-                if (data.type_token == 'verify_account') reject({ status: 400, message: 'BadRequest' });
+                if (data.type_token != 'verify_account') {
+                    reject({ status: 400, message: 'BadRequest' });
+                }
 
                 USER.findById(data.sub).select('verified').then((user: any) => {
 
@@ -160,10 +163,11 @@ function confirm_token_new_account(token: string) {
                     resolve(user);
 
                 }).catch((err: any) => {
-                    reject({ status: 401, message: 'TokenExpired' });
+                    reject({ status: 401, message: 'TokenExpired', result: err });
                 });
             });
+        } else {
+            reject({ status: 400, message: 'BadRequest' });
         }
-        reject({ status: 400, message: 'BadRequest' });
     });
 }

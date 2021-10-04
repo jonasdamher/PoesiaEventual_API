@@ -5,9 +5,9 @@ import UsersService from './users-service';
 
 class UsersController extends UsersService {
 
-    public async getById(req: Request, res: Response) {
+    public async getById(req: any, res: Response) {
         try {
-            const id = req.params.id;
+            const id = req.user._id;
 
             const result = await super.getUserById(id);
             return res.status(result.status).json(result);

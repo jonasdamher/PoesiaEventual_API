@@ -11,9 +11,8 @@ class RouterUsers {
     private router: Router = express.Router();
 
     public routes(): Router {
-
         return this.router
-            .get('/:id', auth.user, validate_common.get_by_id, Users.getUserById)
+            .get('/', auth.user, Users.getById)
             .post('/', validation.create, Users.create)
             .post('/login', validation.login, Users.login)
             .get('/confirm_account/:token', Users.confirmAccount)

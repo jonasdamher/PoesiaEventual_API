@@ -2,9 +2,7 @@
 
 import { Request, Response } from 'express';
 import AuthorsService from './author-service';
-// Tipos
-import Response_data from '../../types/Response_data';
-
+ 
 class AuthorController extends AuthorsService {
 
     async get_all(req: Request, res: Response) {

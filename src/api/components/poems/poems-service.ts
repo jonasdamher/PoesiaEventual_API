@@ -12,7 +12,7 @@ import { Schema } from 'mongoose';
 
 export default class PoemsService {
 
-    get_all_poems(page: number, perpage: number): Promise<Response_data> {
+    protected get_all_poems(page: number, perpage: number): Promise<Response_data> {
         return new Promise((resolve, reject) => {
             let response = response_data();
 
@@ -43,7 +43,7 @@ export default class PoemsService {
         });
     }
 
-    get_poems_of_author(id: any) {
+    public get_poems_of_author(id: any) {
         return new Promise((resolve, reject) => {
             let response = response_data();
 
@@ -60,7 +60,7 @@ export default class PoemsService {
         })
     }
 
-    get_all_poems_of_author_by_id(page: number, perpage: number, id: any): Promise<Response_data> {
+    protected get_all_poems_of_author_by_id(page: number, perpage: number, id: any): Promise<Response_data> {
         return new Promise((resolve, reject) => {
             let response = response_data();
 
@@ -99,7 +99,7 @@ export default class PoemsService {
         });
     }
 
-    get_poem_by_id_(id: string): Promise<Response_data> {
+    protected get_poem_by_id_(id: string): Promise<Response_data> {
         return new Promise((resolve, reject) => {
             let response = response_data();
 
@@ -118,7 +118,7 @@ export default class PoemsService {
         })
     }
 
-    search_poem(page: number, perpage: number, search: string): Promise<Response_data> {
+    protected search_poem(page: number, perpage: number, search: string): Promise<Response_data> {
         return new Promise((resolve, reject) => {
             let response = response_data();
 
@@ -154,7 +154,7 @@ export default class PoemsService {
         })
     }
 
-    random_poem(): Promise<Response_data> {
+    protected random_poem(): Promise<Response_data> {
         return new Promise((resolve, reject) => {
             let response = response_data();
 
@@ -185,7 +185,7 @@ export default class PoemsService {
         })
     }
 
-    create_poem(data: any): Promise<Response_data> {
+    protected create_poem(data: any): Promise<Response_data> {
         return new Promise((resolve, reject) => {
             let response = response_data();
 

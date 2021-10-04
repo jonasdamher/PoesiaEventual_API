@@ -14,7 +14,7 @@ import Response_data from '../../types/Response_data';
 
 export default class UsersService {
 
-    getUserById(id: string): Promise<Response_data> {
+      protected getUserById(id: string): Promise<Response_data> {
         return new Promise((resolve, reject) => {
             let response = response_data();
 
@@ -34,7 +34,7 @@ export default class UsersService {
         });
     }
 
-    userLogin(email: string, password: string): Promise<Response_data> {
+    protected userLogin(email: string, password: string): Promise<Response_data> {
         return new Promise((resolve, reject) => {
             let response = response_data();
 
@@ -69,7 +69,7 @@ export default class UsersService {
         });
     }
 
-    userCreate(data: any): Promise<Response_data> {
+    protected userCreate(data: any): Promise<Response_data> {
         return new Promise((resolve, reject) => {
             let response = response_data();
 
@@ -105,7 +105,7 @@ export default class UsersService {
         });
     }
 
-    confirmAccountWithToken(token: string): Promise<Response_data> {
+    protected confirmAccountWithToken(token: string): Promise<Response_data> {
         return new Promise((resolve, reject) => {
             let response = response_data();
 
@@ -139,7 +139,7 @@ export default class UsersService {
         });
     }
 
-    updateUserById(id: string, data: any): Promise<Response_data> {
+    protected updateUserById(id: string, data: any): Promise<Response_data> {
         return new Promise((resolve, reject) => {
             let response = response_data();
 

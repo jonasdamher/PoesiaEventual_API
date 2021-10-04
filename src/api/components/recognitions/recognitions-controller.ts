@@ -7,7 +7,7 @@ import Response_data from '../../types/Response_data';
 
 class RecogController extends RecogService {
 
-    async get_all(req: Request, res: Response) {
+   public async get_all(req: Request, res: Response) {
 
         const { page, perpage } = req.query;
 
@@ -19,7 +19,7 @@ class RecogController extends RecogService {
             .catch((err: Response_data) => res.status(err.status).json(err))
     }
 
-    async get_by_id(req: Request, res: Response) {
+    public async get_by_id(req: Request, res: Response) {
 
         const id = req.params.id;
 
@@ -28,7 +28,7 @@ class RecogController extends RecogService {
             .catch((err: Response_data) => res.status(err.status).json(err))
     }
 
-    async search(req: Request, res: Response) {
+    public async search(req: Request, res: Response) {
 
         const { page, perpage } = req.query;
         const search = req.params.search.trim().toLowerCase();
@@ -41,7 +41,7 @@ class RecogController extends RecogService {
             .catch((err: Response_data) => res.status(err.status).json(err))
     }
 
-    async create(req: Request, res: Response) {
+    public async create(req: Request, res: Response) {
         try {
             const data_body = req.body;
 

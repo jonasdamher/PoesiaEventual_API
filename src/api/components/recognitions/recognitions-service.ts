@@ -12,7 +12,7 @@ import { Schema } from 'mongoose';
 
 export default class RecogService {
 
-    get_all_recog(page: number, perpage: number): Promise<Response_data> {
+    protected get_all_recog(page: number, perpage: number): Promise<Response_data> {
         return new Promise((resolve, reject) => {
             let response = response_data();
 
@@ -48,7 +48,7 @@ export default class RecogService {
         });
     }
 
-    get_recog_by_id(id: string): Promise<Response_data> {
+    protected get_recog_by_id(id: string): Promise<Response_data> {
         return new Promise((resolve, reject) => {
 
             let response = response_data();
@@ -66,7 +66,7 @@ export default class RecogService {
         })
     }
 
-    search_recogs(page: number, perpage: number, search: string): Promise<Response_data> {
+    protected search_recogs(page: number, perpage: number, search: string): Promise<Response_data> {
         return new Promise((resolve, reject) => {
 
             let response = response_data();
@@ -103,7 +103,7 @@ export default class RecogService {
         })
     }
 
-    get_recognitions_of_author(id: any) {
+    public get_recognitions_of_author(id: any) {
         return new Promise((resolve, reject) => {
             let response = response_data();
 
@@ -126,7 +126,7 @@ export default class RecogService {
         })
     }
 
-    create_recog(data: any): Promise<Response_data> {
+    protected create_recog(data: any): Promise<Response_data> {
         return new Promise((resolve, reject) => {
             let response = response_data();
 
