@@ -7,7 +7,7 @@ import response_data from '../../utils/response_data';
 import Response_data from '../../types/Response_data';
 
 export default class CountriesService {
-    getAllCountries(page: number, perpage: number): Promise<Response_data> {
+    protected getAllCountries(page: number, perpage: number): Promise<Response_data> {
         return new Promise((resolve, reject) => {
             let response = response_data();
  
@@ -55,7 +55,7 @@ export default class CountriesService {
         });
     }
 
-    getByIdCountry(id: string): Promise<Response_data> {
+    protected getByIdCountry(id: string): Promise<Response_data> {
         return new Promise((resolve, reject) => {
 
             let response = response_data();
@@ -72,7 +72,7 @@ export default class CountriesService {
         })
     }
 
-    createCountry(data: any): Promise<Response_data> {
+    protected createCountry(data: any): Promise<Response_data> {
         return new Promise((resolve, reject) => {
 
             const response = response_data();

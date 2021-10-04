@@ -9,7 +9,7 @@ import Response_data from '../../types/Response_data';
 
 export default class EditorialsService {
 
-    get_all_editorials(): Promise<Response_data> {
+    protected  get_all_editorials(): Promise<Response_data> {
         return new Promise((resolve, reject) => {
             let response = response_data();
 
@@ -28,7 +28,7 @@ export default class EditorialsService {
         });
     }
 
-    get_editorial_by_id(id: string): Promise<Response_data> {
+    protected get_editorial_by_id(id: string): Promise<Response_data> {
         return new Promise((resolve, reject) => {
             let response = response_data();
 
@@ -47,7 +47,7 @@ export default class EditorialsService {
         });
     }
 
-    create_editorial(data: any): Promise<Response_data> {
+    protected create_editorial(data: any): Promise<Response_data> {
         return new Promise((resolve, reject) => {
             let response = response_data();
             const new_genre: Editorial = new EDITOR(data);

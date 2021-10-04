@@ -7,7 +7,7 @@ import Response_data from '../../types/Response_data';
 
 class EditorialsController extends EditorialsService {
 
-    async get_all(req: Request, res: Response) {
+    public async get_all(req: Request, res: Response) {
         try {
             const result = await this.get_all_editorials();
             return res.status(result.status).json(result);
@@ -16,7 +16,7 @@ class EditorialsController extends EditorialsService {
         }
     }
 
-    async get_with_id(req: Request, res: Response) {
+    public async get_with_id(req: Request, res: Response) {
         try {
             const id = req.params.id;
 
@@ -27,7 +27,7 @@ class EditorialsController extends EditorialsService {
         }
     }
 
-    async create(req: Request, res: Response) {
+    public async create(req: Request, res: Response) {
         try {
             const data_body = req.body;
 

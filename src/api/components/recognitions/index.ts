@@ -1,8 +1,8 @@
 'use strict';
 
 import express, { Router } from 'express';
-import * as validate_common from '../common/common-validate';
-import * as validation from './recognitions-validation';
+import validate_common from '../common/common-validate';
+import validation from './recognitions-validation';
 import recognitions from './recognitions-controller';
 import * as auth from '../../middlewares/auth';
 

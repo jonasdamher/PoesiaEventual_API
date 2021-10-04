@@ -5,7 +5,7 @@ import BooksService from './books-service';
 
 class BooksController extends BooksService {
 
-    async get_all(req: Request, res: Response) {
+    public async get_all(req: Request, res: Response) {
         try {
             const { page, perpage } = req.query;
 
@@ -19,7 +19,7 @@ class BooksController extends BooksService {
         }
     }
 
-    async get_by_id(req: Request, res: Response) {
+    public async get_by_id(req: Request, res: Response) {
         try {
             const id = req.params.id;
 
@@ -30,7 +30,7 @@ class BooksController extends BooksService {
         }
     }
 
-    async search(req: Request, res: Response) {
+    public async search(req: Request, res: Response) {
         try {
             const { page, perpage } = req.query;
             const search = req.params.search.trim().toLowerCase();
@@ -45,7 +45,7 @@ class BooksController extends BooksService {
         }
     }
 
-    async create(req: Request, res: Response) {
+    public async create(req: Request, res: Response) {
         try {
             const data_body = req.body;
 

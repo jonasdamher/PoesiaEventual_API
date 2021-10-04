@@ -5,7 +5,7 @@ import { Request, Response, NextFunction } from 'express';
 
 class OccupationsValidator {
 
-    async create(req: Request, res: Response, next: NextFunction) {
+    public async create(req: Request, res: Response, next: NextFunction) {
         const schema = Joi.object({
             name: Joi.string().required(),
             description: Joi.string(),

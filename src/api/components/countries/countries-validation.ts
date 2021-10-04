@@ -5,7 +5,7 @@ import { Request, Response, NextFunction } from 'express';
 
 class CountriesValidation {
 
-    async create(req: Request, res: Response, next: NextFunction) {
+    public async create(req: Request, res: Response, next: NextFunction) {
 
         const schema = Joi.object({
             name: Joi.string().required(),

@@ -9,7 +9,7 @@ import Response_data from '../../types/Response_data';
 
 export default class GenresService extends ResponseHandler {
 
-    get_all_genres(): Promise<Response_data> {
+   protected get_all_genres(): Promise<Response_data> {
         return new Promise((resolve, reject) => {
 
             GENRE.find().sort('name').then((res: any) => {
@@ -24,7 +24,7 @@ export default class GenresService extends ResponseHandler {
         });
     }
 
-    get_genre_by_id(id: string): Promise<Response_data> {
+    protected get_genre_by_id(id: string): Promise<Response_data> {
         return new Promise((resolve, reject) => {
 
             GENRE.findById(id).then((res: any) => {
@@ -39,7 +39,7 @@ export default class GenresService extends ResponseHandler {
         });
     }
 
-    create_genre(data: any): Promise<Response_data> {
+    protected create_genre(data: any): Promise<Response_data> {
         return new Promise((resolve, reject) => {
 
             const new_genre: Genre = new GENRE(data);

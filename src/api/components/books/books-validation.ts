@@ -5,7 +5,7 @@ import { Request, Response, NextFunction } from 'express';
 
 class BooksValidation {
 
-    async create(req: Request, res: Response, next: NextFunction) {
+    public async create(req: Request, res: Response, next: NextFunction) {
 
         const schema = Joi.object({
             author: Joi.string().hex().required(),

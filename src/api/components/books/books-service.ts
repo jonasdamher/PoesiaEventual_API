@@ -11,7 +11,7 @@ import { Schema } from 'mongoose';
 
 export default class BooksService {
 
-    get_all_books(page: number, perpage: number): Promise<Response_data> {
+    protected get_all_books(page: number, perpage: number): Promise<Response_data> {
         return new Promise((resolve, reject) => {
 
             let response = response_data();
@@ -53,7 +53,7 @@ export default class BooksService {
         });
     }
 
-    get_book_by_id(id: string): Promise<Response_data> {
+    protected get_book_by_id(id: string): Promise<Response_data> {
         return new Promise((resolve, reject) => {
 
             let response = response_data();
@@ -75,7 +75,7 @@ export default class BooksService {
         })
     }
 
-    get_books_of_author(id: any) {
+    public get_books_of_author(id: any) {
         return new Promise((resolve, reject) => {
             const current_id: Schema.Types.ObjectId = id;
 
@@ -99,7 +99,7 @@ export default class BooksService {
         })
     }
 
-    search_book(page: number, perpage: number, search: string): Promise<Response_data> {
+    protected search_book(page: number, perpage: number, search: string): Promise<Response_data> {
         return new Promise((resolve, reject) => {
 
             let response = response_data();
@@ -139,7 +139,7 @@ export default class BooksService {
         })
     }
 
-    create_book(data: any): Promise<Response_data> {
+    protected create_book(data: any): Promise<Response_data> {
         return new Promise((resolve, reject) => {
 
             let response = response_data();

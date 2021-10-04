@@ -6,7 +6,7 @@ import OccupationService from './occupations-service';
 
 class OccupationsController extends OccupationService {
 
-    async get_all(req: Request, res: Response) {
+    public async get_all(req: Request, res: Response) {
         try {
             const result = await super.get_all_occupations();
             return res.status(result.status).json(result);
@@ -15,7 +15,7 @@ class OccupationsController extends OccupationService {
         }
     }
 
-    async get_with_id(req: Request, res: Response) {
+    public async get_with_id(req: Request, res: Response) {
         try {
             const id = req.params.id;
 
@@ -26,7 +26,7 @@ class OccupationsController extends OccupationService {
         }
     }
 
-    async create(req: Request, res: Response) {
+    public async create(req: Request, res: Response) {
         try {
             const data_body = req.body;
 

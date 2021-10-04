@@ -9,7 +9,7 @@ import Response_data from '../../types/Response_data';
 
 export default class OccupationService {
 
-    get_all_occupations(): Promise<Response_data> {
+    protected get_all_occupations(): Promise<Response_data> {
         return new Promise((resolve, reject) => {
             let response = response_data();
 
@@ -28,7 +28,7 @@ export default class OccupationService {
         });
     }
 
-    get_occupation_by_id(id: string): Promise<Response_data> {
+    protected get_occupation_by_id(id: string): Promise<Response_data> {
         return new Promise((resolve, reject) => {
             let response = response_data();
 
@@ -47,7 +47,7 @@ export default class OccupationService {
         });
     }
 
-    create_occupation(data: any): Promise<Response_data> {
+   protected create_occupation(data: any): Promise<Response_data> {
         return new Promise((resolve, reject) => {
             let response = response_data();
             const new_occupation: Occupation = new OCCUPATION(data);

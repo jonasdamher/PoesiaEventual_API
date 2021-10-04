@@ -5,7 +5,7 @@ import { Request, Response, NextFunction } from 'express';
 
 class PoemsValidation {
 
-    async get_all_poems_of_author(req: Request, res: Response, next: NextFunction) {
+    public async get_all_poems_of_author(req: Request, res: Response, next: NextFunction) {
         const schema = Joi.object({
             id: Joi.string().hex().required(),
             page: Joi.number().integer(),
@@ -24,7 +24,7 @@ class PoemsValidation {
             })
     }
 
-    async create(req: Request, res: Response, next: NextFunction) {
+    public async create(req: Request, res: Response, next: NextFunction) {
 
         const schema = Joi.object({
             title: Joi.string().required(),

@@ -6,7 +6,7 @@ import CountriesService from './countries-service';
 import Response_data from '../../types/Response_data';
 
 class CountriesController extends CountriesService {
-    async getAll(req: Request, res: Response) {
+    public async getAll(req: Request, res: Response) {
         try {
             const { page, perpage } = req.query;
 
@@ -21,7 +21,7 @@ class CountriesController extends CountriesService {
         }
     }
 
-    async getWithId(req: Request, res: Response) {
+    public async getWithId(req: Request, res: Response) {
         try {
             const id = req.params.id;
 
@@ -32,7 +32,7 @@ class CountriesController extends CountriesService {
         }
     }
 
-    async create(req: Request, res: Response) {
+    public async create(req: Request, res: Response) {
         try {
             const data_body = req.body;
 

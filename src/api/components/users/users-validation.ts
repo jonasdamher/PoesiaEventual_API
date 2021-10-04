@@ -7,7 +7,7 @@ import { logger_users } from '../../helpers/logger';
 
 class UsersValidation {
 
-    async login(req: Request, res: Response, next: NextFunction) {
+    public async login(req: Request, res: Response, next: NextFunction) {
         const schema = Joi.object({
             email: Joi.string().email().required(),
             password: Joi.string().required()
@@ -26,7 +26,7 @@ class UsersValidation {
             })
     }
 
-    async create(req: Request, res: Response, next: NextFunction) {
+    public async create(req: Request, res: Response, next: NextFunction) {
         const schema = Joi.object({
             name: Joi.string().required(),
             lastname: Joi.string().required(),
@@ -49,7 +49,7 @@ class UsersValidation {
             })
     }
 
-    async update(req: Request, res: Response, next: NextFunction) {
+    public async update(req: Request, res: Response, next: NextFunction) {
         const schema = Joi.object({
             id: Joi.string().hex().required(),
             name: Joi.string(),

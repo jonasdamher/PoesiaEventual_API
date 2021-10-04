@@ -2,7 +2,7 @@
 
 import express, { Router } from 'express';
 
-import * as validate_common from '../common/common-validate';
+import validate_common from '../common/common-validate';
 import validation from './books-validation';
 import books from './books-controller';
 import * as auth from '../../middlewares/auth';
