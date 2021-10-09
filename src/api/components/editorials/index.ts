@@ -1,6 +1,8 @@
 'use strict';
 
+import csrf from '../../utils/csrf';
 import express, { Router } from 'express';
+
 import validate_common from '../common/common-validate';
 import validation from './editorials-validation';
 import editorials from './editorials-controller';
@@ -14,7 +16,7 @@ class RouterOcup {
         return this.router
             .get('/', editorials.get_all)
             .get('/:id', validate_common.get_by_id, editorials.get_with_id)
-            .post('/', auth.user, validation.create, editorials.create);
+            .post('/', csrf, auth.user, validation.create, editorials.create);
     }
 }
 

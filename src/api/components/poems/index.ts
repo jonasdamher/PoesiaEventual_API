@@ -1,6 +1,8 @@
 'use strict';
 
+import csrf from '../../utils/csrf';
 import express, { Router } from 'express';
+
 import validate_common from '../common/common-validate';
 import validation from './poems-validation';
 import poems from './poems-controller';
@@ -17,7 +19,7 @@ class RouterPoem {
             .get('/:id', validate_common.get_by_id, poems.get_by_id)
             .get('/search/:search', validate_common.search, poems.search)
             .get('/random', poems.random)
-            .post('/', auth.user, validation.create, poems.create);
+            .post('/', csrf, auth.user, validation.create, poems.create);
     }
 }
 

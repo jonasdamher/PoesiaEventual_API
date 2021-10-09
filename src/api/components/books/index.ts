@@ -1,5 +1,6 @@
 'use strict';
 
+import csrf from '../../utils/csrf';
 import express, { Router } from 'express';
 
 import validate_common from '../common/common-validate';
@@ -16,7 +17,7 @@ class RouterBooks {
             .get('/', validate_common.get_all, books.get_all)
             .get('/:id', validate_common.get_by_id, books.get_by_id)
             .get('/search/:search', validate_common.search, books.search)
-            .post('/', auth.user, validation.create, books.create);
+            .post('/', csrf, auth.user, validation.create, books.create);
     }
 
 }

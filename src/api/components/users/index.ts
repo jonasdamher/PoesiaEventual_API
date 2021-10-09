@@ -1,7 +1,8 @@
 'use strict';
 
-import express, { Router } from 'express';
 import csrf from '../../utils/csrf';
+import express, { Router } from 'express';
+
 import validation from './users-validation';
 import Users from './users-controller';
 import * as auth from '../../middlewares/auth';

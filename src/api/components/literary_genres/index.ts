@@ -1,6 +1,8 @@
 'use strict';
 
+import csrf from '../../utils/csrf';
 import express, { Router } from 'express';
+
 import validate_common from '../common/common-validate';
 import validation from './genres-validation';
 import author from './genres-controller';
@@ -14,7 +16,7 @@ class RouterGenres {
         return this.router
             .get('/', author.get_all)
             .get('/:id', validate_common.get_by_id, author.get_with_id)
-            .post('/', auth.user, validation.create, author.create);
+            .post('/', csrf, auth.user, validation.create, author.create);
     }
 }
 

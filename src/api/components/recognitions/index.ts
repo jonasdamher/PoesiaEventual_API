@@ -1,6 +1,8 @@
 'use strict';
 
+import csrf from '../../utils/csrf';
 import express, { Router } from 'express';
+
 import validate_common from '../common/common-validate';
 import validation from './recognitions-validation';
 import recognitions from './recognitions-controller';
@@ -15,7 +17,7 @@ class RouterRecog {
             .get('/', validate_common.get_all, recognitions.get_all)
             .get('/:id', validate_common.get_by_id, recognitions.get_by_id)
             .get('/search/:search', validate_common.search, recognitions.search)
-            .post('/', auth.user, validation.create, recognitions.create);
+            .post('/', csrf, auth.user, validation.create, recognitions.create);
     }
 }
 

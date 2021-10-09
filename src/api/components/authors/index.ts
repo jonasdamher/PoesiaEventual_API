@@ -1,6 +1,8 @@
 'use strict';
 
+import csrf from '../../utils/csrf';
 import express, { Router } from 'express';
+
 import validate_common from '../common/common-validate';
 import validation from './author-validation';
 import author from './author-controller';
@@ -17,8 +19,8 @@ class RouterAuthor {
             .get('/', validate_common.get_all, author.get_all)
             .get('/:id', validate_common.get_by_id, author.get_by_id)
             .get('/name/:name', validation.get_by_name, author.get_by_name)
-            .post('/', auth.user, validation.create, author.create)
-            .patch('/:id', auth.user, author.update);
+            .post('/',csrf, auth.user, validation.create, author.create)
+            .patch('/:id',csrf, auth.user, author.update);
     }
 }
 
