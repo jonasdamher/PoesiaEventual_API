@@ -41,10 +41,10 @@ class App {
             .use(cors())
             .use(limit_mongo)
             .use(config.app.version, Routes)
-            .use((req: any, res: any, next: any) => { // Mensaje al no encontrar una ruta
+            .use((req: Request, res: Response, next: NextFunction) => { // Mensaje al no encontrar una ruta
                 return res.status(404).json({ message: 'Not found' });
             })
-            .use(function (err: any, req: any, res: any, next: any) { // mensaje personalizado de csrf token
+            .use(function (err: any, req: Request, res: Response, next: NextFunction) { // mensaje personalizado de csrf token
 
                 if (err.code !== 'EBADCSRFTOKEN') {
                     return next(err);
