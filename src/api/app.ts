@@ -27,11 +27,6 @@ class App {
         moment.locale('es');
 
         this.app
-            .use(express.urlencoded({ extended: false }))
-            .use(cookieParser())
-            .use(compression())
-            .use(helmet())
-            .use(cors())
             .use(express.json({ strict: true, limit: '90kb' }), (err: Error, req: Request, res: Response, next: NextFunction) => {
                 if (err) {
                     logger_app.info({ err }, 'limit kb body request');
@@ -39,8 +34,16 @@ class App {
                 }
                 next();
             })
+            .use(express.urlencoded({ extended: false }))
+            .use(cookieParser())
+            .use(compression())
+            .use(helmet())
+            .use(cors())
             .use(limit_mongo)
             .use(config.app.version, Routes)
+            .use((req: any, res: any, next: any) => { // Mensaje al no encontrar una ruta
+                return res.status(404).json({ message: 'Not found' });
+            })
             .use(function (err: any, req: any, res: any, next: any) { // mensaje personalizado de csrf token
 
                 if (err.code !== 'EBADCSRFTOKEN') {
