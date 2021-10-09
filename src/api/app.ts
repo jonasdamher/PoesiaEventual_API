@@ -5,6 +5,7 @@ import compression from 'compression';
 import helmet from 'helmet';
 import cors from 'cors';
 import moment from 'moment';
+import cookieParser from 'cookie-parser';
 
 import config from './config';
 import { logger_app } from './helpers/logger';
@@ -26,6 +27,8 @@ class App {
         moment.locale('es');
 
         this.app
+            .use(express.urlencoded({ extended: false }))
+            .use(cookieParser())
             .use(compression())
             .use(helmet())
             .use(cors())
@@ -36,9 +39,15 @@ class App {
                 }
                 next();
             })
-            .use(express.urlencoded({ extended: false }))
             .use(limit_mongo)
             .use(config.app.version, Routes)
+            .use(function (err: any, req: any, res: any, next: any) { // mensaje personalizado de csrf token
+
+                if (err.code !== 'EBADCSRFTOKEN') {
+                    return next(err);
+                }
+                return res.status(403).json({ message: 'Forbidden token' });
+            })
     }
 }
 

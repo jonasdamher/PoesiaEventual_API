@@ -8,11 +8,11 @@ import { logger_app } from './api/helpers/logger';
 Mongo.connect().then(() => {
     try {
         app.listen(config.app.port);
-        
-        if(config.app.node_env==='DEVELOPMENT'){
-            console.log(config.app.url_api);
+
+        if (config.app.node_env === 'DEVELOPMENT') {
+            logger_app.info({ url: config.app.url_api }, 'Up server develop')
         }
-          
+
     } catch (error: unknown) {
         logger_app.info({ error }, 'Run app')
         process.exit(1);

@@ -2,6 +2,7 @@
 
 import express, { Router } from 'express';
 
+import auth from '../components/auth';
 import authors from '../components/authors';
 import books from '../components/books';
 import editorials from '../components/editorials';
@@ -18,6 +19,7 @@ class Routes {
 
     public load(): Router {
         return this.routes
+            .use('/auth', auth.routes())
             .use('/authors', authors.routes())
             .use('/books', books.routes())
             .use('/editorials', editorials.routes())
