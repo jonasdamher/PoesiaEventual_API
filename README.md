@@ -15,3 +15,6 @@ Renombrar archivo ```.dev-env``` a ```.env``` y añadir credenciales necesarias.
 
 ### :heavy_check_mark: Iniciar proyecto.
 ```npm run start```
+
+### Documentation - spanish
+[Documentación v2](https://documenter.getpostman.com/view/8382203/TzmCgYL3)
