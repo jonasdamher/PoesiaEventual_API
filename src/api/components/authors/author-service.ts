@@ -21,20 +21,13 @@ export default class AuthorService {
             let response = response_data();
 
             get_pagination(AUTHOR, page, perpage).then((pagination: any) => {
-
-                AUTHOR.find().skip(pagination.page_range).limit(pagination.perpage)
-                    .sort('personal.full_name')
-                    .select('personal.full_name short_description portrait meta.url')
-                    .populate({ path: 'professional.occupations', select: 'name' })
-                    .populate({ path: 'professional.literary_genres', select: 'name' })
-                    .then((authorResponse: any) => {
+                AUTHOR.find().skip(pagination.page_range).limit(pagination.perpage).sort('personal.full_name').select('personal.full_name short_description portrait meta.url').populate({ path: 'professional.occupations', select: 'name' }).populate({ path: 'professional.literary_genres', select: 'name' }).then((authorResponse: any) => {
 
                         response.result = {
                             authors: authorResponse,
                             pagination: paginate(pagination)
                         };
                         resolve(response);
-
                     }).catch((err: any) => {
 
                         response.status = 400;
@@ -59,13 +52,7 @@ export default class AuthorService {
         return new Promise((resolve, reject) => {
             let response = response_data();
 
-            AUTHOR.findOne({ 'meta.url': name })
-                .select('personal.full_name biography photos meta.url meta.description meta.keywords')
-                .populate({ path: 'professional.occupations', select: 'name' })
-                .populate({ path: 'professional.literary_genres', select: 'name' })
-                .populate({ path: 'personal.country', select: 'name' })
-                .then(async (current_author: any) => {
-
+            AUTHOR.findOne({ 'meta.url': name }).select('personal.full_name biography photos meta.url meta.description meta.keywords').populate({ path: 'professional.occupations', select: 'name' }).populate({ path: 'professional.literary_genres', select: 'name' }).populate({ path: 'personal.country', select: 'name' }).then(async (current_author: any) => {
                     let recog = new RecogService();
                     let poems = new PoemsService();
                     let books = new BooksService();
@@ -77,7 +64,6 @@ export default class AuthorService {
                         recognitions: await recog.get_recognitions_of_author(current_author._id)
                     };
                     resolve(response);
-
                 }).catch((err: any) => {
 
                     response.status = 400;
@@ -111,32 +97,25 @@ export default class AuthorService {
     search_author(page: number, perpage: number, search: string): Promise<Response_data> {
         return new Promise((resolve, reject) => {
             let response = response_data();
-
             const query = { 'personal.full_name': { $regex: '.*' + search + '.*', $options: 'i' } };
 
             get_pagination(AUTHOR, page, perpage, query).then((pagination: any) => {
+                AUTHOR.find(query).skip(pagination.page_range).limit(pagination.perpage).sort('personal.full_name').select('personal.full_name short_description portrait meta.url').then((authorResponse: any) => {
 
-                AUTHOR.find(query)
-                    .skip(pagination.page_range)
-                    .limit(pagination.perpage)
-                    .sort('personal.full_name')
-                    .select('personal.full_name short_description portrait meta.url')
-                    .then((authorResponse: any) => {
+                    response.result = {
+                        authors: authorResponse,
+                        pagination: paginate(pagination)
+                    };
+                    resolve(response);
 
-                        response.result = {
-                            authors: authorResponse,
-                            pagination: paginate(pagination)
-                        };
-                        resolve(response);
+                }).catch((err: any) => {
 
-                    }).catch((err: any) => {
-
-                        response.status = 400;
-                        response.message = 'BadRequest';
-                        response.result = err;
-                        logger_authors.info({ ...response }, 'service');
-                        reject(response);
-                    });
+                    response.status = 400;
+                    response.message = 'BadRequest';
+                    response.result = err;
+                    logger_authors.info({ ...response }, 'service');
+                    reject(response);
+                });
 
             }).catch((err: any) => {
 
@@ -183,10 +162,8 @@ export default class AuthorService {
     create_author(data: any): Promise<Response_data> {
         return new Promise((resolve, reject) => {
             let response = response_data();
-
             data.personal.full_name = data.personal.name.trim() + ' ' + data.personal.lastname.trim();
             data.meta.url = Text.url(data.personal.full_name);
-
             const author: Author = new AUTHOR(data);
 
             author.save().then((authorResponse: Author) => {
