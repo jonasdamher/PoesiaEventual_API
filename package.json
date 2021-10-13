@@ -1,8 +1,8 @@
 {
   "name": "poesiaeventual_api",
-  "version": "1.0.0",
-  "description": "API para obtener poesía en español usando mongoDB.",
-  "main": "index.js",
+  "version": "2.0.0",
+  "description": "API para obtener poesía en español.",
+  "main": "dist/server.js",
   "scripts": {
     "start": "node ./dist/server.js",
     "build": "tsc",

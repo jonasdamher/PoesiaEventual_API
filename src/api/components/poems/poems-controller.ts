@@ -2,6 +2,7 @@
 
 import { Request, Response } from 'express';
 import PoemsService from './poems-service';
+import { currentPage, currentPerPage } from '../../utils/pagination';
 
 class PoemsController extends PoemsService {
 
@@ -9,9 +10,9 @@ class PoemsController extends PoemsService {
         try {
             const { page, perpage } = req.query;
 
-            let current_page = Number(page ?? 1);
-            let current_perpage = Number(perpage ?? 10);
-
+            let current_page = currentPage(page);
+            let current_perpage = currentPerPage(perpage);
+            
             const result = await super.get_all_poems(current_page, current_perpage)
             return res.status(result.status).json(result);
 

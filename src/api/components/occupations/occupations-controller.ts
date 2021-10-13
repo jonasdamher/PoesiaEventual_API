@@ -3,7 +3,6 @@
 import { Request, Response } from 'express';
 import OccupationService from './occupations-service';
 
-
 class OccupationsController extends OccupationService {
 
     public async get_all(req: Request, res: Response) {

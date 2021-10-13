@@ -2,6 +2,8 @@
 
 import { Request, Response } from 'express';
 import RecogService from './recognitions-service';
+import { currentPage, currentPerPage } from '../../utils/pagination';
+
 // Tipos
 import Response_data from '../../types/Response_data';
 
@@ -11,8 +13,8 @@ class RecogController extends RecogService {
 
         const { page, perpage } = req.query;
 
-        let current_page = Number(page ?? 1);
-        let current_perpage = Number(perpage ?? 10);
+        let current_page = currentPage(page);
+        let current_perpage = currentPerPage(perpage);
 
         super.get_all_recog(current_page, current_perpage)
             .then((ok: Response_data) => res.status(ok.status).json(ok))

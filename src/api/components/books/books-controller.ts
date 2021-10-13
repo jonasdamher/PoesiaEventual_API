@@ -2,6 +2,7 @@
 
 import { Request, Response } from 'express';
 import BooksService from './books-service';
+import { currentPage, currentPerPage } from '../../utils/pagination';
 
 class BooksController extends BooksService {
 
@@ -9,8 +10,8 @@ class BooksController extends BooksService {
         try {
             const { page, perpage } = req.query;
 
-            let current_page = Number(page ?? 1);
-            let current_perpage = Number(perpage ?? 10);
+            let current_page = currentPage(page);
+            let current_perpage = currentPerPage(perpage);
 
             const result = await this.get_all_books(current_page, current_perpage);
             res.status(result.status).json(result);
