@@ -3,23 +3,23 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const mongoose_1 = __importDefault(require("mongoose"));
 const app_1 = __importDefault(require("./api/app"));
-const config_1 = __importDefault(require("./api/v1/config"));
-mongoose_1.default.connect(config_1.default.mongo_uri, {
-    useNewUrlParser: true,
-    useCreateIndex: true,
-    useUnifiedTopology: true
-}).then(() => {
+const Mongo_1 = __importDefault(require("./api/db/Mongo"));
+const config_1 = __importDefault(require("./api/config"));
+const logger_1 = require("./api/helpers/logger");
+Mongo_1.default.connect().then(() => {
     try {
-        app_1.default.listen(config_1.default.port);
+        app_1.default.listen(config_1.default.app.port);
+        if (config_1.default.app.node_env === 'DEVELOPMENT') {
+            logger_1.logger_app.info({ url: config_1.default.app.url_api }, 'Up server develop');
+        }
     }
     catch (error) {
-        console.log(error);
+        logger_1.logger_app.info({ error }, 'Run app');
         process.exit(1);
     }
-}).catch((err) => {
-    console.log(err);
+}).catch((error) => {
+    logger_1.logger_app.error({ error }, 'Mongoose, connect to db');
     process.exit(1);
 });
 //# sourceMappingURL=server.js.map
