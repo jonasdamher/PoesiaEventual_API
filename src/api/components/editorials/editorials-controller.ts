@@ -2,8 +2,6 @@
 
 import { Request, Response } from 'express';
 import EditorialsService from './editorials-service';
-// Tipos
-import Response_data from '../../types/Response_data';
 
 class EditorialsController extends EditorialsService {
 

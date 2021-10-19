@@ -103,23 +103,16 @@ export default class BooksService {
         return new Promise((resolve, reject) => {
 
             let response = response_data();
-
             const query = { title: { $regex: '.*' + search + '.*', $options: 'i' } };
 
             get_pagination(BOOK, page, perpage, query).then((pagination: any) => {
 
-                BOOK.find(query)
-                    .skip(pagination.page_range)
-                    .limit(pagination.perpage)
-                    .sort('title')
-                    .populate('author editorial literary_genre')
-                    .then((poems: any) => {
+                BOOK.find(query).skip(pagination.page_range).limit(pagination.perpage).sort('title').populate('author editorial literary_genre').then((poems: any) => {
 
                         let data = {
                             poems: poems,
                             pagination: paginate(pagination)
                         }
-
                         response.result = data;
                         resolve(response)
 

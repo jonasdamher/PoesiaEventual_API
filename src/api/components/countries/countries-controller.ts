@@ -2,16 +2,15 @@
 
 import { Request, Response } from 'express';
 import CountriesService from './countries-service';
-// Tipos
-import Response_data from '../../types/Response_data';
+import { currentPage, currentPerPage } from '../../utils/pagination';
 
 class CountriesController extends CountriesService {
     public async getAll(req: Request, res: Response) {
         try {
             const { page, perpage } = req.query;
 
-            let current_page = Number(page ?? 1);
-            let current_perpage = Number(perpage ?? 10);
+            let current_page = currentPage(page);
+            let current_perpage = currentPerPage(perpage);
 
             const result = await super.getAllCountries(current_page, current_perpage);
 

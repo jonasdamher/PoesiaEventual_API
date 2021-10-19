@@ -2,8 +2,6 @@
 
 import { Request, Response } from 'express';
 import GenresService from './genres-service';
-// Tipos
-import Response_data from '../../types/Response_data';
 
 class GenresController extends GenresService {
 

@@ -25,7 +25,23 @@ export async function get_pagination(model: any, page: number, perpage: number, 
     });
 }
 
-export function paginate(pagination:any){
+export function currentPage(pageNumber: any) {
+    let page = 1;
+    if (pageNumber > 0) {
+        page = Number(pageNumber ?? 1)
+    }
+    return page;
+}
+
+export function currentPerPage(perPageNumber: any) {
+    let perpage = 10;
+    if (perPageNumber > 0 && perPageNumber <= 30) {
+        perpage = Number(perPageNumber ?? 10)
+    }
+    return perpage;
+}
+
+export function paginate(pagination: any) {
     return {
         page: pagination.page,
         lastPage: pagination.lastPage,
