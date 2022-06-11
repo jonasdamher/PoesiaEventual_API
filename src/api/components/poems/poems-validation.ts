@@ -28,10 +28,12 @@ class PoemsValidation {
 
         const schema = Joi.object({
             title: Joi.string().required(),
+            text: Joi.string().required(),
         });
 
         const data = {
             title: req.body.title,
+            text: req.body.text,
         }
 
         schema.validateAsync(data)

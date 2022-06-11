@@ -28,28 +28,28 @@ class AuthorValidation {
 
         const schema = Joi.object({
             name: Joi.string().required(),
-            lastname: Joi.string().required(),
+            lastname: Joi.string().required(),/*
             full_name: Joi.string(),
             pseudonym: Joi.string(),
             gender: Joi.string().required(),
-            country: Joi.string().hex().required(),
-            short_description: Joi.string().max(155).required(),
+            country: Joi.string().hex().required(),*/
+            short_description: Joi.string().max(155).required(),/*
             biography: Joi.string().max(700).required(),
             portrait: Joi.string().required(),
-            description: Joi.string().max(155).required(),
+            description: Joi.string().max(155).required(),*/
         });
 
         const data = {
             name: req.body.personal.name,
-            lastname: req.body.personal.lastname,
+            lastname: req.body.personal.lastname,/*
             full_name: req.body.personal.full_name,
             pseudonym: req.body.personal.pseudonym,
             gender: req.body.personal.gender,
-            country: req.body.personal.country,
-            short_description: req.body.short_description,
+            country: req.body.personal.country,*/
+            short_description: req.body.short_description,/*
             biography: req.body.biography,
             portrait: req.body.portrait,
-            description: req.body.meta.description,
+            description: req.body.meta.description,*/
         };
 
         schema.validateAsync(data)

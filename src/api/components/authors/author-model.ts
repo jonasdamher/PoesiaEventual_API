@@ -23,20 +23,20 @@ interface keywords {
 
 export interface Author extends Document {
     name: string;
-    lastname: string;
+    lastname: string;/*
     full_name: string;
     pseudonym: string;
     gender: genders;
     occupations: Schema.Types.ObjectId;
     literary_genres: Schema.Types.ObjectId;
-    country: Schema.Types.ObjectId;
-    short_description: string;
+    country: Schema.Types.ObjectId;*/
+    short_description: string;/*
     biography: string;
     portrait: string;
     photos: Array<photos>;
     url: string;
     description: string;
-    keywords: Array<keywords>;
+    keywords: Array<keywords>;*/
     created_at: number;
     update_at: number;
 }
@@ -55,7 +55,6 @@ const author_schema = new Schema<Author, author_model>({
                 message: (props: any) => `(${props.value}) no tiene el formato adecuado.`
             },
             required: [true, 'Es obligatorio introducir un nombre.'],
-            unique: [true, 'El nombre introducido ya existe.']
         },
         lastname: {
             type: String,
@@ -66,7 +65,7 @@ const author_schema = new Schema<Author, author_model>({
                 message: (props: any) => `(${props.value}) no tiene el formato adecuado.`
             },
             required: [true, 'Es obligatorio introducir los apellidos.'],
-        },
+        },/*
         full_name: {
             type: String
         },
@@ -87,8 +86,8 @@ const author_schema = new Schema<Author, author_model>({
         country: {
             type: Schema.Types.ObjectId,
             ref: 'countries'
-        }
-    },
+        }*/
+    },/*
     professional: {
         occupations: [{
             type: Schema.Types.ObjectId,
@@ -98,12 +97,12 @@ const author_schema = new Schema<Author, author_model>({
             type: Schema.Types.ObjectId,
             ref: 'literary_genres'
         }],
-    },
+    },*/
     short_description: {
         type: String,
         maxLength: 155,
         required: [true, 'Es obligatorio introducir una descripción corta.'],
-    },
+    },/*
     biography: {
         type: String,
         maxLength: 700,
@@ -178,7 +177,7 @@ const author_schema = new Schema<Author, author_model>({
                 word: String
             }
         ],
-    },
+    },*/
     created_at: {
         type: Number,
         default: moment().unix()
@@ -187,6 +186,6 @@ const author_schema = new Schema<Author, author_model>({
         type: Number,
         default: 0
     }
-})
+}).index({ 'personal.name': 'text', 'personal.lastname': 'text' });
 
 export default model<Author, author_model>('authors', author_schema)

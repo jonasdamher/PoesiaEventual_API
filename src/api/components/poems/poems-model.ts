@@ -12,15 +12,15 @@ interface keywords {
 export interface Poem extends Document {
     author: Schema.Types.ObjectId;
     title: string;
-    text: string;
+    text: string;/*
     url: string;
     description: string;
-    keywords: Array<keywords>;
+    keywords: Array<keywords>;*/
     created_at: number;
     update_at: number;
 }
 
-const poem_schema: Schema<Poem> = new Schema({
+const poem_schema = new Schema<Poem>({
     author: {
         type: Schema.Types.ObjectId,
         ref: 'authors'
@@ -34,7 +34,7 @@ const poem_schema: Schema<Poem> = new Schema({
         type: String,
         trim: true,
         required: [true, 'Es obligatorio introducir un cuerpo del poema.'],
-    },
+    },/*
     meta: {
         url: {
             type: String,
@@ -66,7 +66,7 @@ const poem_schema: Schema<Poem> = new Schema({
                 word: String
             }
         ],
-    },
+    },*/
     created_at: {
         type: Number,
         default: moment().unix()
@@ -75,7 +75,7 @@ const poem_schema: Schema<Poem> = new Schema({
         type: Number,
         default: 0
     }
-})
+}).index({ 'title': 'text' });
 
 const POEM: Model<Poem> = model('poems', poem_schema);
 export default POEM;
