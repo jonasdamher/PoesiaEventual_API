@@ -12,9 +12,9 @@ class RouterAuth {
 
     public routes(): Router {
         return this.router
-            .post('/', csrf, validation.create, Auth.create)
+            // .post('/', csrf, validation.create, Auth.create)
             .post('/login', csrf, validation.login, Auth.login)
-            .get('/confirm_account/:token', Auth.confirmAccount)
+            // .get('/confirm_account/:token', Auth.confirmAccount)
             .get('/csrf', csrf, (req: Request, res: Response) => {
                 return res.json({ csrfToken: req.csrfToken() })
             })

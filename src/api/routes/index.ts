@@ -27,7 +27,7 @@ class Routes {
             .use('/occupations', occupations.routes())
             .use('/poems', poems.routes())
             .use('/recognitions', recognitions.routes())
-            .use('/users', users.routes())
+            // .use('/users', users.routes())
             .use('/countries', countries.routes());
     }
 }
