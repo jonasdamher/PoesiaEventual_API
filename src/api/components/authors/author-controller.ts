@@ -14,7 +14,7 @@ class AuthorController extends AuthorsService {
             let current_page = currentPage(page);
             let current_perpage = currentPerPage(perpage);
 
-            const result = await this.get_all_authors(current_page, current_perpage);
+            const result = await super.get_all_authors(current_page, current_perpage);
             return res.status(result.status).json(result);
         } catch (error: any) {
             return res.status(error.status).json(error);
@@ -26,7 +26,7 @@ class AuthorController extends AuthorsService {
 
             const id = req.params.id;
 
-            const result = await this.get_author_by_id(id);
+            const result = await super.get_author_by_id(id);
             return res.status(result.status).json(result);
         } catch (error: any) {
             return res.status(error.status).json(error);
@@ -38,7 +38,7 @@ class AuthorController extends AuthorsService {
 
             const name = req.params.name;
 
-            const result = await this.get_author_by_name(name);
+            const result = await super.get_author_by_name(name);
             return res.status(result.status).json(result);
         } catch (error: any) {
             return res.status(error.status).json(error);
@@ -54,7 +54,7 @@ class AuthorController extends AuthorsService {
             let current_page = Number(page ?? 1);
             let current_perpage = Number(perpage ?? 10);
 
-            const result = await this.search_author(current_page, current_perpage, search);
+            const result = await super.search_author(current_page, current_perpage, search);
             return res.status(result.status).json(result);
         } catch (error: any) {
             return res.status(error.status).json(error);
@@ -64,7 +64,7 @@ class AuthorController extends AuthorsService {
     async random(req: Request, res: Response) {
         try {
 
-            const result = await this.random_author();
+            const result = await super.random_author();
             return res.status(result.status).json(result);
         } catch (error: any) {
             return res.status(error.status).json(error);
@@ -76,7 +76,7 @@ class AuthorController extends AuthorsService {
 
             const data_body = req.body;
 
-            const result = await this.create_author(data_body);
+            const result = await super.create_author(data_body);
             return res.status(result.status).json(result);
         } catch (error: any) {
             return res.status(error.status).json(error);
@@ -88,7 +88,7 @@ class AuthorController extends AuthorsService {
             const id = req.params.id;
             const data_body = req.body;
 
-            const result = await this.update_author(id, data_body);
+            const result = await super.update_author(id, data_body);
             return res.status(result.status).json(result);
         } catch (error: any) {
             return res.status(error.status).json(error);

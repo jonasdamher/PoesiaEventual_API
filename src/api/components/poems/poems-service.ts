@@ -184,21 +184,30 @@ export default class PoemsService {
             let response = response_data();
 
             // data.meta.url = Text.url(data.title);
-
-            const poem: Poem = new POEM(data);
-
             if (data.poems) {
                 let results: any = [];
-                poem.save().then((new_poem: Poem) => {
 
-                    results.push(new_poem);
-                }).catch((err: any) => {
+                data.poems.forEach((current_poem: any) => {
 
-                    response.status = 400;
-                    response.message = 'BadRequest';
-                    response.result = err;
-                    reject(response);
-                })
+                    const current_data = {
+                        title: current_poem.title,
+                        text: current_poem.text,
+                        author: data.author
+                    };
+
+                    const poem: Poem = new POEM(current_data);
+                    poem.save().then((new_poem: Poem) => {
+
+                        results.push(new_poem);
+                    }).catch((err: any) => {
+
+                        response.status = 400;
+                        response.message = 'BadRequest multiply';
+                        response.result = err;
+                        reject(response);
+                    })
+
+                });
 
                 response.status = 201;
                 response.message = 'Created';
@@ -206,6 +215,8 @@ export default class PoemsService {
                 resolve(response);
 
             } else {
+                const poem: Poem = new POEM(data);
+
                 poem.save().then((new_poem: Poem) => {
 
                     response.status = 201;
@@ -216,7 +227,7 @@ export default class PoemsService {
                 }).catch((err: any) => {
 
                     response.status = 400;
-                    response.message = 'BadRequest';
+                    response.message = 'BadRequest only';
                     response.result = err;
                     reject(response);
                 })

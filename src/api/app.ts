@@ -27,7 +27,7 @@ class App {
         moment.locale('es');
 
         this.app
-            .use(express.json({ strict: true, limit: '90kb' }), (err: Error, req: Request, res: Response, next: NextFunction) => {
+            .use(express.json({ strict: true, limit: '500kb' }), (err: Error, req: Request, res: Response, next: NextFunction) => {
                 if (err) {
                     logger_app.info({ err }, 'limit kb body request');
                     return res.sendStatus(400);

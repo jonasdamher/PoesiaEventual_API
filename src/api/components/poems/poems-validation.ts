@@ -25,15 +25,32 @@ class PoemsValidation {
     }
 
     public async create(req: Request, res: Response, next: NextFunction) {
+        let schema = null;
+        let data = {};
 
-        const schema = Joi.object({
-            title: Joi.string().required(),
-            text: Joi.string().required(),
-        });
+        if (req.body.poems) {
 
-        const data = {
-            title: req.body.title,
-            text: req.body.text,
+            schema = Joi.object({
+                poems: Joi.array().items(Joi.object({
+                    title: Joi.string().required(),
+                    text: Joi.string().required(),
+                }))
+            });
+
+            data = {
+                poems: req.body.poems,
+            }
+        } else {
+
+            schema = Joi.object({
+                title: Joi.string().required(),
+                text: Joi.string().required(),
+            });
+
+            data = {
+                title: req.body.title,
+                text: req.body.text,
+            }
         }
 
         schema.validateAsync(data)

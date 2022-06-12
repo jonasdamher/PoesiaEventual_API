@@ -27,8 +27,10 @@ class AuthorValidation {
     async create(req: Request, res: Response, next: NextFunction) {
 
         const schema = Joi.object({
-            name: Joi.string().required(),
-            lastname: Joi.string().required(),/*
+            personal: {
+                name: Joi.string().required(),
+                lastname: Joi.string().required(),
+            },/*
             full_name: Joi.string(),
             pseudonym: Joi.string(),
             gender: Joi.string().required(),
@@ -40,8 +42,10 @@ class AuthorValidation {
         });
 
         const data = {
-            name: req.body.personal.name,
-            lastname: req.body.personal.lastname,/*
+            personal: {
+                name: req.body.personal.name,
+                lastname: req.body.personal.lastname,
+            },/*
             full_name: req.body.personal.full_name,
             pseudonym: req.body.personal.pseudonym,
             gender: req.body.personal.gender,
