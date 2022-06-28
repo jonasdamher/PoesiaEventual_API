@@ -18,7 +18,7 @@ export default class PoemsService {
 
             get_pagination(POEM, page, perpage).then((pagination: any) => {
 
-                POEM.find().skip(pagination.page_range).limit(pagination.perpage).sort('name')
+                POEM.find().skip(pagination.page_range).limit(pagination.perpage).sort('title')
                     .then((authorResponse: any) => {
 
                         response.result = {
@@ -48,7 +48,7 @@ export default class PoemsService {
 
             const current_id: Schema.Types.ObjectId = id;
 
-            POEM.findOne({ author: current_id }).select('title meta.url').then((poems: any) => {
+            POEM.findOne({ author: current_id }).select('title text').then((poems: any) => {
                 if (!poems) resolve([]);
                 if (poems.length > 1) resolve(poems);
                 resolve([poems]);
@@ -67,7 +67,7 @@ export default class PoemsService {
 
             get_pagination(POEM, page, perpage, query).then((pagination: any) => {
 
-                POEM.find(query).populate('author').skip(pagination.page_range).limit(pagination.perpage).sort('title')
+                POEM.find(query).populate('author', 'personal.name personal.lastname').skip(pagination.page_range).limit(pagination.perpage).sort('title')
                     .then(poemList => {
 
                         response.result = {
@@ -121,7 +121,7 @@ export default class PoemsService {
             get_pagination(POEM, page, perpage, query)
                 .then((pagination: any) => {
 
-                    POEM.find(query).populate('author').skip(pagination.page_range).limit(pagination.perpage).sort('title')
+                    POEM.find(query).populate('author','personal.name personal.lastname').skip(pagination.page_range).limit(pagination.perpage).sort('title')
                         .then((poems: any) => {
 
                             response.result = {
@@ -156,7 +156,7 @@ export default class PoemsService {
 
                 const random = count == 1 ? 1 : Math.floor(Math.random() * count)
 
-                POEM.findOne().populate('author', 'name').skip(random).then((poem: any) => {
+                POEM.findOne().populate('author', 'personal.name personal.lastname').skip(random).then((poem: any) => {
 
                     response.result = poem;
                     resolve(response);
