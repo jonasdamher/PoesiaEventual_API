@@ -15,10 +15,10 @@ class RouterPoem {
     public routes(): Router {
         return this.router
             .get('/', validate_common.get_all, poems.get_all)
-            .get('/author/:id', poems.get_all_poems_of_author, poems.get_all_poems_of_author)
-            .get('/:id', validate_common.get_by_id, poems.get_by_id)
             .get('/search/:search', validate_common.search, poems.search)
             .get('/random', poems.random)
+            .get('/author/:id', poems.get_all_poems_of_author, poems.get_all_poems_of_author)
+            .get('/:id', validate_common.get_by_id, poems.get_by_id)
             .post('/', csrf, auth.user, validation.create, poems.create);
     }
 }

@@ -16,9 +16,9 @@ class RouterAuthor {
         return this.router
             .get('/random', author.random)
             .get('/search/:search', validate_common.search, author.search)
+            .get('/name/:name', validation.get_by_name, author.get_by_name)
             .get('/', validate_common.get_all, author.get_all)
             .get('/:id', validate_common.get_by_id, author.get_by_id)
-            .get('/name/:name', validation.get_by_name, author.get_by_name)
             .post('/',csrf, auth.user, validation.create, author.create)
             .patch('/:id',csrf, auth.user, author.update);
     }
