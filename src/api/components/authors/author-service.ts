@@ -101,7 +101,7 @@ export default class AuthorService {
 
 
             get_pagination(AUTHOR, page, perpage, query).then((pagination: any) => {
-                AUTHOR.find(query).skip(pagination.page_range).limit(pagination.perpage).sort('personal.full_name').select('personal.full_name short_description portrait meta.url').then((authorResponse: any) => {
+                AUTHOR.find(query).skip(pagination.page_range).limit(pagination.perpage).sort('personal.lastname').select('personal.name personal.lastname short_description').then((authorResponse: any) => {
 
                     response.result = {
                         authors: authorResponse,
