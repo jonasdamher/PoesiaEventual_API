@@ -97,7 +97,7 @@ export default class PoemsService {
         return new Promise((resolve, reject) => {
             let response = response_data();
 
-            POEM.findById({ _id: id }).populate('author', 'name').then((poem: any) => {
+            POEM.findById({ _id: id }).populate('author','personal.name personal.lastname').then((poem: any) => {
 
                 response.result = poem;
                 resolve(response);
