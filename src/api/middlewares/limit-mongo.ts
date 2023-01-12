@@ -4,6 +4,10 @@ import { Request, Response, NextFunction } from 'express';
 import { RateLimiterMongo } from 'rate-limiter-flexible';
 import mongoose from 'mongoose';
 
+/**
+ * Configuración para limitar peticiones a la API por usuario
+ */
+
 const opts = {
     dbName: 'limit_mongo',
     storeClient: mongoose.connection,

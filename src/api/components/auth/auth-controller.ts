@@ -3,6 +3,9 @@
 import { Request, Response } from 'express';
 import AuthService from './auth-service';
 
+/**
+ * Para crear usuarios, confirmar cuenta y autenticar usuarios por Json Web Token
+ */
 class AuthController extends AuthService {
 
     public async login(req: Request, res: Response) {

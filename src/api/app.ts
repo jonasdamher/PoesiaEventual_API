@@ -13,7 +13,10 @@ import limit_mongo from './middlewares/limit-mongo';
 
 import Routes from './routes';
 
-
+/**
+ * Clase principal de app.
+ * Configuración de principales librerías e inicialización de rutas de API.
+ */
 class App {
 
     public app: Application = express();
@@ -24,9 +27,11 @@ class App {
 
     private configuration(): void {
 
+        // Configuración fecha formato Español
         moment.locale('es');
 
         this.app
+            // Limitar los KB de las peticiones
             .use(express.json({ strict: true, limit: '500kb' }), (err: Error, req: Request, res: Response, next: NextFunction) => {
                 if (err) {
                     logger_app.info({ err }, 'limit kb body request');
@@ -39,12 +44,16 @@ class App {
             .use(compression())
             .use(helmet())
             .use(cors())
+            // Usar configuración de limite de peticiones simultaneas
             .use(limit_mongo)
+            // Ruta principal de endpoints de API
             .use(config.app.version, Routes)
-            .use((req: Request, res: Response, next: NextFunction) => { // Mensaje al no encontrar una ruta
+            // Mensaje al no encontrar una ruta
+            .use((req: Request, res: Response, next: NextFunction) => { 
                 return res.status(404).json({ message: 'Not found' });
             })
-            .use(function (err: any, req: Request, res: Response, next: NextFunction) { // mensaje personalizado de csrf token
+            // Mensaje personalizado de csrf token al no tenerlo en el cuerpo de la solicitud del endpoint donde se requiere
+            .use(function (err: any, req: Request, res: Response, next: NextFunction) {
 
                 if (err.code !== 'EBADCSRFTOKEN') {
                     return next(err);

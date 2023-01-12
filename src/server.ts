@@ -4,7 +4,7 @@ import app from './api/app';
 import Mongo from './api/db/Mongo';
 import config from './api/config';
 import { logger_app } from './api/helpers/logger';
-
+ 
 Mongo.connect().then(() => {
     try {
         app.listen(config.app.port);

@@ -4,6 +4,14 @@ import config from '../types/config';
 import dotenv from 'dotenv';
 dotenv.config();
 
+/**
+ * Configuración general obtenida del archivo .env
+ * Parametros de configuración
+ * 
+ * Clave secreta json web token
+ * Correo, clave envio correos electrónicos 
+ */
+
 const url_version = '/api/' + process.env.API_VERSION ?? '';
 const url_domain = process.env.DOMAIN ?? '';
 

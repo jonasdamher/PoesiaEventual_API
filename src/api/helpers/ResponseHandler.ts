@@ -1,5 +1,8 @@
 'use strict';
 
+/**
+ * Clase para devolver datos de la API
+ */
 export default class ResponseHandler {
 
     resMessage: string;

@@ -2,6 +2,13 @@
 
 import pino from 'pino';
 
+/**
+ * Configuración de logger.
+ * Registrar errores de la app en archivos JSON.
+ * Por cada componente creado, 1 logger.
+ */
+
+
 const commons_options = {
     sync: false
 };

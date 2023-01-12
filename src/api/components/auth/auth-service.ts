@@ -14,6 +14,12 @@ import Response_data from '../../types/Response_data';
 
 export default class AuthService {
 
+    /**
+     * Autenticar correo y clave.
+     * @param email 
+     * @param password 
+     * @returns JSON web token
+     */
     protected userLogin(email: string, password: string): Promise<Response_data> {
         return new Promise((resolve, reject) => {
             let response = response_data();
@@ -49,6 +55,11 @@ export default class AuthService {
         });
     }
 
+    /**
+     * Crear cuenta de usuario y envia correo electrónico de confirmación de cuenta.
+     * @param data 
+     * @returns ID de cuenta de usuario.
+     */
     protected userCreate(data: any): Promise<Response_data> {
         return new Promise((resolve, reject) => {
             let response = response_data();
@@ -85,6 +96,11 @@ export default class AuthService {
         });
     }
 
+    /**
+     * Verifica si el token existe, si existe deja la cuenta de usuario correspondiente como activa.
+     * @param token 
+     * @returns Mensaje de verificación
+     */
     protected confirmAccountWithToken(token: string): Promise<Response_data> {
         return new Promise((resolve, reject) => {
             let response = response_data();

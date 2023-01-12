@@ -5,6 +5,10 @@ import { Request, Response, NextFunction } from 'express';
 import * as regex from '../../utils/regex';
 import { logger_users } from '../../helpers/logger';
 
+/**
+ * Para validar la información de las peticiones antes de 
+ * pasarlos antes de enviarlos a los métodos del controlador de servicios
+ */
 class AuthValidation {
 
     public async login(req: Request, res: Response, next: NextFunction) {

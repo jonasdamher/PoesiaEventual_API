@@ -8,6 +8,9 @@ import validation from './author-validation';
 import author from './author-controller';
 import * as auth from '../../middlewares/auth';
 
+/**
+ * Rutas
+ */
 class RouterAuthor {
 
     private router: Router = express.Router();

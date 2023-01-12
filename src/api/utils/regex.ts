@@ -1,5 +1,8 @@
 'use strict';
 
+/**
+ * Expresiones regulares para validar información en los modelos con la librería Mongose
+ */
 export const text_only = /[a-zA-ZñÑáéíóú.,; ]/;
 export const url_name = /[a-z-]/;
 export const photo = /^[a-zA-Z-0-9]+\.+(png|jpg|jpeg)$/;

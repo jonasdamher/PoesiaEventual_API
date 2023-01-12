@@ -6,6 +6,9 @@ import express, { Router, Request, Response } from 'express';
 import validation from './auth-validation';
 import Auth from './auth-controller';
 
+/**
+ * Rutas
+ */
 class RouterAuth {
 
     private router: Router = express.Router();

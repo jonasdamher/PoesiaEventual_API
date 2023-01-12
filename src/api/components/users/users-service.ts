@@ -3,18 +3,19 @@
 // Modelos
 import USER, { User } from './users-model';
 // Ayudantes
-import * as jwt from '../../helpers/jwt';
-import Email from '../../helpers/Email';
 import { logger_users } from '../../helpers/logger';
 import response_data from '../../utils/response_data';
-// Configuración
-import config from '../../config'
 // Tipos
 import Response_data from '../../types/Response_data';
 
 export default class UsersService {
 
-      protected getUserById(id: string): Promise<Response_data> {
+    /**
+     * Obtiene la información de una cuenta de usuario mediante el ID.
+     * @param id 
+     * @returns Objeto con nombre, apellidos, email
+     */
+    protected getUserById(id: string): Promise<Response_data> {
         return new Promise((resolve, reject) => {
             let response = response_data();
 
@@ -34,6 +35,12 @@ export default class UsersService {
         });
     }
 
+    /**
+     * Actualiza una cuenta de usuario mediante el ID
+     * @param id 
+     * @param data 
+     * @returns string || object
+     */
     protected updateUserById(id: string, data: any): Promise<Response_data> {
         return new Promise((resolve, reject) => {
             let response = response_data();

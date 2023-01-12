@@ -13,6 +13,9 @@ import recognitions from '../components/recognitions';
 import users from '../components/users';
 import countries from '../components/countries';
 
+/**
+ * Clase de rutas principales de la API rest
+ */
 class Routes {
 
     private routes: Router = express.Router({ caseSensitive: true, strict: true });

@@ -21,7 +21,7 @@ export {
  * Crea un token con el nombre, apellidos, id y rol de usuario
  * con la duración de 1 día.
  * @param user 
- * @returns Object with token and expire token.
+ * @returns Objeto con json web token y tiempo de expiración.
  */
 function create_token(user: any, type_token: string) {
 
@@ -51,7 +51,7 @@ function create_token(user: any, type_token: string) {
  * Crea un token con el nombre, apellidos, id y rol de usuario
  * con la duración de 2 días.
  * @param user 
- * @returns New token.
+ * @returns Token renovado.
  */
 function create_refresh_token(user: any): string {
 
@@ -73,11 +73,11 @@ function create_refresh_token(user: any): string {
 }
 
 /**
- * Refresca el token actual pasado por parametros y te devuelve uno nuevo.
+ * Refresca el token actual pasado por parámetros y te devuelve uno nuevo.
  * @param refresh_token Token actual
  * @param grant_type Tipo = refresh_token
  * @param USER modelo de tipo de usuario
- * @returns response with object.
+ * @returns Objecto con token, expiración.
  */
 async function refresh_token(refresh_token: string, grant_type: string, USER: any) {
     return new Promise((resolve, reject) => {
@@ -115,8 +115,8 @@ async function refresh_token(refresh_token: string, grant_type: string, USER: an
 
 /**
  * Verifica el token y el tipo de token
- * @param token 
- * @returns 
+ * @param token JSON Web Token
+ * @returns Información del usuario verificado.
  */
 function confirm_token(token: string) {
     return new Promise((resolve, reject) => {
@@ -143,6 +143,11 @@ function confirm_token(token: string) {
     });
 }
 
+/**
+ * Verificar token de confirmación de cuenta.
+ * @param token JSON Web Token
+ * @returns Información del usuario verificado.
+ */
 function confirm_token_new_account(token: string) {
     return new Promise((resolve, reject) => {
 

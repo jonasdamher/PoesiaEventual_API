@@ -125,5 +125,6 @@ user_schema.methods.compare_password = async function (password: string) {
         });
     });
 }
+
 const USER: Model<User> = model('users', user_schema);
 export default USER;
