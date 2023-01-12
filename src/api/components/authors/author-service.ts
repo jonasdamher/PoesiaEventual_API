@@ -21,21 +21,26 @@ export default class AuthorService {
             let response = response_data();
 
             get_pagination(AUTHOR, page, perpage).then((pagination: any) => {
-                AUTHOR.find().skip(pagination.page_range).limit(pagination.perpage).sort('personal.full_name').select('personal.full_name short_description portrait meta.url').populate({ path: 'professional.occupations', select: 'name' }).populate({ path: 'professional.literary_genres', select: 'name' }).then((authorResponse: any) => {
+                AUTHOR.find().skip(pagination.page_range).limit(pagination.perpage)
+                    .sort('personal.name')
+                    .select('personal.name personal.lastname short_description portrait meta.url')
+                    .populate({ path: 'professional.occupations', select: 'name' })
+                    .populate({ path: 'professional.literary_genres', select: 'name' })
+                    .then((authorResponse: any) => {
 
-                    response.result = {
-                        authors: authorResponse,
-                        pagination: paginate(pagination)
-                    };
-                    resolve(response);
-                }).catch((err: any) => {
+                        response.result = {
+                            authors: authorResponse,
+                            pagination: paginate(pagination)
+                        };
+                        resolve(response);
+                    }).catch((err: any) => {
 
-                    response.status = 400;
-                    response.message = 'BadRequest';
-                    response.result = err;
-                    logger_authors.info({ ...response }, 'service');
-                    reject(response);
-                });
+                        response.status = 400;
+                        response.message = 'BadRequest';
+                        response.result = err;
+                        logger_authors.info({ ...response }, 'service');
+                        reject(response);
+                    });
 
             }).catch((err: any) => {
 
