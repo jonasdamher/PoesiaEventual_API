@@ -9,7 +9,7 @@ class CommonValidation {
 
         const schema = Joi.object({
             page: Joi.number().integer(),
-            perpage: Joi.number().integer().min(1).max(10)
+            perpage: Joi.number().integer().min(1).max(12)
         });
 
         const data = {

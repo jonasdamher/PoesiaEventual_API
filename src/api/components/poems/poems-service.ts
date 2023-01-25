@@ -18,7 +18,8 @@ export default class PoemsService {
 
             get_pagination(POEM, page, perpage).then((pagination: any) => {
 
-                POEM.find().skip(pagination.page_range).limit(pagination.perpage).sort('title')
+                POEM.find().populate('author', 'personal.name personal.lastname').skip(pagination.page_range).limit(pagination.perpage).sort('title')
+
                     .then((authorResponse: any) => {
 
                         response.result = {
