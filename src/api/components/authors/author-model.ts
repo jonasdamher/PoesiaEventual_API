@@ -65,7 +65,7 @@ const author_schema = new Schema<Author, author_model>({
                 message: (props: any) => `(${props.value}) no tiene el formato adecuado.`
             },
             required: [true, 'Es obligatorio introducir los apellidos.'],
-        },/*
+        },
         full_name: {
             type: String
         },
@@ -86,7 +86,7 @@ const author_schema = new Schema<Author, author_model>({
         country: {
             type: Schema.Types.ObjectId,
             ref: 'countries'
-        }*/
+        }
     },/*
     professional: {
         occupations: [{
@@ -102,7 +102,7 @@ const author_schema = new Schema<Author, author_model>({
         type: String,
         maxLength: 155,
         required: [true, 'Es obligatorio introducir una descripción corta.'],
-    },/*
+    },
     biography: {
         type: String,
         maxLength: 700,
@@ -177,7 +177,7 @@ const author_schema = new Schema<Author, author_model>({
                 word: String
             }
         ],
-    },*/
+    },
     created_at: {
         type: Number,
         default: moment().unix()
