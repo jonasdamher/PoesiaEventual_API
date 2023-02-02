@@ -65,7 +65,7 @@ const author_schema = new Schema<Author, author_model>({
                 message: (props: any) => `(${props.value}) no tiene el formato adecuado.`
             },
             required: [true, 'Es obligatorio introducir los apellidos.'],
-        },/*
+        },
         full_name: {
             type: String
         },
@@ -82,7 +82,7 @@ const author_schema = new Schema<Author, author_model>({
             type: String,
             enum: ['Hombre', 'Mujer', 'No binario'],
             required: true
-        },
+        },/*
         country: {
             type: Schema.Types.ObjectId,
             ref: 'countries'
