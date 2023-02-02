@@ -82,7 +82,7 @@ const author_schema = new Schema<Author, author_model>({
             type: String,
             enum: ['Hombre', 'Mujer', 'No binario'],
             required: true
-        },/*
+        }/*,
         country: {
             type: Schema.Types.ObjectId,
             ref: 'countries'
