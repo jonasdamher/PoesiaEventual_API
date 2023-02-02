@@ -23,10 +23,10 @@ interface keywords {
 
 export interface Author extends Document {
     name: string;
-    lastname: string;/*
+    lastname: string;
     full_name: string;
     pseudonym: string;
-    gender: genders;
+    gender: genders;/*
     occupations: Schema.Types.ObjectId;
     literary_genres: Schema.Types.ObjectId;
     country: Schema.Types.ObjectId;*/
