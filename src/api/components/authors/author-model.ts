@@ -7,7 +7,7 @@ import * as regex from '../../utils/regex';
 enum genders {
     'Hombre', 'Mujer', 'No binario'
 }
-
+/*
 interface photos {
     _id: Schema.Types.ObjectId;
     order: number;
@@ -20,7 +20,7 @@ interface keywords {
     _id: Schema.Types.ObjectId;
     word: string;
 }
-
+*/
 export interface Author extends Document {
     name: string;
     lastname: string;
@@ -54,7 +54,7 @@ const author_schema = new Schema<Author, author_model>({
                 },
                 message: (props: any) => `(${props.value}) no tiene el formato adecuado.`
             },
-            required: [true, 'Es obligatorio introducir un nombre.'],
+            required: [true, 'Es obligatorio introducir un nombre.']
         },
         lastname: {
             type: String,
@@ -64,7 +64,7 @@ const author_schema = new Schema<Author, author_model>({
                 },
                 message: (props: any) => `(${props.value}) no tiene el formato adecuado.`
             },
-            required: [true, 'Es obligatorio introducir los apellidos.'],
+            required: [true, 'Es obligatorio introducir los apellidos.']
         },
         full_name: {
             type: String
@@ -76,7 +76,7 @@ const author_schema = new Schema<Author, author_model>({
                     return regex.text_only.test(v);
                 },
                 message: (props: any) => `(${props.value}) no tiene el formato adecuado.`
-            },
+            }
         },
         gender: {
             type: String,
@@ -101,7 +101,7 @@ const author_schema = new Schema<Author, author_model>({
     short_description: {
         type: String,
         maxLength: 155,
-        required: [true, 'Es obligatorio introducir una descripción corta.'],
+        required: [true, 'Es obligatorio introducir una descripción corta.']
     },/*
     biography: {
         type: String,
