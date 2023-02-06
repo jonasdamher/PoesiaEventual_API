@@ -86,7 +86,7 @@ const author_schema = new Schema<Author, author_model>({
         country: {
             type: Schema.Types.ObjectId,
             ref: 'countries'
-        }*/
+        }
     },/*
     professional: {
         occupations: [{
@@ -177,7 +177,7 @@ const author_schema = new Schema<Author, author_model>({
                 word: String
             }
         ],
-    },*/
+    },
     created_at: {
         type: Number,
         default: moment().unix()
