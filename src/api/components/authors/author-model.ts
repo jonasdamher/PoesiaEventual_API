@@ -7,7 +7,7 @@ import * as regex from '../../utils/regex';
 enum genders {
     'Hombre', 'Mujer', 'No binario'
 }
-/*
+ 
 interface photos {
     _id: Schema.Types.ObjectId;
     order: number;
@@ -20,23 +20,23 @@ interface keywords {
     _id: Schema.Types.ObjectId;
     word: string;
 }
-*/
+ 
 export interface Author extends Document {
     name: string;
     lastname: string;
     full_name: string;
     pseudonym: string;
-    gender: genders;/*
+    gender: genders; 
     occupations: Schema.Types.ObjectId;
     literary_genres: Schema.Types.ObjectId;
-    country: Schema.Types.ObjectId;*/
-    short_description: string;/*
+    country: Schema.Types.ObjectId; 
+    short_description: string;
     biography: string;
     portrait: string;
     photos: Array<photos>;
     url: string;
     description: string;
-    keywords: Array<keywords>;*/
+    keywords: Array<keywords>; 
     created_at: number;
     update_at: number;
 }
@@ -82,12 +82,12 @@ const author_schema = new Schema<Author, author_model>({
             type: String,
             enum: ['Hombre', 'Mujer', 'No binario'],
             required: true
-        }/*,
+        } ,
         country: {
             type: Schema.Types.ObjectId,
             ref: 'countries'
-        }*/
-    },/*
+        } 
+    }, 
     professional: {
         occupations: [{
             type: Schema.Types.ObjectId,
@@ -97,12 +97,12 @@ const author_schema = new Schema<Author, author_model>({
             type: Schema.Types.ObjectId,
             ref: 'literary_genres'
         }],
-    },*/
+    }, 
     short_description: {
         type: String,
         maxLength: 155,
         required: [true, 'Es obligatorio introducir una descripción corta.']
-    },/*
+    }, 
     biography: {
         type: String,
         maxLength: 700,
@@ -112,14 +112,14 @@ const author_schema = new Schema<Author, author_model>({
             },
             message: (props: any) => `(${props.value}) no tiene el formato adecuado.`
         },
-        required: [true, 'Es obligatorio introducir un trext.'],
+        // required: [true, 'Es obligatorio introducir un trext.'],
     },
     portrait: {
         type: String,
         validator: (v: any) => {
             return regex.photo.test(v);
         },
-        required: true
+        // required: true
     },
     photos: {
         type: [
@@ -177,7 +177,7 @@ const author_schema = new Schema<Author, author_model>({
                 word: String
             }
         ],
-    },*/
+    }, 
     created_at: {
         type: Number,
         default: moment().unix()
