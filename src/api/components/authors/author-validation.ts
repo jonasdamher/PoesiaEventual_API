@@ -34,11 +34,11 @@ class AuthorValidation {
             full_name: Joi.string(),
             pseudonym: Joi.string(),
             gender: Joi.string().required(),
-            country: Joi.string().hex().required(),
+            country: Joi.string().hex(),
             short_description: Joi.string().max(155).required(),
             biography: Joi.string().max(700).required(),
-            portrait: Joi.string().required(),
-            description: Joi.string().max(155).required(),
+            portrait: Joi.string(),
+            description: Joi.string().max(155),
         });
 
         const data = {
