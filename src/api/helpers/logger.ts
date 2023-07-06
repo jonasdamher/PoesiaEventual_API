@@ -39,6 +39,12 @@ export const logger_recognitions = pino(pino.destination({
     ...commons_options
 })).child({ component: 'recognitions' });
 
+export const logger_editorials = pino(pino.destination({
+    dest: './logs/components/editorials.json',
+    ...commons_options
+})).child({ component: 'editorials' });
+
+
 // FINAL - FOR COMPONENTS
 
 export const logger_email = pino(pino.destination({

@@ -2,22 +2,23 @@
 
 import moment from 'moment';
 import { Model, model, Document, Schema } from 'mongoose';
-import * as regex from '../../utils/regex';
+// import * as regex from '../../utils/regex';
 
+/*
 interface keywords {
     _id: Schema.Types.ObjectId;
     word: string;
-}
+}*/
 
 export interface Recognition extends Document {
     author: Schema.Types.ObjectId;
     title: string;
     age: number;
-    posthumous: boolean;
+    // posthumous: boolean;
     text: string;
-    url: string;
+    // url: string;
     description: string;
-    keywords: Array<keywords>;
+    // keywords: Array<keywords>;
     created_at: number;
     update_at: number;
 }
@@ -29,18 +30,18 @@ const recognitions_schema: Schema<Recognition> = new Schema({
     },
     title: {
         type: String,
-        required: [true, 'Es obligatorio introducir un título del poema.'],
+        required: [true, 'Es obligatorio introducir un título del reconocimiento.'],
     },
     age: {
         type: Number
-    },
+    },/*
     posthumous: {
         type: Boolean,
         default: false
-    },
+    },*/
     text: {
         type: String,
-    },
+    },/*
     meta: {
         url: {
             type: String,
@@ -70,7 +71,7 @@ const recognitions_schema: Schema<Recognition> = new Schema({
                 word: String
             }
         ],
-    },
+    },*/
     created_at: {
         type: Number,
         default: moment().unix()

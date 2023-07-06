@@ -7,7 +7,7 @@ class EditorialsController extends EditorialsService {
 
     public async get_all(req: Request, res: Response) {
         try {
-            const result = await this.get_all_editorials();
+            const result = await super.get_all_editorials();
             return res.status(result.status).json(result);
         } catch (error: any) {
             return res.status(error.status).json(error);
@@ -18,7 +18,7 @@ class EditorialsController extends EditorialsService {
         try {
             const id = req.params.id;
 
-            const result = await this.get_editorial_by_id(id);
+            const result = await super.get_editorial_by_id(id);
             return res.status(result.status).json(result);
         } catch (error: any) {
             return res.status(error.status).json(error);
@@ -29,7 +29,7 @@ class EditorialsController extends EditorialsService {
         try {
             const data_body = req.body;
 
-            const result = await this.create_editorial(data_body);
+            const result = await super.create_editorial(data_body);
             return res.status(result.status).json(result);
         } catch (error: any) {
             return res.status(error.status).json(error);

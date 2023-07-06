@@ -7,7 +7,7 @@ class GenresController extends GenresService {
 
     public async get_all(req: Request, res: Response) {
         try {
-            const result = await this.get_all_genres();
+            const result = await super.get_all_genres();
             return res.status(result.status).json(result);
 
         } catch (err: any) {
@@ -19,7 +19,7 @@ class GenresController extends GenresService {
         try {
             const id = req.params.id;
 
-            const result = await this.get_genre_by_id(id);
+            const result = await super.get_genre_by_id(id);
             return res.status(result.status).json(result);
         } catch (err: any) {
             return res.status(err.status).json(err);
@@ -30,7 +30,7 @@ class GenresController extends GenresService {
         try {
             const data_body = req.body;
 
-            const result = await this.create_genre(data_body);
+            const result = await super.create_genre(data_body);
             return res.status(result.status).json(result);
         } catch (err: any) {
             return res.status(err.status).json(err);

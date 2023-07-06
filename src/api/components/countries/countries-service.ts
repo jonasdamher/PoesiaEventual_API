@@ -79,11 +79,11 @@ export default class CountriesService {
 
             const country: Country = new COUNTRY(data);
 
-            country.save().then((new_poem: Country) => {
+            country.save().then((new_country: Country) => {
 
                 response.status = 201;
 
-                response.result = new_poem;
+                response.result = new_country;
                 resolve(response)
 
             }).catch((err: any) => {

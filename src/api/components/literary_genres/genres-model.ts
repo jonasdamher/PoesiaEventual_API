@@ -3,16 +3,16 @@
 import moment from 'moment';
 import { Model, model, Document, Schema } from 'mongoose';
 import * as regex from '../../utils/regex';
-
+/*
 interface subgenres {
     _id: Schema.Types.ObjectId;
     name: string;
-}
+}*/
 
 export interface Genre extends Document {
     name: string;
     description: string;
-    subgenres: Array<subgenres>;
+    // subgenres: Array<subgenres>;
     created_at: number;
     update_at: number;
 }
@@ -34,7 +34,7 @@ const genres_schema = new Schema<Genre, genres_model>({
     },
     description: {
         type: String
-    },
+    },/*
     subgenres: [
         {
             _id: {
@@ -45,7 +45,7 @@ const genres_schema = new Schema<Genre, genres_model>({
             },
             name: String
         },
-    ],
+    ],*/
     created_at: {
         type: Number,
         default: moment().unix()

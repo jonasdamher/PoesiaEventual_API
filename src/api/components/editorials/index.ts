@@ -8,7 +8,7 @@ import validation from './editorials-validation';
 import editorials from './editorials-controller';
 import * as auth from '../../middlewares/auth';
 
-class RouterOcup {
+class RouterEditorial {
 
     private router: Router = express.Router();
 
@@ -20,4 +20,4 @@ class RouterOcup {
     }
 }
 
-export default new RouterOcup();
+export default new RouterEditorial();

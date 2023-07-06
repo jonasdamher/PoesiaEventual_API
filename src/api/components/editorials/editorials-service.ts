@@ -6,6 +6,7 @@ import EDITOR, { Editorial } from './editorials-model';
 import response_data from '../../utils/response_data';
 // Tipos
 import Response_data from '../../types/Response_data';
+import { logger_editorials } from '../../helpers/logger';
 
 export default class EditorialsService {
 
@@ -57,7 +58,7 @@ export default class EditorialsService {
                 response.status = 201;
                 response.message = 'Created';
                 response.result = res;
-                reject(response);
+                resolve(response);
 
             }).catch((err: any) => {
 

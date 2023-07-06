@@ -11,7 +11,7 @@ export interface Editorial extends Document {
     update_at: number;
 };
 
-const editorial_schema: Schema<Editorial> = new Schema({
+const editorial_schema = new Schema<Editorial>({
     name: {
         type: String,
         validate: {
@@ -36,5 +36,4 @@ const editorial_schema: Schema<Editorial> = new Schema({
     }
 });
 
-const EDITOR: Model<Editorial> = model('editorials', editorial_schema);
-export default EDITOR;
+export default model<Editorial>('editorials', editorial_schema)

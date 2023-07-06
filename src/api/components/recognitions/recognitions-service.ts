@@ -130,13 +130,12 @@ export default class RecogService {
         return new Promise((resolve, reject) => {
             let response = response_data();
 
-            data.meta.url = Text.url(data.title);
             const poem: Recognition = new RECOG(data);
 
             poem.save().then((new_poem: Recognition) => {
                 response.status = 201;
                 response.result = new_poem;
-                reject(response);
+                resolve(response);
 
             }).catch((err: any) => {
 

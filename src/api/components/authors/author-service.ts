@@ -6,8 +6,7 @@ import AUTHOR, { Author } from './author-model';
 import BooksService from '../books/books-service';
 import PoemsService from '../poems/poems-service';
 import RecogService from '../recognitions/recognitions-service';
-// Ayudantes
-import Text from '../../helpers/Text';
+// Ayudantes 
 import response_data from '../../utils/response_data';
 import { logger_authors } from '../../helpers/logger';
 import { get_pagination, paginate } from '../../utils/pagination';
@@ -90,8 +89,8 @@ export default class AuthorService {
                 resolve(response);
             }).catch((err: any) => {
 
-                response.status = 400;
-                response.message = 'BadRequest';
+                response.status = 404;
+                response.message = 'Not found';
                 response.result = err;
                 logger_authors.info({ ...response }, 'service');
                 reject(response);
@@ -190,7 +189,7 @@ export default class AuthorService {
     }
 
     update_author(id: any, data: any): Promise<Response_data> {
-        return new Promise(async (resolve, reject) => {
+        return new Promise((resolve, reject) => {
             let response = response_data();
 
             // const current_user = await get_by_id(id);
