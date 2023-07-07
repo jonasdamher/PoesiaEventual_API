@@ -4,8 +4,8 @@ import { Model, model, Document, Schema } from 'mongoose';
 
 export interface Country extends Document {
     name: string;
-    language: string;
-    ISO: string;
+    ISO_text: string;
+    ISO_number: number;
 }
 
 const countries_schema: Schema<Country> = new Schema({
@@ -13,13 +13,13 @@ const countries_schema: Schema<Country> = new Schema({
         type: String,
         required: true
     },
-    language: {
+    ISO_text: {
         type: String,
         required: true
     },
-    ISO: {
-        type: String,
-        default: null
+    ISO_number: {
+        type: Number,
+        default: 0
     }
 });
 

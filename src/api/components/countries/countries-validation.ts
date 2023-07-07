@@ -9,14 +9,14 @@ class CountriesValidation {
 
         const schema = Joi.object({
             name: Joi.string().required(),
-            language: Joi.string().required(),
-            ISO: Joi.number()
+            ISO_text: Joi.string().required(),
+            ISO_number: Joi.number()
         });
 
         const data = {
             name: req.body.name,
-            language: req.body.language,
-            ISO: req.body.ISO,
+            ISO_text: req.body.ISO_text,
+            ISO_number: req.body.ISO_number,
         }
 
         schema.validateAsync(data)
