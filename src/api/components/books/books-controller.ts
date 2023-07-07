@@ -13,7 +13,7 @@ class BooksController extends BooksService {
             let current_page = currentPage(page);
             let current_perpage = currentPerPage(perpage);
 
-            const result = await this.get_all_books(current_page, current_perpage);
+            const result = await super.get_all_books(current_page, current_perpage);
             res.status(result.status).json(result);
         } catch (error: any) {
             res.status(error.status).json(error);
@@ -24,7 +24,7 @@ class BooksController extends BooksService {
         try {
             const id = req.params.id;
 
-            const result = await this.get_book_by_id(id);
+            const result = await super.get_book_by_id(id);
             res.status(result.status).json(result);
         } catch (error: any) {
             res.status(error.status).json(error);
@@ -39,7 +39,7 @@ class BooksController extends BooksService {
             let current_page = Number(page ?? 1);
             let current_perpage = Number(perpage ?? 10);
 
-            const result = await this.search_book(current_page, current_perpage, search);
+            const result = await super.search_book(current_page, current_perpage, search);
             res.status(result.status).json(result);
         } catch (error: any) {
             res.status(error.status).json(error);
@@ -50,7 +50,7 @@ class BooksController extends BooksService {
         try {
             const data_body = req.body;
 
-            const result = await this.create_book(data_body);
+            const result = await super.create_book(data_body);
             res.status(result.status).json(result);
         } catch (error: any) {
             res.status(error.status).json(error);

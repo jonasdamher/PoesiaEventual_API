@@ -1,13 +1,13 @@
 'use strict';
 
+import moment from 'moment';
 import { Model, model, Document, Schema } from 'mongoose';
 
 export interface Book extends Document {
     author: Schema.Types.ObjectId;
     title: string;
     synopsis: string;
-    portrait: string;
-    posthumous: boolean;
+    // portrait: string;
     literary_genre: Schema.Types.ObjectId;
     editorial: Schema.Types.ObjectId;
     published: number;
@@ -27,13 +27,9 @@ const book_schema: Schema<Book> = new Schema({
     synopsis: {
         type: String
     },
-    portrait: {
-        type: String
-    },
-    posthumous: {
-        type: Boolean,
-        default: false
-    },
+    // portrait: {
+    //     type: String
+    // },
     literary_genre: {
         type: Schema.Types.ObjectId,
         ref: 'literary_genres'
@@ -48,7 +44,7 @@ const book_schema: Schema<Book> = new Schema({
     },
     created_at: {
         type: Number,
-        default: 0
+        default: moment().unix()
     },
     update_at: {
         type: Number,
