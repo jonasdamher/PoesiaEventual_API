@@ -3,11 +3,12 @@
 import moment from 'moment';
 import { Model, model, Document, Schema } from 'mongoose';
 import * as regex from '../../utils/regex';
+import Text from '../../helpers/Text';
 
 enum genders {
     'Hombre', 'Mujer', 'No binario'
 }
- 
+
 interface photos {
     _id: Schema.Types.ObjectId;
     order: number;
@@ -20,31 +21,47 @@ interface keywords {
     _id: Schema.Types.ObjectId;
     word: string;
 }
- 
-export interface Author extends Document {
+
+interface personal {
     name: string;
     lastname: string;
     full_name: string;
     pseudonym: string;
-    gender: genders; 
+    gender: genders;
+    country: Schema.Types.ObjectId;
+}
+
+interface professional {
     occupations: Schema.Types.ObjectId;
     literary_genres: Schema.Types.ObjectId;
-    country: Schema.Types.ObjectId; 
+}
+
+interface meta {
+    url: string;
+    description: string;
+    keywords: Array<keywords>;
+}
+
+interface author_model extends Document {
+
+    saveAuthor(): Promise<author_model>;
+
+}
+
+export interface Author extends author_model {
+    personal: personal;
+    professional: professional;
     short_description: string;
     biography: string;
     portrait: string;
     photos: Array<photos>;
-    url: string;
-    description: string;
-    keywords: Array<keywords>; 
+    meta: meta;
     created_at: number;
     update_at: number;
+
 }
 
-// Para añadir funciones extras con mongoose
-interface author_model extends Model<Author> { }
-
-const author_schema = new Schema<Author, author_model>({
+const author_schema = new Schema<Author>({
     personal: {
         name: {
             type: String,
@@ -82,12 +99,12 @@ const author_schema = new Schema<Author, author_model>({
             type: String,
             enum: ['Hombre', 'Mujer', 'No binario'],
             required: true
-        } ,
+        },
         country: {
             type: Schema.Types.ObjectId,
             ref: 'countries'
-        } 
-    }, 
+        }
+    },
     professional: {
         occupations: [{
             type: Schema.Types.ObjectId,
@@ -97,12 +114,12 @@ const author_schema = new Schema<Author, author_model>({
             type: Schema.Types.ObjectId,
             ref: 'literary_genres'
         }],
-    }, 
+    },
     short_description: {
         type: String,
         maxLength: 300,
         required: [true, 'Es obligatorio introducir una descripción corta.']
-    }, 
+    },
     biography: {
         type: String,
         maxLength: 1200,
@@ -177,7 +194,7 @@ const author_schema = new Schema<Author, author_model>({
                 word: String
             }
         ],
-    }, 
+    },
     created_at: {
         type: Number,
         default: moment().unix()
@@ -188,4 +205,22 @@ const author_schema = new Schema<Author, author_model>({
     }
 }).index({ 'personal.name': 'text', 'personal.lastname': 'text' });
 
-export default model<Author, author_model>('authors', author_schema)
+author_schema.methods.saveAuthor = async function (this: Author) {
+    return new Promise(async (resolve, reject) => {
+
+        this.personal.full_name = this.personal.name.trim() + ' ' + this.personal.lastname.trim();
+        this.meta.url = Text.url(this.personal.full_name);
+
+        this.save().then((authorResponse: Author) => {
+
+            resolve(authorResponse);
+
+        }).catch((err: any) => {
+
+            reject(err);
+        })
+
+    });
+}
+
+export default model<Author>('authors', author_schema)
