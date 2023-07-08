@@ -3,12 +3,11 @@
 // Modelos
 import GENRE, { Genre } from './genres-model';
 // Ayudantes
-import ResponseHandler from '../../helpers/ResponseHandler';
 import response_data from '../../utils/response_data';
 // Tipos
 import Response_data from '../../types/Response_data';
 
-export default class GenresService extends ResponseHandler {
+export default class GenresService {
 
     get_all_genres(): Promise<Response_data> {
         return new Promise((resolve, reject) => {
