@@ -49,7 +49,7 @@ export default class UsersService {
             USER.findByIdAndUpdate(id, data, { new: true }).select('name lastname email ').then((res: any) => {
 
                 response.message = 'Update';
-                reject(response);
+                resolve(response);
 
             }).catch((err: any) => {
 
