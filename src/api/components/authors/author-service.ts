@@ -168,8 +168,10 @@ export default class AuthorService {
     protected create_author(data: any): Promise<Response_data> {
         return new Promise((resolve, reject) => {
             let response = response_data();
-            // data.personal.full_name = data.personal.name.trim() + ' ' + data.personal.lastname.trim();
-            // data.meta.url = Text.url(data.personal.full_name);
+
+            data.personal.full_name = data.personal.name.trim() + ' ' + data.personal.lastname.trim();
+            data.meta.url = Text.url(data.personal.full_name);
+
             const author: Author = new AUTHOR(data);
 
             author.save().then((authorResponse: Author) => {

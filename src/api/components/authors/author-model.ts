@@ -100,12 +100,12 @@ const author_schema = new Schema<Author, author_model>({
     }, 
     short_description: {
         type: String,
-        maxLength: 155,
+        maxLength: 300,
         required: [true, 'Es obligatorio introducir una descripción corta.']
     }, 
     biography: {
         type: String,
-        maxLength: 700,
+        maxLength: 1200,
         validate: {
             validator: (v: any) => {
                 return regex.text_only.test(v);
@@ -164,7 +164,7 @@ const author_schema = new Schema<Author, author_model>({
         description: {
             type: String,
             minLength: 70,
-            maxLength: 155,
+            maxLength: 250,
         },
         keywords: [
             {
