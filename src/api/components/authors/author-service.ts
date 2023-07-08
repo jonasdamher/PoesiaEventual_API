@@ -193,9 +193,7 @@ export default class AuthorService {
         return new Promise((resolve, reject) => {
             let response = response_data();
 
-            console.log(id)
             AUTHOR.findById(id).then((current_user: any) => {
-                console.log(current_user)
 
                 if (data.personal.name && data.personal.lastname) {
                     data.personal.full_name = data.personal.name.trim() + ' ' + data.personal.lastname.trim();
