@@ -9,7 +9,7 @@ import Response_data from '../../types/Response_data';
 
 export default class GenresService {
 
-    get_all_genres(): Promise<Response_data> {
+    protected get_all_genres(): Promise<Response_data> {
         return new Promise((resolve, reject) => {
             let response = response_data();
 
@@ -28,7 +28,7 @@ export default class GenresService {
         });
     }
 
-    get_genre_by_id(id: string): Promise<Response_data> {
+    protected get_genre_by_id(id: string): Promise<Response_data> {
         return new Promise((resolve, reject) => {
             let response = response_data();
 
@@ -46,7 +46,7 @@ export default class GenresService {
         });
     }
 
-    create_genre(data: any): Promise<Response_data> {
+    protected create_genre(data: any): Promise<Response_data> {
         return new Promise((resolve, reject) => {
             let response = response_data();
 

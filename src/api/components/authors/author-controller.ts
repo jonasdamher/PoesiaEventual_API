@@ -6,7 +6,7 @@ import { currentPage, currentPerPage } from '../../utils/pagination';
 
 class AuthorController extends AuthorsService {
 
-    async get_all(req: Request, res: Response) {
+    public async get_all(req: Request, res: Response) {
         try {
 
             const { page, perpage } = req.query;
@@ -21,7 +21,7 @@ class AuthorController extends AuthorsService {
         }
     }
 
-    async get_by_id(req: Request, res: Response) {
+    public async get_by_id(req: Request, res: Response) {
         try {
 
             const id = req.params.id;
@@ -33,7 +33,7 @@ class AuthorController extends AuthorsService {
         }
     }
 
-    async get_by_name(req: Request, res: Response) {
+    public async get_by_name(req: Request, res: Response) {
         try {
 
             const name = req.params.name;
@@ -45,7 +45,7 @@ class AuthorController extends AuthorsService {
         }
     }
 
-    async search(req: Request, res: Response) {
+    public async search(req: Request, res: Response) {
         try {
 
             const { page, perpage } = req.query;
@@ -61,7 +61,7 @@ class AuthorController extends AuthorsService {
         }
     }
 
-    async random(req: Request, res: Response) {
+    public async random(req: Request, res: Response) {
         try {
 
             const result = await super.random_author();
@@ -71,7 +71,7 @@ class AuthorController extends AuthorsService {
         }
     }
 
-    async create(req: Request, res: Response) {
+    public async create(req: Request, res: Response) {
         try {
 
             const data_body = req.body;
@@ -83,7 +83,7 @@ class AuthorController extends AuthorsService {
         }
     }
 
-    async update(req: Request, res: Response) {
+    public async update(req: Request, res: Response) {
         try {
             const id = req.params.id;
             const data_body = req.body;

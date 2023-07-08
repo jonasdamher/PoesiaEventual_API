@@ -16,7 +16,7 @@ import Response_data from '../../types/Response_data';
 
 export default class AuthorService {
 
-    get_all_authors(page: number, perpage: number): Promise<Response_data> {
+    protected get_all_authors(page: number, perpage: number): Promise<Response_data> {
         return new Promise((resolve, reject) => {
             let response = response_data();
 
@@ -53,7 +53,7 @@ export default class AuthorService {
         });
     }
 
-    get_author_by_name(name: string): Promise<Response_data> {
+    protected get_author_by_name(name: string): Promise<Response_data> {
         return new Promise((resolve, reject) => {
             let response = response_data();
 
@@ -80,7 +80,7 @@ export default class AuthorService {
         });
     }
 
-    get_author_by_id(id: string): Promise<Response_data> {
+    protected get_author_by_id(id: string): Promise<Response_data> {
         return new Promise((resolve, reject) => {
             let response = response_data();
 
@@ -99,7 +99,7 @@ export default class AuthorService {
         });
     }
 
-    search_author(page: number, perpage: number, search: string): Promise<Response_data> {
+    protected search_author(page: number, perpage: number, search: string): Promise<Response_data> {
         return new Promise((resolve, reject) => {
             let response = response_data();
             const query = { $text: { $search: search } };
@@ -134,7 +134,7 @@ export default class AuthorService {
         });
     }
 
-    random_author(): Promise<Response_data> {
+    protected random_author(): Promise<Response_data> {
         return new Promise((resolve, reject) => {
             let response = response_data();
 
@@ -165,7 +165,7 @@ export default class AuthorService {
         })
     }
 
-    create_author(data: any): Promise<Response_data> {
+    protected create_author(data: any): Promise<Response_data> {
         return new Promise((resolve, reject) => {
             let response = response_data();
             // data.personal.full_name = data.personal.name.trim() + ' ' + data.personal.lastname.trim();
@@ -189,7 +189,7 @@ export default class AuthorService {
         });
     }
 
-    update_author(id: any, data: any): Promise<Response_data> {
+    protected update_author(id: any, data: any): Promise<Response_data> {
         return new Promise((resolve, reject) => {
             let response = response_data();
 
