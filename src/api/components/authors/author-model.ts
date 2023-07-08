@@ -112,7 +112,7 @@ const author_schema = new Schema<Author, author_model>({
             },
             message: (props: any) => `(${props.value}) no tiene el formato adecuado.`
         },
-        // required: [true, 'Es obligatorio introducir un trext.'],
+        // required: [true, 'Es obligatorio introducir un texto.'],
     },
     portrait: {
         type: String,

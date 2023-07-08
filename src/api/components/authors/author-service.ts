@@ -10,6 +10,7 @@ import RecogService from '../recognitions/recognitions-service';
 import response_data from '../../utils/response_data';
 import { logger_authors } from '../../helpers/logger';
 import { get_pagination, paginate } from '../../utils/pagination';
+import Text from '../../helpers/Text';
 // Tipos
 import Response_data from '../../types/Response_data';
 
@@ -192,31 +193,44 @@ export default class AuthorService {
         return new Promise((resolve, reject) => {
             let response = response_data();
 
-            // const current_user = await get_by_id(id);
+            console.log(id)
+            AUTHOR.findById(id).then((current_user: any) => {
+                console.log(current_user)
 
-            // if (data.personal.name && data.personal.lastname) {
-            //     data.personal.full_name = data.personal.name.trim() + ' ' + data.personal.lastname.trim();
-            //     data.meta.url = Text.url(data.personal.full_name);
-            // }
+                if (data.personal.name && data.personal.lastname) {
+                    data.personal.full_name = data.personal.name.trim() + ' ' + data.personal.lastname.trim();
+                    data.meta.url = Text.url(data.personal.full_name);
+                } else {
 
-            // if (data.personal.name) {
-            //     data.personal.full_name = data.personal.name.trim() + ' ' + current_user.data.personal.lastname;
-            //     data.meta.url = Text.url(data.personal.full_name);
-            // }
+                    if (data.personal.name) {
+                        data.personal.full_name = data.personal.name.trim() + ' ' + current_user.personal.lastname;
+                        data.meta.url = Text.url(data.personal.full_name);
+                    }
 
-            // if (data.personal.lastname) {
-            //     data.personal.full_name = current_user.data.personal.name.trim() + ' ' + data.personal.lastname;
-            //     data.meta.url = Text.url(data.personal.full_name);
-            // }
+                    if (data.personal.lastname) {
+                        data.personal.full_name = current_user.personal.name.trim() + ' ' + data.personal.lastname;
+                        data.meta.url = Text.url(data.personal.full_name);
+                    }
 
-            AUTHOR.findByIdAndUpdate(id, data).then((authorResponse: any) => {
+                }
 
-                response.result = authorResponse;
-                resolve(response)
+                AUTHOR.findByIdAndUpdate(id, data).then((authorResponse: any) => {
+
+                    response.result = authorResponse;
+                    resolve(response)
+                }).catch((err: any) => {
+
+                    response.status = 400;
+                    response.message = 'BadRequest';
+                    response.result = err;
+                    logger_authors.info({ ...response }, 'service');
+                    reject(response);
+                })
+
             }).catch((err: any) => {
 
-                response.status = 400;
-                response.message = 'BadRequest';
+                response.status = 404;
+                response.message = 'Not found';
                 response.result = err;
                 logger_authors.info({ ...response }, 'service');
                 reject(response);
