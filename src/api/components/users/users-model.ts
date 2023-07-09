@@ -19,8 +19,9 @@ export interface User extends Document {
     role: roles;
     verified?: Boolean;
     expire_at: Date;
-    created_at: number;
-    update_at: number;
+    createdAt: number;
+    updateAt: number;
+
 }
 
 const user_schema: Schema<User> = new Schema({
@@ -89,15 +90,13 @@ const user_schema: Schema<User> = new Schema({
         // elimine si no se confirma la cuenta por correo electrónico.
         index: { expires: '1440m' }
     },
-    created_at: {
-        type: Number,
-        default: moment().unix()
-    },
-    update_at: {
-        type: Number,
-        default: 0
+    createdAt: Number,
+    updatedAt: Number
+}, {
+    timestamps: {
+        currentTime: () => moment().unix()
     }
-})
+});
 
 user_schema.pre<User>('save', function (this: User, next: any) {
 

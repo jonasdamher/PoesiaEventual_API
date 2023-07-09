@@ -38,8 +38,8 @@ export interface Author extends Document {
     url: string;
     description: string;
     keywords: Array<keywords>;
-    created_at: number;
-    update_at: number;
+    createdAt: number;
+    updateAt: number;
 
     saveAuthor(): Promise<Author>;
     updateAuthor(data: Partial<Author>): Promise<Author>;
@@ -173,13 +173,11 @@ const author_schema = new Schema<Author>({
             word: String
         }
     ],
-    created_at: {
-        type: Number,
-        default: moment().unix()
-    },
-    update_at: {
-        type: Number,
-        default: 0
+    createdAt: Number,
+    updatedAt: Number
+}, {
+    timestamps: {
+        currentTime: () => moment().unix()
     }
 }).index({ 'name': 'text', 'lastname': 'text' });
 

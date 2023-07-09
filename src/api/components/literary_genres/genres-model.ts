@@ -13,8 +13,8 @@ export interface Genre extends Document {
     name: string;
     description: string;
     subgenres: Array<subgenres>;
-    created_at: number;
-    update_at: number;
+    createdAt: number;
+    updatedAt: number;
 }
 
 const genres_schema = new Schema<Genre>({
@@ -43,13 +43,11 @@ const genres_schema = new Schema<Genre>({
             name: String
         },
     ],
-    created_at: {
-        type: Number,
-        default: moment().unix()
-    },
-    update_at: {
-        type: Number,
-        default: 0
+    createdAt: Number,
+    updatedAt: Number
+}, {
+    timestamps: {
+        currentTime: () => moment().unix()
     }
 })
 

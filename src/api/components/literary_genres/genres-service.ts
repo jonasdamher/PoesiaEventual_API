@@ -70,25 +70,60 @@ export default class GenresService {
     }
     protected update_genre(id: any, data: any): Promise<Response_data> {
         return new Promise((resolve, reject) => {
+
             let response = response_data();
 
-            GENRE.findByIdAndUpdate(
-                id,
-                { $set: data },
-                { new: true }
-            ).then((genreResponse: any) => {
+            GENRE.findById(id).then((genreResponse: any) => {
 
-                response.result = genreResponse;
-                resolve(response)
+                if (data.subgenres && Array.isArray(data.subgenres)) {
+
+                    data.subgenres.forEach((updatedBook: any) => {
+                        // Filtrar libros existentes para actualizar
+                        const existingBookIndex = genreResponse.subgenres.findIndex((existingBook: any) => existingBook._id.toString() === updatedBook._id);
+
+                        if (existingBookIndex !== -1) {
+                            // Actualizar libro existente
+                            genreResponse.subgenres[existingBookIndex].name = updatedBook.name;
+                        } else {
+                            // Añadir nuevo libro
+                            genreResponse.subgenres.push({
+                                name: updatedBook.name,
+                            });
+                        }
+                    });
+                }
+
+                // Guardar el usuario actualizado
+                if (data.name) {
+                    genreResponse.name = data.name;
+                }
+
+                if (data.description) {
+                    genreResponse.description = data.description;
+                }
+
+                genreResponse.save().then((res: any) => {
+
+                    response.result = res;
+                    resolve(response)
+
+                }).catch((err: any) => {
+
+                    response.status = 400;
+                    response.message = 'BadRequest';
+                    response.result = err;
+                    logger_genre.info({ err }, 'service');
+                    reject(response);
+                })
 
             }).catch((err: any) => {
-
                 response.status = 400;
                 response.message = 'BadRequest';
                 response.result = err;
                 logger_genre.info({ err }, 'service');
                 reject(response);
-            })
+            });
+
         });
     }
 

@@ -7,8 +7,8 @@ import * as regex from '../../utils/regex';
 export interface Editorial extends Document {
     name: string;
     description: string;
-    created_at: number;
-    update_at: number;
+    createdAt: number;
+    updateAt: number;
 };
 
 const editorial_schema = new Schema<Editorial>({
@@ -26,13 +26,11 @@ const editorial_schema = new Schema<Editorial>({
     description: {
         type: String,
     },
-    created_at: {
-        type: Number,
-        default: moment().unix()
-    },
-    update_at: {
-        type: Number,
-        default: 0
+    createdAt: Number,
+    updatedAt: Number
+}, {
+    timestamps: {
+        currentTime: () => moment().unix()
     }
 });
 

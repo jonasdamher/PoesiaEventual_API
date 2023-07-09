@@ -11,8 +11,8 @@ export interface Book extends Document {
     literary_genre: Schema.Types.ObjectId;
     editorial: Schema.Types.ObjectId;
     published: number;
-    created_at: number;
-    update_at: number;
+    createdAt: number;
+    updateAt: number;
 };
 
 const book_schema: Schema<Book> = new Schema({
@@ -42,13 +42,11 @@ const book_schema: Schema<Book> = new Schema({
         type: Number,
         default: 0
     },
-    created_at: {
-        type: Number,
-        default: moment().unix()
-    },
-    update_at: {
-        type: Number,
-        default: 0
+    createdAt: Number,
+    updatedAt: Number
+}, {
+    timestamps: {
+        currentTime: () => moment().unix()
     }
 });
 
