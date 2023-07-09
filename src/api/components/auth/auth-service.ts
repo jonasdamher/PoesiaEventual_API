@@ -75,7 +75,7 @@ export default class AuthService {
                 email.subject = 'Verifica tu cuenta de usuario';
                 email.text = 'Hola,\n' +
                     'Por favor, verifica tu cuenta de usuario haciendo clic en:\n' +
-                    config.app.url_api + 'auth\/confirm_account\/' + verify_token.token + '.\n';
+                    config.app.url_api() + 'auth\/confirm_account\/' + verify_token.token + '.\n';
                 email.send();
 
                 response.status = 201;

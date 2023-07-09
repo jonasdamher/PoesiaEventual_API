@@ -3,7 +3,7 @@
 type app = {
     version: string;
     domain: string;
-    url_api: string;
+    url_api: any;
     port: string;
     node_env: string;
 }

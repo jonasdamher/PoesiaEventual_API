@@ -4,13 +4,13 @@ import app from './api/app';
 import Mongo from './api/db/Mongo';
 import config from './api/config';
 import { logger_app } from './api/helpers/logger';
- 
+
 Mongo.connect().then(() => {
     try {
         app.listen(config.app.port);
 
         if (config.app.node_env === 'DEVELOPMENT') {
-            logger_app.info({ url: config.app.url_api }, 'Up server develop')
+            logger_app.info({ url: config.app.url_api() }, 'Up server develop')
         }
 
     } catch (error: unknown) {

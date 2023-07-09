@@ -12,14 +12,13 @@ dotenv.config();
  * Correo, clave envio correos electrónicos 
  */
 
-const url_version = '/api/' + process.env.API_VERSION ?? '';
-const url_domain = process.env.DOMAIN ?? '';
-
 const configuration: config = {
     app: {
-        version: url_version,
-        domain: url_domain,
-        url_api: url_domain + url_version,
+        domain: process.env.DOMAIN ?? '',
+        version: '/api/' + process.env.API_VERSION ?? '',
+        url_api: function (): string {
+            return this.domain + this.version;
+        },
         port: process.env.PORT ?? '',
         node_env: process.env.NODE_ENV ?? ''
     },
