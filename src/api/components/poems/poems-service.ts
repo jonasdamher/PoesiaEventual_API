@@ -18,7 +18,7 @@ export default class PoemsService {
 
             get_pagination(POEM, page, perpage).then((pagination: any) => {
 
-                POEM.find().populate('author', 'personal.name personal.lastname').skip(pagination.page_range).limit(pagination.perpage).sort('title')
+                POEM.find().populate('author', 'name lastname').skip(pagination.page_range).limit(pagination.perpage).sort('title')
 
                     .then((authorResponse: any) => {
 
@@ -68,7 +68,7 @@ export default class PoemsService {
 
             get_pagination(POEM, page, perpage, query).then((pagination: any) => {
 
-                POEM.find(query).populate('author', 'personal.name personal.lastname').skip(pagination.page_range).limit(pagination.perpage).sort('title')
+                POEM.find(query).populate('author', 'name lastname').skip(pagination.page_range).limit(pagination.perpage).sort('title')
                     .then(poemList => {
 
                         response.result = {
@@ -98,7 +98,7 @@ export default class PoemsService {
         return new Promise((resolve, reject) => {
             let response = response_data();
 
-            POEM.findById({ _id: id }).populate('author','personal.name personal.lastname').then((poem: any) => {
+            POEM.findById({ _id: id }).populate('author','name lastname').then((poem: any) => {
 
                 response.result = poem;
                 resolve(response);
@@ -122,7 +122,7 @@ export default class PoemsService {
             get_pagination(POEM, page, perpage, query)
                 .then((pagination: any) => {
 
-                    POEM.find(query).populate('author','personal.name personal.lastname').skip(pagination.page_range).limit(pagination.perpage).sort('title')
+                    POEM.find(query).populate('author','name lastname').skip(pagination.page_range).limit(pagination.perpage).sort('title')
                         .then((poems: any) => {
 
                             response.result = {
@@ -157,7 +157,7 @@ export default class PoemsService {
 
                 const random = count == 1 ? 1 : Math.floor(Math.random() * count)
 
-                POEM.findOne().populate('author', 'personal.name personal.lastname').skip(random).then((poem: any) => {
+                POEM.findOne().populate('author', 'name lastname').skip(random).then((poem: any) => {
 
                     response.result = poem;
                     resolve(response);

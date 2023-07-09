@@ -44,6 +44,22 @@ export const logger_editorials = pino(pino.destination({
     ...commons_options
 })).child({ component: 'editorials' });
 
+export const logger_occupation = pino(pino.destination({
+    dest: './logs/components/occupations.json',
+    ...commons_options
+})).child({ component: 'occupations' });
+
+export const logger_genre = pino(pino.destination({
+    dest: './logs/components/literary_genre.json',
+    ...commons_options
+})).child({ component: 'literary_genre' });
+
+
+export const logger_countries = pino(pino.destination({
+    dest: './logs/components/countries.json',
+    ...commons_options
+})).child({ component: 'countries' });
+
 
 // FINAL - FOR COMPONENTS
 

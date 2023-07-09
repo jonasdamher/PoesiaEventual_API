@@ -110,7 +110,7 @@ export default class RecogService {
             const current_id: Schema.Types.ObjectId = id;
 
             RECOG.findOne({ author: current_id })
-                .select('title age posthumous meta.url')
+                .select('title age url')
                 .then((recognitions: any) => {
                     if (!recognitions) {
                         resolve([]);
@@ -142,6 +142,9 @@ export default class RecogService {
                 response.status = 400;
                 response.message = 'BadRequest'
                 response.result = err;
+
+                logger_recognitions.info(err, 'service');
+
                 reject(response);
             })
         })

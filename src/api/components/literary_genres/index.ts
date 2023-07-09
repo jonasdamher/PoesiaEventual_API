@@ -16,7 +16,8 @@ class RouterGenres {
         return this.router
             .get('/', genres.get_all)
             .get('/:id', validate_common.get_by_id, genres.get_with_id)
-            .post('/', csrf, auth.user, validation.create, genres.create);
+            .post('/', csrf, auth.user, validation.create, genres.create)
+            .patch('/:id', csrf, auth.user,  genres.update);
     }
 
 }

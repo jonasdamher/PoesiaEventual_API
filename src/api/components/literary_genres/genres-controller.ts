@@ -36,5 +36,17 @@ class GenresController extends GenresService {
             return res.status(err.status).json(err);
         }
     }
+
+    public async update(req: Request, res: Response) {
+        try {
+            const id = req.params.id;
+            const data_body = req.body;
+
+            const result = await super.update_genre(id, data_body);
+            return res.status(result.status).json(result);
+        } catch (err: any) {
+            return res.status(err.status).json(err);
+        }
+    }
 }
 export default new GenresController();

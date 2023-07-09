@@ -3,6 +3,7 @@
 import COUNTRY, { Country } from './countries-model';
 // Ayudantes
 import response_data from '../../utils/response_data';
+import { logger_countries } from '../../helpers/logger';
 // Tipos
 import Response_data from '../../types/Response_data';
 
@@ -90,6 +91,7 @@ export default class CountriesService {
 
                 response.status = 400;
                 response.result = err;
+                logger_countries.info(err, 'service');
                 reject(response)
             })
         })

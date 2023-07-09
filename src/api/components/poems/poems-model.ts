@@ -12,10 +12,10 @@ interface keywords {
 export interface Poem extends Document {
     author: Schema.Types.ObjectId;
     title: string;
-    text: string;/*
+    text: string;
     url: string;
     description: string;
-    keywords: Array<keywords>;*/
+    keywords: Array<keywords>;
     created_at: number;
     update_at: number;
 }
@@ -34,39 +34,37 @@ const poem_schema = new Schema<Poem>({
         type: String,
         trim: true,
         required: [true, 'Es obligatorio introducir un cuerpo del poema.'],
-    },/*
-    meta: {
-        url: {
-            type: String,
-            trim: true,
-            validate: {
-                validator: function (v: any) {
-                    return regex.url_name.test(v);
-                },
-                message: (props: any) => `(${props.value}) no tiene el formato adecuado.`
+    },
+    url: {
+        type: String,
+        trim: true,
+        validate: {
+            validator: function (v: any) {
+                return regex.url_name.test(v);
             },
-            required: [true, 'Es obligatorio introducir un nombre de url.'],
-            unique: [true, 'La url introducida ya existe.']
+            message: (props: any) => `(${props.value}) no tiene el formato adecuado.`
         },
-        description: {
-            type: String,
-            min: 70,
-            maxLength: 155,
-            trim: true,
-            required: [true, 'Es obligatorio introducir una descripción.'],
-        },
-        keywords: [
-            {
-                _id: {
-                    type: Schema.Types.ObjectId,
-                    index: true,
-                    required: true,
-                    auto: true
-                },
-                word: String
-            }
-        ],
-    },*/
+        required: [true, 'Es obligatorio introducir un nombre de url.'],
+        unique: [true, 'La url introducida ya existe.']
+    },
+    description: {
+        type: String,
+        min: 70,
+        maxLength: 250,
+        trim: true,
+        required: [true, 'Es obligatorio introducir una descripción.'],
+    },
+    keywords: [
+        {
+            _id: {
+                type: Schema.Types.ObjectId,
+                index: true,
+                required: true,
+                auto: true
+            },
+            word: String
+        }
+    ],
     created_at: {
         type: Number,
         default: moment().unix()

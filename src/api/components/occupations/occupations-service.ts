@@ -3,6 +3,7 @@
 // Modelos
 import OCCUPATION, { Occupation } from './occupations-model';
 // Ayudantes
+import { logger_occupation } from '../../helpers/logger';
 import response_data from '../../utils/response_data';
 // Tipos
 import Response_data from '../../types/Response_data';
@@ -47,7 +48,7 @@ export default class OccupationService {
         });
     }
 
-   protected create_occupation(data: any): Promise<Response_data> {
+    protected create_occupation(data: any): Promise<Response_data> {
         return new Promise((resolve, reject) => {
             let response = response_data();
             const new_occupation: Occupation = new OCCUPATION(data);
@@ -64,6 +65,7 @@ export default class OccupationService {
                 response.status = 400;
                 response.message = 'BadRequest';
                 response.result = err;
+                logger_occupation.info(err, 'service');
                 reject(response);
             })
         });

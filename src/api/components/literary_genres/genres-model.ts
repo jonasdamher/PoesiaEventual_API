@@ -1,26 +1,23 @@
 'use strict';
 
 import moment from 'moment';
-import { Model, model, Document, Schema } from 'mongoose';
+import { model, Document, Schema } from 'mongoose';
 import * as regex from '../../utils/regex';
-/*
+
 interface subgenres {
     _id: Schema.Types.ObjectId;
     name: string;
-}*/
+}
 
 export interface Genre extends Document {
     name: string;
     description: string;
-    // subgenres: Array<subgenres>;
+    subgenres: Array<subgenres>;
     created_at: number;
     update_at: number;
 }
 
-// Para añadir funciones extras con mongoose
-interface genres_model extends Model<Genre> { }
-
-const genres_schema = new Schema<Genre, genres_model>({
+const genres_schema = new Schema<Genre>({
     name: {
         type: String,
         validate: {
@@ -34,7 +31,7 @@ const genres_schema = new Schema<Genre, genres_model>({
     },
     description: {
         type: String
-    },/*
+    },
     subgenres: [
         {
             _id: {
@@ -45,7 +42,7 @@ const genres_schema = new Schema<Genre, genres_model>({
             },
             name: String
         },
-    ],*/
+    ],
     created_at: {
         type: Number,
         default: moment().unix()
@@ -56,4 +53,4 @@ const genres_schema = new Schema<Genre, genres_model>({
     }
 })
 
-export default model<Genre, genres_model>('literary_genres', genres_schema)
+export default model<Genre>('literary_genres', genres_schema)

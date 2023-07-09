@@ -27,10 +27,8 @@ class AuthorValidation {
     async create(req: Request, res: Response, next: NextFunction) {
 
         const schema = Joi.object({
-            personal: {
-                name: Joi.string().required(),
-                lastname: Joi.string().required(),
-            },
+            name: Joi.string().required(),
+            lastname: Joi.string().required(),
             full_name: Joi.string(),
             pseudonym: Joi.string(),
             gender: Joi.string().required(),
@@ -42,18 +40,16 @@ class AuthorValidation {
         });
 
         const data = {
-            personal: {
-                name: req.body.personal.name,
-                lastname: req.body.personal.lastname,
-            },
-            full_name: req.body.personal.full_name,
-            pseudonym: req.body.personal.pseudonym,
-            gender: req.body.personal.gender,
-            country: req.body.personal.country,
+            name: req.body.name,
+            lastname: req.body.lastname,
+            full_name: req.body.full_name,
+            pseudonym: req.body.pseudonym,
+            gender: req.body.gender,
+            country: req.body.country,
             short_description: req.body.short_description,
             biography: req.body.biography,
             portrait: req.body.portrait,
-            description: req.body.meta.description,
+            description: req.body.description,
         };
 
         schema.validateAsync(data)

@@ -4,6 +4,7 @@
 import GENRE, { Genre } from './genres-model';
 // Ayudantes
 import response_data from '../../utils/response_data';
+import { logger_genre } from '../../helpers/logger';
 // Tipos
 import Response_data from '../../types/Response_data';
 
@@ -22,7 +23,6 @@ export default class GenresService {
                 response.status = 400;
                 response.message = 'Dont found';
                 response.result = err;
-                // logger_authors.info({ ...response }, 'service');
                 reject(response);
             });
         });
@@ -40,7 +40,6 @@ export default class GenresService {
                 response.status = 404;
                 response.message = 'Not found';
                 response.result = err;
-                // logger_authors.info({ ...response }, 'service');
                 reject(response);
             })
         });
@@ -64,9 +63,33 @@ export default class GenresService {
                 response.status = 400;
                 response.message = 'BadRequest';
                 response.result = err;
-                // logger_authors.info({ ...response }, 'service');
+                logger_genre.info({ err }, 'service');
                 reject(response);
             })
         });
     }
+    protected update_genre(id: any, data: any): Promise<Response_data> {
+        return new Promise((resolve, reject) => {
+            let response = response_data();
+
+            GENRE.findByIdAndUpdate(
+                id,
+                { $set: data },
+                { new: true }
+            ).then((genreResponse: any) => {
+
+                response.result = genreResponse;
+                resolve(response)
+
+            }).catch((err: any) => {
+
+                response.status = 400;
+                response.message = 'BadRequest';
+                response.result = err;
+                logger_genre.info({ err }, 'service');
+                reject(response);
+            })
+        });
+    }
+
 }

@@ -10,7 +10,6 @@ import RecogService from '../recognitions/recognitions-service';
 import response_data from '../../utils/response_data';
 import { logger_authors } from '../../helpers/logger';
 import { get_pagination, paginate } from '../../utils/pagination';
-import Text from '../../helpers/Text';
 // Tipos
 import Response_data from '../../types/Response_data';
 
@@ -22,10 +21,10 @@ export default class AuthorService {
 
             get_pagination(AUTHOR, page, perpage).then((pagination: any) => {
                 AUTHOR.find().skip(pagination.page_range).limit(pagination.perpage)
-                    .sort('personal.name')
-                    .select('personal.name personal.lastname short_description portrait meta.url')
-                    .populate({ path: 'professional.occupations', select: 'name' })
-                    .populate({ path: 'professional.literary_genres', select: 'name' })
+                    .sort('name')
+                    .select('name lastname short_description portrait url')
+                    .populate({ path: 'occupations', select: 'name' })
+                    .populate({ path: 'literary_genres', select: 'name' })
                     .then((authorResponse: any) => {
 
                         response.result = {
@@ -57,7 +56,7 @@ export default class AuthorService {
         return new Promise((resolve, reject) => {
             let response = response_data();
 
-            AUTHOR.findOne({ $text: { $search: name } }).select('personal.name ').populate({ path: 'professional.occupations', select: 'name' }).populate({ path: 'professional.literary_genres', select: 'name' }).populate({ path: 'personal.country', select: 'name' }).then(async (current_author: any) => {
+            AUTHOR.findOne({ $text: { $search: name } }).select('name ').populate({ path: 'occupations', select: 'name' }).populate({ path: 'literary_genres', select: 'name' }).populate({ path: 'country', select: 'name' }).then(async (current_author: any) => {
                 let recog = new RecogService();
                 let poems = new PoemsService();
                 let books = new BooksService();
@@ -106,7 +105,7 @@ export default class AuthorService {
 
 
             get_pagination(AUTHOR, page, perpage, query).then((pagination: any) => {
-                AUTHOR.find(query).skip(pagination.page_range).limit(pagination.perpage).sort('personal.lastname').select('personal.name personal.lastname short_description').then((authorResponse: any) => {
+                AUTHOR.find(query).skip(pagination.page_range).limit(pagination.perpage).sort('lastname').select('name lastname short_description').then((authorResponse: any) => {
 
                     response.result = {
                         authors: authorResponse,
@@ -165,7 +164,7 @@ export default class AuthorService {
         })
     }
 
-    protected create_author(data: any): Promise<Response_data> {
+    protected create_author(data: Author): Promise<Response_data> {
         return new Promise((resolve, reject) => {
             let response = response_data();
 
@@ -188,50 +187,36 @@ export default class AuthorService {
         });
     }
 
-    protected update_author(id: any, data: any): Promise<Response_data> {
+    protected update_author(id: any, data: Partial<Author>): Promise<Response_data> {
         return new Promise((resolve, reject) => {
+
             let response = response_data();
 
             AUTHOR.findById(id).then((current_user: any) => {
 
-                if (data.personal.name && data.personal.lastname) {
-                    data.personal.full_name = data.personal.name.trim() + ' ' + data.personal.lastname.trim();
-                    data.meta.url = Text.url(data.personal.full_name);
-                } else {
-
-                    if (data.personal.name) {
-                        data.personal.full_name = data.personal.name.trim() + ' ' + current_user.personal.lastname;
-                        data.meta.url = Text.url(data.personal.full_name);
-                    }
-
-                    if (data.personal.lastname) {
-                        data.personal.full_name = current_user.personal.name.trim() + ' ' + data.personal.lastname;
-                        data.meta.url = Text.url(data.personal.full_name);
-                    }
-
-                }
-
-                AUTHOR.findByIdAndUpdate(id, data).then((authorResponse: any) => {
+                current_user.updateAuthor(data).then((authorResponse: Author) => {
 
                     response.result = authorResponse;
-                    resolve(response)
+                    resolve(response);
+
                 }).catch((err: any) => {
 
                     response.status = 400;
                     response.message = 'BadRequest';
                     response.result = err;
-                    logger_authors.info({ ...response }, 'service');
+                    logger_authors.info({ ...response, id: id, data: data }, 'service');
                     reject(response);
                 })
 
             }).catch((err: any) => {
 
                 response.status = 404;
-                response.message = 'Not found';
+                response.message = 'not found';
                 response.result = err;
-                logger_authors.info({ ...response }, 'service');
+                logger_authors.info({ ...response, id: id, data: data }, 'service');
                 reject(response);
             })
+
         });
     }
 }

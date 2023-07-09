@@ -1,7 +1,7 @@
 'use strict';
 
 import moment from 'moment';
-import { Model, model, Document, Schema } from 'mongoose';
+import { model, Document, Schema } from 'mongoose';
 import * as regex from '../../utils/regex';
 import Text from '../../helpers/Text';
 
@@ -22,99 +22,79 @@ interface keywords {
     word: string;
 }
 
-interface personal {
+export interface Author extends Document {
     name: string;
     lastname: string;
     full_name: string;
     pseudonym: string;
     gender: genders;
     country: Schema.Types.ObjectId;
-}
-
-interface professional {
     occupations: Schema.Types.ObjectId;
     literary_genres: Schema.Types.ObjectId;
-}
-
-interface meta {
-    url: string;
-    description: string;
-    keywords: Array<keywords>;
-}
-
-interface author_model extends Document {
-
-    saveAuthor(): Promise<author_model>;
-
-}
-
-export interface Author extends author_model {
-    personal: personal;
-    professional: professional;
     short_description: string;
     biography: string;
     portrait: string;
     photos: Array<photos>;
-    meta: meta;
+    url: string;
+    description: string;
+    keywords: Array<keywords>;
     created_at: number;
     update_at: number;
 
+    saveAuthor(): Promise<Author>;
+    updateAuthor(data: Partial<Author>): Promise<Author>;
 }
 
 const author_schema = new Schema<Author>({
-    personal: {
-        name: {
-            type: String,
-            validate: {
-                validator: (v: any) => {
-                    return regex.text_only.test(v);
-                },
-                message: (props: any) => `(${props.value}) no tiene el formato adecuado.`
+    name: {
+        type: String,
+        validate: {
+            validator: (v: any) => {
+                return regex.text_only.test(v);
             },
-            required: [true, 'Es obligatorio introducir un nombre.']
+            message: (props: any) => `(${props.value}) no tiene el formato adecuado.`
         },
-        lastname: {
-            type: String,
-            validate: {
-                validator: (v: any) => {
-                    return regex.text_only.test(v);
-                },
-                message: (props: any) => `(${props.value}) no tiene el formato adecuado.`
+        required: [true, 'Es obligatorio introducir un nombre.']
+    },
+    lastname: {
+        type: String,
+        validate: {
+            validator: (v: any) => {
+                return regex.text_only.test(v);
             },
-            required: [true, 'Es obligatorio introducir los apellidos.']
+            message: (props: any) => `(${props.value}) no tiene el formato adecuado.`
         },
-        full_name: {
-            type: String
-        },
-        pseudonym: {
-            type: String,
-            validate: {
-                validator: (v: any) => {
-                    return regex.text_only.test(v);
-                },
-                message: (props: any) => `(${props.value}) no tiene el formato adecuado.`
-            }
-        },
-        gender: {
-            type: String,
-            enum: ['Hombre', 'Mujer', 'No binario'],
-            required: true
-        },
-        country: {
-            type: Schema.Types.ObjectId,
-            ref: 'countries'
+        required: [true, 'Es obligatorio introducir los apellidos.']
+    },
+    full_name: {
+        type: String
+    },
+    pseudonym: {
+        type: String,
+        validate: {
+            validator: (v: any) => {
+                return regex.text_only.test(v);
+            },
+            message: (props: any) => `(${props.value}) no tiene el formato adecuado.`
         }
     },
-    professional: {
-        occupations: [{
-            type: Schema.Types.ObjectId,
-            ref: 'occupations'
-        }],
-        literary_genres: [{
-            type: Schema.Types.ObjectId,
-            ref: 'literary_genres'
-        }],
+    gender: {
+        type: String,
+        enum: ['Hombre', 'Mujer', 'No binario'],
+        required: true
     },
+    country: {
+        type: Schema.Types.ObjectId,
+        ref: 'countries'
+    },
+    occupations: [{
+        type: Schema.Types.ObjectId,
+        ref: 'occupations'
+    }],
+    literary_genres: [{
+        type: Schema.Types.ObjectId,
+        ref: 'literary_genres'
+    }],
     short_description: {
         type: String,
         maxLength: 300,
@@ -166,35 +146,33 @@ const author_schema = new Schema<Author>({
             message: (props: any) => `(${props.value}) máx 4 imagenes.`
         }
     },
-    meta: {
-        url: {
-            type: String,
-            validate: {
-                validator: (v: any) => {
-                    return regex.url_name.test(v);
-                },
-                message: (props: any) => `(${props.value}) no tiene el formato adecuado.`
+    url: {
+        type: String,
+        validate: {
+            validator: (v: any) => {
+                return regex.url_name.test(v);
             },
-            required: [true, 'Es obligatorio introducir un nombre de url.'],
-            unique: [true, 'La url introducida ya existe.']
+            message: (props: any) => `(${props.value}) no tiene el formato adecuado.`
         },
-        description: {
-            type: String,
-            minLength: 70,
-            maxLength: 250,
-        },
-        keywords: [
-            {
-                _id: {
-                    type: Schema.Types.ObjectId,
-                    index: true,
-                    required: true,
-                    auto: true
-                },
-                word: String
-            }
-        ],
+        required: [true, 'Es obligatorio introducir un nombre de url.'],
+        unique: [true, 'La url introducida ya existe.']
     },
+    description: {
+        type: String,
+        minLength: 70,
+        maxLength: 250,
+    },
+    keywords: [
+        {
+            _id: {
+                type: Schema.Types.ObjectId,
+                index: true,
+                required: true,
+                auto: true
+            },
+            word: String
+        }
+    ],
     created_at: {
         type: Number,
         default: moment().unix()
@@ -203,13 +181,13 @@ const author_schema = new Schema<Author>({
         type: Number,
         default: 0
     }
-}).index({ 'personal.name': 'text', 'personal.lastname': 'text' });
+}).index({ 'name': 'text', 'lastname': 'text' });
 
 author_schema.methods.saveAuthor = async function (this: Author) {
     return new Promise(async (resolve, reject) => {
 
-        this.personal.full_name = this.personal.name.trim() + ' ' + this.personal.lastname.trim();
-        this.meta.url = Text.url(this.personal.full_name);
+        this.full_name = this.name.trim() + ' ' + this.lastname.trim();
+        this.url = Text.url(this.full_name);
 
         this.save().then((authorResponse: Author) => {
 
@@ -223,4 +201,45 @@ author_schema.methods.saveAuthor = async function (this: Author) {
     });
 }
 
-export default model<Author>('authors', author_schema)
+author_schema.methods.updateAuthor = async function (data: Partial<Author>) {
+    return new Promise((resolve, reject) => {
+
+        const id = this._id;
+
+        if (data.name && data.lastname) {
+
+            data.full_name = data.name.trim() + ' ' + data.lastname.trim();
+            data.url = Text.url(data.full_name);
+
+        } else {
+
+            if (data.name) {
+
+                data.full_name = data.name.trim() + ' ' + this.lastname;
+                data.url = Text.url(data.full_name);
+            }
+
+            if (data.lastname) {
+
+                data.full_name = this.name.trim() + ' ' + data.lastname;
+                data.url = Text.url(data.full_name);
+            }
+        }
+
+        AUTHOR.findByIdAndUpdate(
+            id,
+            { $set: data },
+            { new: true }
+        ).then((authorResponse: any) => {
+
+            resolve(authorResponse)
+        }).catch((err: any) => {
+
+            reject(err);
+        })
+
+    });
+}
+
+const AUTHOR = model<Author>('authors', author_schema)
+export default AUTHOR;

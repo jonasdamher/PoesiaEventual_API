@@ -7,7 +7,7 @@ export interface Book extends Document {
     author: Schema.Types.ObjectId;
     title: string;
     synopsis: string;
-    // portrait: string;
+    portrait: string;
     literary_genre: Schema.Types.ObjectId;
     editorial: Schema.Types.ObjectId;
     published: number;
@@ -27,9 +27,9 @@ const book_schema: Schema<Book> = new Schema({
     synopsis: {
         type: String
     },
-    // portrait: {
-    //     type: String
-    // },
+    portrait: {
+        type: String
+    },
     literary_genre: {
         type: Schema.Types.ObjectId,
         ref: 'literary_genres'

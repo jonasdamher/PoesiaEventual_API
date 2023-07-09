@@ -4,13 +4,13 @@
 import EDITOR, { Editorial } from './editorials-model';
 // Ayudantes
 import response_data from '../../utils/response_data';
+import { logger_editorials } from '../../helpers/logger';
 // Tipos
 import Response_data from '../../types/Response_data';
-import { logger_editorials } from '../../helpers/logger';
 
 export default class EditorialsService {
 
-    protected  get_all_editorials(): Promise<Response_data> {
+    protected get_all_editorials(): Promise<Response_data> {
         return new Promise((resolve, reject) => {
             let response = response_data();
 
@@ -65,6 +65,7 @@ export default class EditorialsService {
                 response.status = 400;
                 response.message = 'BadRequest';
                 response.result = err;
+                logger_editorials.info(err, 'service');
                 reject(response);
             })
         });

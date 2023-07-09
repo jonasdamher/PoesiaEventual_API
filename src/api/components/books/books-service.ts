@@ -23,7 +23,7 @@ export default class BooksService {
                     .limit(pagination.perpage)
                     .sort('title')
                     .select('title')
-                    .populate({ path: 'author', select: 'personal.full_name meta.url' })
+                    .populate({ path: 'author', select: 'full_name url' })
                     .populate({ path: 'editorial', select: 'name' })
                     .populate({ path: 'literary_genre', select: 'name' })
                     .then((book_list: any) => {
@@ -60,7 +60,7 @@ export default class BooksService {
 
             BOOK.findById({ _id: id })
                 .select('title')
-                .populate({ path: 'author', select: 'personal.full_name meta.url' })
+                .populate({ path: 'author', select: 'full_name url' })
                 .populate({ path: 'editorial', select: 'name' })
                 .populate({ path: 'literary_genre', select: 'name' })
                 .then((poem: any) => {
@@ -80,7 +80,7 @@ export default class BooksService {
             const current_id: Schema.Types.ObjectId = id;
 
             BOOK.findOne({ author: current_id })
-                .select('title meta.url published posthumous')
+                .select('title url published posthumous')
                 .populate({ path: 'editorial', select: 'name' })
                 .populate({ path: 'literary_genre', select: 'name' })
                 .then((books: any) => {
@@ -145,6 +145,7 @@ export default class BooksService {
             }).catch((err: any) => {
                 response.status = 400;
                 response.result = err;
+                logger_books.info(err, 'service');
                 reject(response)
             })
         })
