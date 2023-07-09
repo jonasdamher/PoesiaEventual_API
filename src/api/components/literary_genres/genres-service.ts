@@ -80,30 +80,28 @@ export default class GenresService {
                     genreResponse.subgenres.forEach((updatedBook: any) => {
 
                         // Filtrar libros existentes para actualizar
-                        const existingBookIndex = data.subgenres.findIndex((existingBook: any) => existingBook._id === updatedBook._id.toString());
+                        const existing = data.subgenres.findIndex((exists: any) => exists._id === updatedBook._id.toString());
 
-                        if (existingBookIndex === -1) {
+                        if (existing === -1) {
                             data.subgenres.push(updatedBook);
                         }
 
                     });
                 }
 
-                GENRE.findByIdAndUpdate(id, { $set: data }, { new: true })
-                    // genreResponse.save()
-                    .then((res: any) => {
+                GENRE.findByIdAndUpdate(id, { $set: data }, { new: true }).then((res: any) => {
 
-                        response.result = res;
-                        resolve(response)
+                    response.result = res;
+                    resolve(response)
 
-                    }).catch((err: any) => {
+                }).catch((err: any) => {
 
-                        response.status = 400;
-                        response.message = 'BadRequest';
-                        response.result = err;
-                        logger_genre.info({ err }, 'service');
-                        reject(response);
-                    })
+                    response.status = 400;
+                    response.message = 'BadRequest';
+                    response.result = err;
+                    logger_genre.info({ err }, 'service');
+                    reject(response);
+                })
 
             }).catch((err: any) => {
                 response.status = 400;

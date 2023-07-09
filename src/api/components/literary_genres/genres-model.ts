@@ -20,6 +20,7 @@ export interface Genre extends Document {
 const genres_schema = new Schema<Genre>({
     name: {
         type: String,
+        maxLength: 40,
         validate: {
             validator: function (v: any) {
                 return regex.text_only.test(v);
@@ -30,7 +31,8 @@ const genres_schema = new Schema<Genre>({
         unique: [true, 'El nombre introducido ya existe.']
     },
     description: {
-        type: String
+        type: String,
+        maxLength: 250,
     },
     subgenres: [
         {
@@ -42,6 +44,7 @@ const genres_schema = new Schema<Genre>({
             },
             name: {
                 type: String,
+                maxLength: 40,
                 validate: {
                     validator: function (v: any) {
                         return regex.text_only.test(v);
