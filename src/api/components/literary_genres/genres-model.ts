@@ -40,7 +40,16 @@ const genres_schema = new Schema<Genre>({
                 required: true,
                 auto: true
             },
-            name: String
+            name: {
+                type: String,
+                validate: {
+                    validator: function (v: any) {
+                        return regex.text_only.test(v);
+                    },
+                    message: (props: any) => `(${props.value}) no tiene el formato adecuado.`
+                },
+                required: [true, 'Es obligatorio introducir un nombre.'],
+            }
         },
     ],
     createdAt: Number,

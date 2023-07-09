@@ -75,46 +75,35 @@ export default class GenresService {
 
             GENRE.findById(id).then((genreResponse: any) => {
 
-                if (data.subgenres && Array.isArray(data.subgenres)) {
+                if (data.subgenres && Array.isArray(data.subgenres) && data.subgenres.length) {
 
-                    data.subgenres.forEach((updatedBook: any) => {
+                    genreResponse.subgenres.forEach((updatedBook: any) => {
+
                         // Filtrar libros existentes para actualizar
-                        const existingBookIndex = genreResponse.subgenres.findIndex((existingBook: any) => existingBook._id.toString() === updatedBook._id);
+                        const existingBookIndex = data.subgenres.findIndex((existingBook: any) => existingBook._id === updatedBook._id.toString());
 
-                        if (existingBookIndex !== -1) {
-                            // Actualizar libro existente
-                            genreResponse.subgenres[existingBookIndex].name = updatedBook.name;
-                        } else {
-                            // Añadir nuevo libro
-                            genreResponse.subgenres.push({
-                                name: updatedBook.name,
-                            });
+                        if (existingBookIndex === -1) {
+                            data.subgenres.push(updatedBook);
                         }
+
                     });
                 }
 
-                // Guardar el usuario actualizado
-                if (data.name) {
-                    genreResponse.name = data.name;
-                }
+                GENRE.findByIdAndUpdate(id, { $set: data }, { new: true })
+                    // genreResponse.save()
+                    .then((res: any) => {
 
-                if (data.description) {
-                    genreResponse.description = data.description;
-                }
+                        response.result = res;
+                        resolve(response)
 
-                genreResponse.save().then((res: any) => {
+                    }).catch((err: any) => {
 
-                    response.result = res;
-                    resolve(response)
-
-                }).catch((err: any) => {
-
-                    response.status = 400;
-                    response.message = 'BadRequest';
-                    response.result = err;
-                    logger_genre.info({ err }, 'service');
-                    reject(response);
-                })
+                        response.status = 400;
+                        response.message = 'BadRequest';
+                        response.result = err;
+                        logger_genre.info({ err }, 'service');
+                        reject(response);
+                    })
 
             }).catch((err: any) => {
                 response.status = 400;
