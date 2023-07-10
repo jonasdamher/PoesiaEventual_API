@@ -66,6 +66,20 @@ class RecogController extends RecogService {
             res.status(error.status).json(error);
         }
     }
+
+    public async update(req: Request, res: Response) {
+        try {
+            const id = req.params.id;
+            const data_body = req.body;
+
+            const result = await super.update_recog(id, data_body)
+            return res.status(result.status).json(result);
+
+        } catch (error: any) {
+            res.status(error.status).json(error);
+        }
+    }
+
 }
 
 export default new RecogController();

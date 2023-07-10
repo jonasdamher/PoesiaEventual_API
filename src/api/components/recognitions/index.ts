@@ -17,7 +17,8 @@ class RouterRecog {
             .get('/', validate_common.get_all, recognitions.get_all)
             .get('/:id', validate_common.get_by_id, recognitions.get_by_id)
             .get('/search/:search', validate_common.search, recognitions.search)
-            .post('/', csrf, auth.user, validation.create, recognitions.create);
+            .post('/', csrf, auth.user, validation.create, recognitions.create)
+            .patch('/:id', csrf, auth.user, validation.update, recognitions.update)
     }
 }
 

@@ -149,4 +149,52 @@ export default class RecogService {
             })
         })
     }
+
+    protected update_recog(id: any, data: any): Promise<Response_data> {
+        return new Promise((resolve, reject) => {
+            let response = response_data();
+
+            RECOG.findById(id).then((recog: any) => {
+
+                if (data.keywords && Array.isArray(data.keywords) && data.keywords.length) {
+
+                    recog.keywords.forEach((word: any) => {
+
+                        // Filtrar libros existentes para actualizar
+                        const existing = data.keywords.findIndex((exists: any) => exists._id === word._id.toString());
+
+                        if (existing === -1) {
+                            data.keywords.push(word);
+                        }
+
+                    });
+                }
+
+                RECOG.findByIdAndUpdate(id, { $set: data }, { new: true }).then((new_poem: any) => {
+                    response.result = new_poem;
+                    resolve(response);
+
+                }).catch((err: any) => {
+
+                    response.status = 400;
+                    response.message = 'BadRequest'
+                    response.result = err;
+
+                    logger_recognitions.info(err, 'service');
+
+                    reject(response);
+                })
+            }).catch((err: any) => {
+
+                response.status = 400;
+                response.message = 'BadRequest'
+                response.result = err;
+
+                logger_recognitions.info(err, 'service');
+
+                reject(response);
+            })
+        })
+    }
+
 }
