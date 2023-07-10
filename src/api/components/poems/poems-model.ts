@@ -54,8 +54,8 @@ const poem_schema = new Schema<Poem>({
         trim: true,
         required: [true, 'Es obligatorio introducir una descripción.'],
     },
-    keywords: [
-        {
+    keywords: {
+        type: [{
             _id: {
                 type: Schema.Types.ObjectId,
                 index: true,
@@ -63,8 +63,14 @@ const poem_schema = new Schema<Poem>({
                 auto: true
             },
             word: String
+        }],
+        validate: {
+            validator: (v: any) => {
+                return v.length <= 25;
+            },
+            message: 'El número máximo de palabras clave son 25.'
         }
-    ],
+    },
     createdAt: Number,
     updatedAt: Number
 }, {

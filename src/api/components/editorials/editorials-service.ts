@@ -70,4 +70,24 @@ export default class EditorialsService {
             })
         });
     }
+
+    protected update_editorial(id: any, data: any): Promise<Response_data> {
+        return new Promise((resolve, reject) => {
+            let response = response_data();
+
+            EDITOR.findByIdAndUpdate(id, { $set: data }, { new: true }).then((res: any) => {
+
+                response.result = res;
+                resolve(response);
+
+            }).catch((err: any) => {
+
+                response.status = 400;
+                response.message = 'BadRequest';
+                response.result = err;
+                logger_editorials.info(err, 'service');
+                reject(response);
+            })
+        });
+    }
 }

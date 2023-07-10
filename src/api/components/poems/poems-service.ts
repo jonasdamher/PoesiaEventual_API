@@ -98,7 +98,7 @@ export default class PoemsService {
         return new Promise((resolve, reject) => {
             let response = response_data();
 
-            POEM.findById({ _id: id }).populate('author','name lastname').then((poem: any) => {
+            POEM.findById({ _id: id }).populate('author', 'name lastname').then((poem: any) => {
 
                 response.result = poem;
                 resolve(response);
@@ -122,7 +122,7 @@ export default class PoemsService {
             get_pagination(POEM, page, perpage, query)
                 .then((pagination: any) => {
 
-                    POEM.find(query).populate('author','name lastname').skip(pagination.page_range).limit(pagination.perpage).sort('title')
+                    POEM.find(query).populate('author', 'name lastname').skip(pagination.page_range).limit(pagination.perpage).sort('title')
                         .then((poems: any) => {
 
                             response.result = {
@@ -184,7 +184,9 @@ export default class PoemsService {
         return new Promise((resolve, reject) => {
             let response = response_data();
 
-            // data.meta.url = Text.url(data.title);
+            data.url = Text.url(data.title);
+
+            // si es un array de poemas
             if (data.poems) {
                 let results: any = [];
 
@@ -215,7 +217,7 @@ export default class PoemsService {
                 response.result = results;
                 resolve(response);
 
-            } else {
+            } else { // si es un unico poema
                 const poem: Poem = new POEM(data);
 
                 poem.save().then((new_poem: Poem) => {
@@ -235,4 +237,57 @@ export default class PoemsService {
             }
         })
     }
+
+    protected update_poem(id: any, data: any): Promise<Response_data> {
+        return new Promise((resolve, reject) => {
+            let response = response_data();
+
+            if (data.title && data.title.length) {
+                data.url = Text.url(data.title);
+            }
+
+            POEM.findById(id).then((poem: any) => {
+
+                if (data.keywords && Array.isArray(data.keywords) && data.keywords.length) {
+
+                    poem.keywords.forEach((word: any) => {
+
+                        // Filtrar libros existentes para actualizar
+                        const existing = data.keywords.findIndex((exists: any) => exists._id === word._id.toString());
+
+                        if (existing === -1) {
+                            data.keywords.push(word);
+                        }
+
+                    });
+                }
+
+                POEM.findByIdAndUpdate(
+                    id,
+                    { $set: data },
+                    { new: true }
+                ).then((update: any) => {
+
+                    response.result = update;
+                    resolve(response);
+
+                }).catch((err: any) => {
+
+                    response.status = 400;
+                    response.message = 'BadRequest only';
+                    response.result = err;
+                    reject(response);
+                })
+
+            }).catch((err: any) => {
+
+                response.status = 400;
+                response.message = 'BadRequest only';
+                response.result = err;
+                reject(response);
+            })
+
+        })
+    }
+
 }

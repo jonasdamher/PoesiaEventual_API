@@ -16,7 +16,8 @@ class RouterEditorial {
         return this.router
             .get('/', editorials.get_all)
             .get('/:id', validate_common.get_by_id, editorials.get_with_id)
-            .post('/', csrf, auth.user, validation.create, editorials.create);
+            .post('/', csrf, auth.user, validation.create, editorials.create)
+            .patch('/:id', csrf, auth.user, validation.update, editorials.update);
     }
 }
 

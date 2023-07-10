@@ -34,6 +34,13 @@ class PoemsValidation {
                 poems: Joi.array().items(Joi.object({
                     title: Joi.string().required(),
                     text: Joi.string().required(),
+                    author: Joi.string().hex().required(),
+                    description: Joi.string().max(250),
+                    keywords: Joi.array().items(
+                        Joi.object({
+                            word: Joi.string().required(),
+                        })
+                    ).max(25).optional()
                 }))
             });
 
@@ -45,6 +52,65 @@ class PoemsValidation {
             schema = Joi.object({
                 title: Joi.string().required(),
                 text: Joi.string().required(),
+                author: Joi.string().hex().required(),
+                description: Joi.string().max(250),
+                keywords: Joi.array().items(
+                    Joi.object({
+                        word: Joi.string().required(),
+                    })
+                ).max(25).optional()
+            });
+
+            data = {
+                title: req.body.title,
+                text: req.body.text,
+            }
+        }
+
+        schema.validateAsync(data)
+            .then(() => next())
+            .catch((err: Error) => res.status(400).json(err))
+    }
+
+    public async update(req: Request, res: Response, next: NextFunction) {
+        let schema = null;
+        let data = {};
+
+        if (req.body.poems) {
+
+            schema = Joi.object({
+                poems: Joi.array().items(Joi.object({
+                    id: Joi.string().hex().required(),
+                    title: Joi.string(),
+                    text: Joi.string(),
+                    author: Joi.string().hex(),
+                    description: Joi.string().max(250),
+                    keywords: Joi.array().items(
+                        Joi.object({
+                            _id: Joi.string().hex().optional(),
+                            word: Joi.string().required(),
+                        })
+                    ).max(25).optional()
+                }))
+            });
+
+            data = {
+                poems: req.body.poems,
+            }
+        } else {
+
+            schema = Joi.object({
+                id: Joi.string().hex().required(),
+                title: Joi.string(),
+                text: Joi.string(),
+                author: Joi.string().hex(),
+                description: Joi.string().max(250),
+                keywords: Joi.array().items(
+                    Joi.object({
+                        _id: Joi.string().hex().optional(),
+                        word: Joi.string().required(),
+                    })
+                ).max(25).optional()
             });
 
             data = {

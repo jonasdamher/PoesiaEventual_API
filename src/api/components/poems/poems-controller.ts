@@ -89,6 +89,20 @@ class PoemsController extends PoemsService {
             return res.status(error.status).json(error);
         }
     }
+
+    public async update(req: Request, res: Response) {
+        try {
+            const id = req.params.id;
+            const data_body = req.body;
+
+            const result = await super.update_poem(id, data_body);
+            return res.status(result.status).json(result);
+
+        } catch (error: any) {
+            return res.status(error.status).json(error);
+        }
+    }
+
 }
 
 export default new PoemsController();

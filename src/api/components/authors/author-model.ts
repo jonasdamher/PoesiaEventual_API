@@ -178,8 +178,7 @@ const author_schema = new Schema<Author>({
             },
             message: 'El número máximo de palabras clave son 25.'
         }
-    }
-    ,
+    },
     createdAt: Number,
     updatedAt: Number
 }, {

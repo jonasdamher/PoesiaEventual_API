@@ -104,8 +104,6 @@ export default class CountriesService {
 
             COUNTRY.findByIdAndUpdate(id, { $set: data }, { new: true }).then((update_country: any) => {
 
-                response.status = 201;
-
                 response.result = update_country;
                 resolve(response)
 

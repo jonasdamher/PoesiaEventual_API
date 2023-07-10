@@ -35,5 +35,18 @@ class EditorialsController extends EditorialsService {
             return res.status(error.status).json(error);
         }
     }
+
+    public async update(req: Request, res: Response) {
+        try {
+            const id = req.params.id;
+            const data_body = req.body;
+
+            const result = await super.update_editorial(id, data_body);
+            return res.status(result.status).json(result);
+        } catch (error: any) {
+            return res.status(error.status).json(error);
+        }
+    }
+
 }
 export default new EditorialsController();
