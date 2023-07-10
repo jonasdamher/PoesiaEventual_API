@@ -56,7 +56,7 @@ class AuthorValidation {
                     _id: Joi.string().hex().optional(),
                     word: Joi.string().required(),
                 })
-            ).optional()
+            ).max(25).optional()
         });
 
         const data = {
@@ -116,7 +116,7 @@ class AuthorValidation {
                     _id: Joi.string().hex().optional(),
                     word: Joi.string().required(),
                 })
-            ).optional()
+            ).max(25).optional()
         });
 
         const data = {

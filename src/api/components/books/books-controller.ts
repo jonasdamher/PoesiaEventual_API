@@ -56,6 +56,19 @@ class BooksController extends BooksService {
             res.status(error.status).json(error);
         }
     }
+
+    public async update(req: Request, res: Response) {
+        try {
+            const id = req.params.id;
+            const data_body = req.body;
+
+            const result = await super.update_book(id, data_body);
+            res.status(result.status).json(result);
+        } catch (error: any) {
+            res.status(error.status).json(error);
+        }
+    }
+
 }
 
 export default new BooksController();

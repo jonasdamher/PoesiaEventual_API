@@ -109,19 +109,19 @@ export default class BooksService {
 
                 BOOK.find(query).skip(pagination.page_range).limit(pagination.perpage).sort('title').populate('author editorial literary_genre').then((poems: any) => {
 
-                        let data = {
-                            poems: poems,
-                            pagination: paginate(pagination)
-                        }
-                        response.result = data;
-                        resolve(response)
+                    let data = {
+                        poems: poems,
+                        pagination: paginate(pagination)
+                    }
+                    response.result = data;
+                    resolve(response)
 
-                    }).catch((err: any) => {
+                }).catch((err: any) => {
 
-                        response.status = 400;
-                        response.result = err;
-                        reject(response)
-                    })
+                    response.status = 400;
+                    response.result = err;
+                    reject(response)
+                })
 
             }).catch((err: any) => {
 
@@ -150,4 +150,23 @@ export default class BooksService {
             })
         })
     }
+
+    protected update_book(id: any, data: any): Promise<Response_data> {
+        return new Promise((resolve, reject) => {
+
+            let response = response_data();
+
+            BOOK.findByIdAndUpdate(id, { $set: data }, { new: true }).then((poem: any) => {
+
+                response.result = poem;
+                resolve(response);
+            }).catch((err: any) => {
+                response.status = 400;
+                response.result = err;
+                logger_books.info(err, 'service');
+                reject(response)
+            })
+        })
+    }
+
 }

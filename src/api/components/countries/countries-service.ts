@@ -11,7 +11,7 @@ export default class CountriesService {
     protected getAllCountries(page: number, perpage: number): Promise<Response_data> {
         return new Promise((resolve, reject) => {
             let response = response_data();
- 
+
             let current_page = Math.max(0, page)
             let pageNum = current_page
             --current_page
@@ -96,4 +96,27 @@ export default class CountriesService {
             })
         })
     }
+
+    protected update_country(id: any, data: any): Promise<Response_data> {
+        return new Promise((resolve, reject) => {
+
+            const response = response_data();
+
+            COUNTRY.findByIdAndUpdate(id, { $set: data }, { new: true }).then((update_country: any) => {
+
+                response.status = 201;
+
+                response.result = update_country;
+                resolve(response)
+
+            }).catch((err: any) => {
+
+                response.status = 400;
+                response.result = err;
+                logger_countries.info(err, 'service');
+                reject(response)
+            })
+        })
+    }
+
 }

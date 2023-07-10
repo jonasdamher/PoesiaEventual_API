@@ -18,6 +18,7 @@ class RouterBooks {
             .get('/:id', validate_common.get_by_id, books.get_by_id)
             .get('/search/:search', validate_common.search, books.search)
             .post('/', csrf, auth.user, validation.create, books.create);
+            .patch('/:id', csrf, auth.user, validation.update, books.update;
     }
 
 }

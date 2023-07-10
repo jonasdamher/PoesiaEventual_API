@@ -16,7 +16,8 @@ class RouterCountries {
         return this.router
             .get('/', validate_common.get_all, countries.getAll)
             .get('/:id', validate_common.get_by_id, countries.getWithId)
-            .post('/', csrf, auth.user, validation.create, countries.create);
+            .post('/', csrf, auth.user, validation.create, countries.create)
+            .patch('/:id', csrf, auth.user, validation.update, countries.update);
     }
 }
 

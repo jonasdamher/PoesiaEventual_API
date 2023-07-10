@@ -162,8 +162,8 @@ const author_schema = new Schema<Author>({
         minLength: 70,
         maxLength: 250,
     },
-    keywords: [
-        {
+    keywords: {
+        type: [{
             _id: {
                 type: Schema.Types.ObjectId,
                 index: true,
@@ -171,8 +171,15 @@ const author_schema = new Schema<Author>({
                 auto: true
             },
             word: String
+        }],
+        validate: {
+            validator: (v: any) => {
+                return v.length <= 25;
+            },
+            message: 'El número máximo de palabras clave son 25.'
         }
-    ],
+    }
+    ,
     createdAt: Number,
     updatedAt: Number
 }, {
