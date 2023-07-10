@@ -8,20 +8,20 @@ export interface Editorial extends Document {
     name: string;
     description: string;
     createdAt: number;
-    updateAt: number;
+    updatedAt: number;
 };
 
 const editorial_schema = new Schema<Editorial>({
     name: {
         type: String,
+        maxLength: 40,
         validate: {
-            validator: function (v: any) {
+            validator: (v: any) => {
                 return regex.text_only.test(v);
             },
             message: (props: any) => `(${props.value}) no tiene el formato adecuado.`
         },
-        required: [true, 'Es obligatorio introducir un nombre.'],
-        unique: [true, 'El nombre introducido ya existe.']
+        required: [true, 'Es obligatorio introducir un nombre.']
     },
     description: {
         type: String,

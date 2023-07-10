@@ -10,7 +10,7 @@ interface subgenres {
 }
 
 export interface Genre extends Document {
-    name: string;
+    name?: string;
     description: string;
     subgenres: Array<subgenres>;
     createdAt: number;
@@ -22,13 +22,12 @@ const genres_schema = new Schema<Genre>({
         type: String,
         maxLength: 40,
         validate: {
-            validator: function (v: any) {
+            validator: (v: any) => {
                 return regex.text_only.test(v);
             },
             message: (props: any) => `(${props.value}) no tiene el formato adecuado.`
         },
-        required: [true, 'Es obligatorio introducir un nombre.'],
-        unique: [true, 'El nombre introducido ya existe.']
+        required: [true, 'Es obligatorio introducir un nombre.']
     },
     description: {
         type: String,

@@ -16,11 +16,11 @@ export interface User extends Document {
     lastname: string;
     email: string;
     password: string;
-    role: roles;
+    role?: roles;
     verified?: Boolean;
     expire_at: Date;
     createdAt: number;
-    updateAt: number;
+    updatedAt: number;
 
 }
 
@@ -76,11 +76,7 @@ const user_schema: Schema<User> = new Schema({
     },
     role: {
         type: String,
-        trim: true,
-        enum: [
-            'ROLE_ADMIN',
-            'ROLE_BASIC'
-        ],
+        enum: [roles.ROLE_ADMIN, roles.ROLE_BASIC],
         required: true
     },
     expire_at: {

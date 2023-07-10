@@ -6,6 +6,7 @@ import config from '../config';
 /**
  * Para conectarnos a una base de datos de MONGODB
  */
+
 class Mongo {
 
     /**
@@ -15,13 +16,7 @@ class Mongo {
     async connect(): Promise<Boolean | Error> {
         return new Promise((resolve, reject) => {
 
-            const options = {
-                useNewUrlParser: true,
-                useCreateIndex: true,
-                useUnifiedTopology: true
-            };
-
-            mongoose.connect(config.db.mongo_uri, options)
+            mongoose.connect(config.db.mongo_uri)
                 .then(() => resolve(true))
                 .catch((error: Error) => reject(error))
         })

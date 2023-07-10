@@ -14,10 +14,14 @@ Mongo.connect().then(() => {
         }
 
     } catch (error: unknown) {
-        logger_app.info({ error }, 'Run app')
+        console.log(error);
+
+        logger_app.info({ error }, 'Error app')
         process.exit(1);
     }
 }).catch((error: Error) => {
+    console.log(error);
+
     logger_app.error({ error }, 'Mongoose, connect to db')
     process.exit(1);
 })

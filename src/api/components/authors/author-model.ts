@@ -27,7 +27,7 @@ export interface Author extends Document {
     lastname: string;
     full_name: string;
     pseudonym: string;
-    gender: genders;
+    gender?: genders;
     country: Schema.Types.ObjectId;
     occupations: Array<Schema.Types.ObjectId>;
     literary_genres: Array<Schema.Types.ObjectId>;
@@ -35,11 +35,11 @@ export interface Author extends Document {
     biography: string;
     portrait: string;
     photos: Array<photos>;
-    url: string;
+    url?: string;
     description: string;
     keywords: Array<keywords>;
     createdAt: number;
-    updateAt: number;
+    updatedAt: number;
 
     saveAuthor(): Promise<Author>;
     updateAuthor(data: Partial<Author>): Promise<Author>;

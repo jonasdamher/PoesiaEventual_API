@@ -1,6 +1,6 @@
 'use strict';
 
-import pino from 'pino';
+import pino, { Logger } from 'pino';
 
 /**
  * Configuración de logger.
@@ -9,81 +9,69 @@ import pino from 'pino';
  */
 
 
-const commons_options = {
+const commons_options: any = {
     sync: false
 };
 
 // FOR COMPONENTS
-export const logger_users = pino(pino.destination({
-    dest: './logs/components/users.json',
-    ...commons_options
-})).child({ component: 'users' });
+export const logger_users: Logger = pino(
+    commons_options,
+    pino.destination('./logs/components/users.json')).child({ component: 'users' });
 
-export const logger_authors = pino(pino.destination({
-    dest: './logs/components/authors.json',
-    ...commons_options
-})).child({ component: 'users' });
+export const logger_authors: Logger = pino(
+    commons_options,
+    pino.destination('./logs/components/authors.json')).child({ component: 'authors' });
 
-export const logger_books = pino(pino.destination({
-    dest: './logs/components/books .json',
-    ...commons_options
-})).child({ component: 'books ' });
-
-export const logger_poems = pino(pino.destination({
-    dest: './logs/components/poems.json',
-    ...commons_options
-})).child({ component: 'poems' });
-
-export const logger_recognitions = pino(pino.destination({
-    dest: './logs/components/recognitions.json',
-    ...commons_options
-})).child({ component: 'recognitions' });
-
-export const logger_editorials = pino(pino.destination({
-    dest: './logs/components/editorials.json',
-    ...commons_options
-})).child({ component: 'editorials' });
-
-export const logger_occupation = pino(pino.destination({
-    dest: './logs/components/occupations.json',
-    ...commons_options
-})).child({ component: 'occupations' });
-
-export const logger_genre = pino(pino.destination({
-    dest: './logs/components/literary_genre.json',
-    ...commons_options
-})).child({ component: 'literary_genre' });
+export const logger_books: Logger = pino(
+    commons_options,
+    pino.destination('./logs/components/books.json')).child({ component: 'books' });
 
 
-export const logger_countries = pino(pino.destination({
-    dest: './logs/components/countries.json',
-    ...commons_options
-})).child({ component: 'countries' });
+export const logger_poems: Logger = pino(
+    commons_options,
+    pino.destination('./logs/components/poems.json')).child({ component: 'poems' });
 
+export const logger_recognitions: Logger = pino(
+    commons_options,
+    pino.destination('./logs/components/recognitions.json')).child({ component: 'recognitions' });
+
+
+export const logger_editorials: Logger = pino(
+    commons_options,
+    pino.destination('./logs/components/editorials.json')).child({ component: 'editorials' });
+
+export const logger_occupation: Logger = pino(
+    commons_options,
+    pino.destination('./logs/components/occupations.json')).child({ component: 'occupations' });
+
+export const logger_genre: Logger = pino(
+    commons_options,
+    pino.destination('./logs/components/literary_genre.json')).child({ component: 'literary_genre' });
+
+export const logger_countries: Logger = pino(
+    commons_options,
+    pino.destination('./logs/components/countries.json')).child({ component: 'countries' });
 
 // FINAL - FOR COMPONENTS
 
-export const logger_email = pino(pino.destination({
-    dest: './logs/emails.json',
-    ...commons_options
-})).child({ component: 'email' });
+export const logger_email: Logger = pino(
+    commons_options,
+    pino.destination('./logs/email.json')).child({ component: 'email' });
 
-export const logger_app = pino(pino.destination({
-    dest: './logs/app.json',
-    ...commons_options
-})).child({ component: 'app' });
+export const logger_app: Logger = pino(
+    commons_options,
+    pino.destination('./logs/app.json')).child({ component: 'app' });
 
-const logger_node = pino(pino.destination({
-    dest: './logs/node.json',
-    ...commons_options
-})).child({ component: 'node' });
+const logger_node: Logger = pino(
+    commons_options,
+    pino.destination('./logs/node.json')).child({ component: 'node' });
 
-process.on('uncaughtException', pino.final(logger_node, (err, finalLogger) => {
-    finalLogger.error({ err }, 'uncaughtException');
+process.on('uncaughtException', (err: any) => {
+    logger_node.error({ err }, 'uncaughtException');
     process.exit(1);
-}));
+});
 
-process.on('unhandledRejection', pino.final(logger_node, (err, finalLogger) => {
-    finalLogger.error({ err }, 'unhandledRejection');
+process.on('unhandledRejection', (err: any) => {
+    logger_node.error({ err }, 'unhandledRejection');
     process.exit(1);
-}));
+});

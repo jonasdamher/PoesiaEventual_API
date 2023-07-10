@@ -6,13 +6,13 @@ import { Model, model, Document, Schema } from 'mongoose';
 export interface Book extends Document {
     author: Schema.Types.ObjectId;
     title: string;
-    synopsis: string;
-    portrait: string;
+    synopsis?: string;
+    portrait?: string;
     literary_genre: Schema.Types.ObjectId;
     editorial: Schema.Types.ObjectId;
     published: number;
     createdAt: number;
-    updateAt: number;
+    updatedAt: number;
 };
 
 const book_schema: Schema<Book> = new Schema({

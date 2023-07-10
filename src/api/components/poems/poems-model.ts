@@ -13,11 +13,11 @@ export interface Poem extends Document {
     author: Schema.Types.ObjectId;
     title: string;
     text: string;
-    url: string;
+    url?: string;
     description: string;
     keywords: Array<keywords>;
     createdAt: number;
-    updateAt: number;
+    updatedAt: number;
 }
 
 const poem_schema = new Schema<Poem>({
@@ -37,7 +37,6 @@ const poem_schema = new Schema<Poem>({
     },
     url: {
         type: String,
-        trim: true,
         validate: {
             validator: function (v: any) {
                 return regex.url_name.test(v);

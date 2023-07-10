@@ -8,7 +8,7 @@ export interface Country extends Document {
     ISO_text: string;
     ISO_number: number;
     createdAt: number;
-    updateAt: number;
+    updatedAt: number;
 }
 
 const countries_schema: Schema<Country> = new Schema({

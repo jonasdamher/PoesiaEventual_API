@@ -14,11 +14,11 @@ export interface Recognition extends Document {
     title: string;
     age: number;
     text: string;
-    url: string;
+    url?: string;
     description: string;
     keywords: Array<keywords>;
     createdAt: number;
-    updateAt: number;
+    updatedAt: number;
 }
 
 const recognitions_schema: Schema<Recognition> = new Schema({

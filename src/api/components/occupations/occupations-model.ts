@@ -8,7 +8,7 @@ export interface Occupation extends Document {
     name: string;
     description: string;
     createdAt: number;
-    updateAt: number;
+    updatedAt: number;
 }
 
 const occupations_schema: Schema<Occupation> = new Schema({
