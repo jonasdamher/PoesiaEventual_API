@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node ./dist/server.js",
     "build": "tsc",
-    "test": "jest"
+    "test": "jest",
+    "docker":"docker build -t jonasdamher/poesiaeventual_api ."
   },
   "repository": {
     "type": "git",
