@@ -1,4 +1,13 @@
 'use strict';
 
 import csrf from 'csurf';
-export default csrf({ cookie: true });
+import { Request, Response, NextFunction } from 'express';
+import config from '../config';
+
+export default (config.app.node_env === 'test'
+    ?
+    function (req: Request, res: Response, next: NextFunction) {
+        next();
+    } :
+    csrf({ cookie: true }));
+

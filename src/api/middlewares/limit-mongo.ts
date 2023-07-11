@@ -11,8 +11,8 @@ import mongoose from 'mongoose';
 const opts = {
     dbName: 'limit_mongo',
     storeClient: mongoose.connection,
-    points: 10, // Number of points
-    duration: 3 // Per second(s)
+    points: 50, // Number of points
+    duration: 1 // Per second(s)
 };
 
 const limiter_mongo = new RateLimiterMongo(opts);
