@@ -9,7 +9,6 @@ class UsersValidation {
 
     public async update(req: Request, res: Response, next: NextFunction) {
         const schema = Joi.object({
-            id: Joi.string().hex().required(),
             name: Joi.string(),
             lastname: Joi.string(),
             email: Joi.string().email(),
@@ -17,7 +16,6 @@ class UsersValidation {
         });
 
         const data = {
-            id: req.params.id,
             name: req.body.name,
             lastname: req.body.lastname,
             email: req.body.email,

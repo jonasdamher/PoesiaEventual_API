@@ -63,4 +63,29 @@ export default class UsersService {
             })
         });
     }
+
+    protected deleteUserById(id: string): Promise<Response_data> {
+        return new Promise((resolve, reject) => {
+
+            let response = response_data();
+
+            USER.findByIdAndDelete(id).then((res: any) => {
+
+                response.message = '';
+                response.result = res._id;
+
+                resolve(response);
+
+            }).catch((err: any) => {
+
+                response.status = 400;
+                response.message = 'BadRequest';
+
+                let responseFail = response;
+                responseFail.result = err;
+                logger_users.info(responseFail, 'service')
+                reject(response);
+            })
+        });
+    }
 }
