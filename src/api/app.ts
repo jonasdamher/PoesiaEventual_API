@@ -77,7 +77,7 @@ class App {
                 if (err.code !== 'EBADCSRFTOKEN') return next(err);
 
                 return res.status(403).json({ message: 'Forbidden token' });
-            })
+            });
     }
 }
 
