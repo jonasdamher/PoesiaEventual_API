@@ -5,7 +5,7 @@ import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
 import request from 'supertest';
 
-let mongod: any;
+let mongod: MongoMemoryServer;
 
 /* Connecting to the database before each test. */
 beforeEach(async () => {
@@ -34,7 +34,7 @@ describe("POST /api/v2/auth/", () => {
                 "name": "Jonás",
                 "lastname": "Damián Hernández",
                 "email": "pepeluis@gmail.com",
-                "password": "desire12Q*",
+                "password": "XXXXX",
                 "role": 1
             });
 
