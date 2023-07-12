@@ -6,6 +6,7 @@ import helmet from 'helmet';
 import cors from 'cors';
 import moment from 'moment';
 import cookieParser from 'cookie-parser';
+import timeout from 'connect-timeout';
 
 import config from './config';
 import { logger_app } from './helpers/logger';
@@ -30,7 +31,15 @@ class App {
         // Configuración fecha formato Español
         moment.locale('es');
 
+        if (config.app.node_env !== 'test') {
+            // Usar configuración de limite de peticiones simultaneas
+            this.app.use(limit_mongo);
+        }
+
         this.app
+            .enable('strict routing')
+            // Configurar el middleware de tiempo de espera
+            .use(timeout('7s'))
             // Limitar los KB de las peticiones
             .use(express.json({ strict: true, limit: '500kb' }), (err: Error, req: Request, res: Response, next: NextFunction) => {
                 if (err) {
@@ -39,15 +48,25 @@ class App {
                 }
                 next();
             })
+            .use(express.json())
             .use(express.urlencoded({ extended: false }))
             .use(cookieParser())
             .use(compression())
             .use(helmet())
             .use(cors())
-            // Usar configuración de limite de peticiones simultaneas
-            .use(limit_mongo)
             // Ruta principal de endpoints de API
             .use(config.app.version, Routes)
+            .use((err: any, req: Request, res: Response, next: NextFunction) => {
+                if (err) {
+                    if (err.timeout) {
+                        res.status(503).send('Request timeout');
+                    } else {
+                        next(err);
+                    }
+                } else {
+                    next();
+                }
+            })
             // Mensaje al no encontrar una ruta
             .use((req: Request, res: Response) => {
                 return res.status(404).json({ message: 'Not found' });
@@ -55,11 +74,10 @@ class App {
             // Mensaje personalizado de csrf token al no tenerlo en el cuerpo de la solicitud del endpoint donde se requiere
             .use(function (err: any, req: Request, res: Response, next: NextFunction) {
 
-                if (err.code !== 'EBADCSRFTOKEN') {
-                    return next(err);
-                }
+                if (err.code !== 'EBADCSRFTOKEN') return next(err);
+
                 return res.status(403).json({ message: 'Forbidden token' });
-            });
+            })
     }
 }
 

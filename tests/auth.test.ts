@@ -8,19 +8,16 @@ import request from 'supertest';
 let mongod: MongoMemoryServer;
 
 /* Connecting to the database before each test. */
-beforeEach(async () => {
+beforeAll(async () => {
 
     mongod = await MongoMemoryServer.create();
-
     const uri = mongod.getUri();
-
     // The Server can be stopped again with
-
     await mongoose.connect(uri);
 });
 
 /* Closing database connection after each test. */
-afterEach(async () => {
+afterAll(async () => {
     await mongoose.connection.close();
     await mongod.stop();
 });
@@ -34,7 +31,7 @@ describe("POST /api/v2/auth/", () => {
                 "name": "Jonás",
                 "lastname": "Damián Hernández",
                 "email": "pepeluis@gmail.com",
-                "password": "XXXXX",
+                "password": "XXXXXeeeeeee12Q*",
                 "role": 1
             });
 

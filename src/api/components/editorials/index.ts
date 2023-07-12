@@ -10,7 +10,7 @@ import * as auth from '../../middlewares/auth';
 
 class RouterEditorial {
 
-    private router: Router = express.Router();
+    private router: Router = express.Router({ caseSensitive: true, strict: true });
 
     public routes(): Router {
         return this.router

@@ -13,7 +13,7 @@ import * as auth from '../../middlewares/auth';
  */
 class RouterAuthor {
 
-    private router: Router = express.Router();
+    private router: Router = express.Router({ caseSensitive: true, strict: true });
 
     public routes(): Router {
         return this.router

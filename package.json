@@ -33,6 +33,7 @@
   "dependencies": {
     "bcrypt": "^5.1.0",
     "compression": "^1.7.4",
+    "connect-timeout": "^1.9.0",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "csurf": "^1.11.0",
@@ -53,6 +54,7 @@
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",
     "@types/compression": "^1.7.2",
+    "@types/connect-timeout": "^0.0.37",
     "@types/cookie-parser": "^1.4.3",
     "@types/cors": "^2.8.13",
     "@types/csurf": "^1.11.2",
