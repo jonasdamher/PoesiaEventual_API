@@ -14,11 +14,11 @@ class OccupationsValidator {
         const data = {
             name: req.body.name,
             description: req.body.description,
-        }
+        };
 
         schema.validateAsync(data)
             .then(() => next())
-            .catch((err: Error) => res.status(400).json(err))
+            .catch((err: Error) => res.status(400).json(err));
     }
 
     public async update(req: Request, res: Response, next: NextFunction) {
@@ -33,14 +33,14 @@ class OccupationsValidator {
             id: req.params.id,
             name: req.body.name,
             description: req.body.description
-        }
+        };
 
         schema.validateAsync(data)
             .then(() => next())
             .catch((err: Error) => {
                 // logger_editorials.info({ err }, 'validation')
-                return res.status(400).json(err)
-            })
+                return res.status(400).json(err);
+            });
 
     }
 

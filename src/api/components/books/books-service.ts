@@ -11,16 +11,16 @@ import { Schema } from 'mongoose';
 
 export default class BooksService {
 
-    protected get_all_books(page: number, perpage: number): Promise<Response_data> {
+    protected get_all_books(page: number, perPage: number): Promise<Response_data> {
         return new Promise((resolve, reject) => {
 
-            let response = response_data();
+            const response = response_data();
 
-            get_pagination(BOOK, page, perpage).then((pagination: any) => {
+            get_pagination(BOOK, page, perPage).then((pagination: any) => {
 
                 BOOK.find()
                     .skip(pagination.page_range)
-                    .limit(pagination.perpage)
+                    .limit(pagination.perPage)
                     .sort('title')
                     .select('title')
                     .populate({ path: 'author', select: 'full_name url' })
@@ -28,7 +28,7 @@ export default class BooksService {
                     .populate({ path: 'literary_genre', select: 'name' })
                     .then((book_list: any) => {
 
-                        let data = {
+                        const data = {
                             books: book_list,
                             pagination: paginate(pagination)
                         };
@@ -56,7 +56,7 @@ export default class BooksService {
     protected get_book_by_id(id: string): Promise<Response_data> {
         return new Promise((resolve, reject) => {
 
-            let response = response_data();
+            const response = response_data();
 
             BOOK.findById({ _id: id })
                 .select('title')
@@ -70,9 +70,9 @@ export default class BooksService {
                 }).catch((err: any) => {
                     response.status = 400;
                     response.result = err;
-                    reject(response)
-                })
-        })
+                    reject(response);
+                });
+        });
     }
 
     public get_books_of_author(id: any) {
@@ -94,48 +94,48 @@ export default class BooksService {
 
                 }).catch((err: any) => {
                     logger_books.info(err, 'service');
-                    reject([])
-                })
-        })
+                    reject([]);
+                });
+        });
     }
 
-    protected search_book(page: number, perpage: number, search: string): Promise<Response_data> {
+    protected search_book(page: number, perPage: number, search: string): Promise<Response_data> {
         return new Promise((resolve, reject) => {
 
-            let response = response_data();
+            const response = response_data();
             const query = { title: { $regex: '.*' + search + '.*', $options: 'i' } };
 
-            get_pagination(BOOK, page, perpage, query).then((pagination: any) => {
+            get_pagination(BOOK, page, perPage, query).then((pagination: any) => {
 
-                BOOK.find(query).skip(pagination.page_range).limit(pagination.perpage).sort('title').populate('author editorial literary_genre').then((poems: any) => {
+                BOOK.find(query).skip(pagination.page_range).limit(pagination.perPage).sort('title').populate('author editorial literary_genre').then((poems: any) => {
 
-                    let data = {
+                    const data = {
                         poems: poems,
                         pagination: paginate(pagination)
-                    }
+                    };
                     response.result = data;
-                    resolve(response)
+                    resolve(response);
 
                 }).catch((err: any) => {
 
                     response.status = 400;
                     response.result = err;
-                    reject(response)
-                })
+                    reject(response);
+                });
 
             }).catch((err: any) => {
 
                 response.status = 400;
                 response.result = err;
-                reject(response)
-            })
-        })
+                reject(response);
+            });
+        });
     }
 
     protected create_book(data: any): Promise<Response_data> {
         return new Promise((resolve, reject) => {
 
-            let response = response_data();
+            const response = response_data();
             const book: Book = new BOOK(data);
 
             book.save().then((poem: any) => {
@@ -146,15 +146,15 @@ export default class BooksService {
                 response.status = 400;
                 response.result = err;
                 logger_books.info(err, 'service');
-                reject(response)
-            })
-        })
+                reject(response);
+            });
+        });
     }
 
     protected update_book(id: any, data: any): Promise<Response_data> {
         return new Promise((resolve, reject) => {
 
-            let response = response_data();
+            const response = response_data();
 
             BOOK.findByIdAndUpdate(id, { $set: data }, { new: true }).then((poem: any) => {
 
@@ -164,9 +164,9 @@ export default class BooksService {
                 response.status = 400;
                 response.result = err;
                 logger_books.info(err, 'service');
-                reject(response)
-            })
-        })
+                reject(response);
+            });
+        });
     }
 
 }

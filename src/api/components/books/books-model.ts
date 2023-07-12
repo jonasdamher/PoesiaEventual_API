@@ -13,7 +13,7 @@ export interface Book extends Document {
     published: number;
     createdAt: number;
     updatedAt: number;
-};
+}
 
 const book_schema: Schema<Book> = new Schema({
     author: {

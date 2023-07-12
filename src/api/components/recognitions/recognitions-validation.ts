@@ -27,11 +27,11 @@ class RecognitionsValidation {
             author: req.body.author,
             description: req.body.description,
             keywords: req.body.keywords,
-        }
+        };
 
         schema.validateAsync(data)
             .then(() => next())
-            .catch((err: Error) => res.status(400).json(err))
+            .catch((err: Error) => res.status(400).json(err));
     }
 
     public async update(req: Request, res: Response, next: NextFunction) {
@@ -59,11 +59,11 @@ class RecognitionsValidation {
             author: req.body.author,
             description: req.body.description,
             keywords: req.body.keywords,
-        }
+        };
 
         schema.validateAsync(data)
             .then(() => next())
-            .catch((err: Error) => res.status(400).json(err))
+            .catch((err: Error) => res.status(400).json(err));
     }
 
 }

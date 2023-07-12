@@ -1,6 +1,6 @@
 'use strict';
 
-import { Request, Response } from 'express';
+import { Response } from 'express';
 import UsersService from './users-service';
 
 class UsersController extends UsersService {

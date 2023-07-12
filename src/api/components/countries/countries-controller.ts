@@ -7,12 +7,12 @@ import { currentPage, currentPerPage } from '../../utils/pagination';
 class CountriesController extends CountriesService {
     public async getAll(req: Request, res: Response) {
         try {
-            const { page, perpage } = req.query;
+            const { page, perPage } = req.query;
 
-            let current_page = currentPage(page);
-            let current_perpage = currentPerPage(perpage);
+            const current_page = currentPage(page);
+            const current_perPage = currentPerPage(perPage);
 
-            const result = await super.getAllCountries(current_page, current_perpage);
+            const result = await super.getAllCountries(current_page, current_perPage);
 
             return res.status(result.status).json(result);
         } catch (error: any) {

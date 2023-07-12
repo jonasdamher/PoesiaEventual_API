@@ -35,7 +35,7 @@ export default class Email {
             }
         });
 
-        let mail_details = {
+        const mail_details = {
             from: config.nodemailer.email,
             to: this.#to,
             subject: this.#subject,

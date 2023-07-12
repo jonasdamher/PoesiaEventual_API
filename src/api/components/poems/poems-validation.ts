@@ -9,19 +9,19 @@ class PoemsValidation {
         const schema = Joi.object({
             id: Joi.string().hex().required(),
             page: Joi.number().integer(),
-            perpage: Joi.number().integer().min(1).max(12)
+            perPage: Joi.number().integer().min(1).max(12)
         });
 
         const data = {
             id: req.params.id,
             page: req.query.page,
-            perpage: req.query.perpage
-        }
+            perPage: req.query.perPage
+        };
         schema.validateAsync(data)
             .then(() => next())
             .catch((err: Error) => {
-                return res.status(400).json(err)
-            })
+                return res.status(400).json(err);
+            });
     }
 
     public async create(req: Request, res: Response, next: NextFunction) {
@@ -46,7 +46,7 @@ class PoemsValidation {
 
             data = {
                 poems: req.body.poems,
-            }
+            };
         } else {
 
             schema = Joi.object({
@@ -64,12 +64,12 @@ class PoemsValidation {
             data = {
                 title: req.body.title,
                 text: req.body.text,
-            }
+            };
         }
 
         schema.validateAsync(data)
             .then(() => next())
-            .catch((err: Error) => res.status(400).json(err))
+            .catch((err: Error) => res.status(400).json(err));
     }
 
     public async update(req: Request, res: Response, next: NextFunction) {
@@ -96,7 +96,7 @@ class PoemsValidation {
 
             data = {
                 poems: req.body.poems,
-            }
+            };
         } else {
 
             schema = Joi.object({
@@ -116,12 +116,12 @@ class PoemsValidation {
             data = {
                 title: req.body.title,
                 text: req.body.text,
-            }
+            };
         }
 
         schema.validateAsync(data)
             .then(() => next())
-            .catch((err: Error) => res.status(400).json(err))
+            .catch((err: Error) => res.status(400).json(err));
     }
 }
 

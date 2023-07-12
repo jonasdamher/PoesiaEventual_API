@@ -7,5 +7,5 @@ export default function response_data(): Response_data {
         message: 'Success',
         status: 200,
         result: null
-    }
+    };
 }

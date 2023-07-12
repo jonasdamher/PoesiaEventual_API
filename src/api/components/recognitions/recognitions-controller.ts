@@ -9,12 +9,12 @@ class RecogController extends RecogService {
     public async get_all(req: Request, res: Response) {
         try {
 
-            const { page, perpage } = req.query;
+            const { page, perPage } = req.query;
 
-            let current_page = currentPage(page);
-            let current_perpage = currentPerPage(perpage);
+            const current_page = currentPage(page);
+            const current_perPage = currentPerPage(perPage);
 
-            const result = await super.get_all_recog(current_page, current_perpage)
+            const result = await super.get_all_recog(current_page, current_perPage);
             return res.status(result.status).json(result);
 
 
@@ -40,13 +40,13 @@ class RecogController extends RecogService {
 
     public async search(req: Request, res: Response) {
         try {
-            const { page, perpage } = req.query;
+            const { page, perPage } = req.query;
             const search = req.params.search.trim().toLowerCase();
 
-            let current_page = Number(page ?? 1);
-            let current_perpage = Number(perpage ?? 10);
+            const current_page = Number(page ?? 1);
+            const current_perPage = Number(perPage ?? 10);
 
-            const result = await super.search_recogs(current_page, current_perpage, search);
+            const result = await super.search_recogs(current_page, current_perPage, search);
             return res.status(result.status).json(result);
 
         } catch (error: any) {
@@ -59,7 +59,7 @@ class RecogController extends RecogService {
         try {
             const data_body = req.body;
 
-            const result = await super.create_recog(data_body)
+            const result = await super.create_recog(data_body);
             return res.status(result.status).json(result);
 
         } catch (error: any) {
@@ -72,7 +72,7 @@ class RecogController extends RecogService {
             const id = req.params.id;
             const data_body = req.body;
 
-            const result = await super.update_recog(id, data_body)
+            const result = await super.update_recog(id, data_body);
             return res.status(result.status).json(result);
 
         } catch (error: any) {
@@ -84,7 +84,7 @@ class RecogController extends RecogService {
         try {
             const id = req.params.id;
 
-            const result = await super.delete_by_author_all_document(id)
+            const result = await super.delete_by_author_all_document(id);
             return res.status(result.status).json(result);
 
         } catch (error: any) {
@@ -97,7 +97,7 @@ class RecogController extends RecogService {
         try {
             const id = req.params.id;
 
-            const result = await super.delete_by_id_document(id)
+            const result = await super.delete_by_id_document(id);
             return res.status(result.status).json(result);
 
         } catch (error: any) {

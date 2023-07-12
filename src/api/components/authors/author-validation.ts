@@ -19,9 +19,9 @@ class AuthorValidation {
         schema.validateAsync(param)
             .then(() => next())
             .catch((err: Error) => {
-                logger_authors.info({ err }, 'validation')
-                return res.status(400).json(err)
-            })
+                logger_authors.info({ err }, 'validation');
+                return res.status(400).json(err);
+            });
     }
 
     async create(req: Request, res: Response, next: NextFunction) {
@@ -78,9 +78,9 @@ class AuthorValidation {
         schema.validateAsync(data)
             .then(() => next())
             .catch((err: Error) => {
-                logger_authors.info({ err }, 'validation')
-                return res.status(400).json(err)
-            })
+                logger_authors.info({ err }, 'validation');
+                return res.status(400).json(err);
+            });
     }
 
     async update(req: Request, res: Response, next: NextFunction) {
@@ -139,9 +139,9 @@ class AuthorValidation {
         schema.validateAsync(data)
             .then(() => next())
             .catch((err: Error) => {
-                logger_authors.info({ err }, 'validation')
-                return res.status(400).json(err)
-            })
+                logger_authors.info({ err }, 'validation');
+                return res.status(400).json(err);
+            });
     }
 
 }

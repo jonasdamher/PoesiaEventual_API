@@ -8,7 +8,7 @@ import Email from '../../helpers/Email';
 import { logger_users } from '../../helpers/logger';
 import response_data from '../../utils/response_data';
 // Configuración
-import config from '../../config'
+import config from '../../config';
 // Tipos
 import Response_data from '../../types/Response_data';
 
@@ -22,7 +22,7 @@ export default class AuthService {
      */
     protected userLogin(email: string, password: string): Promise<Response_data> {
         return new Promise((resolve, reject) => {
-            let response = response_data();
+            const response = response_data();
 
             USER.findOne({ email: email }).then((current_user: any) => {
 
@@ -39,19 +39,19 @@ export default class AuthService {
                     response.status = 401;
                     response.message = 'Unauthorized';
 
-                    logger_users.info(response, 'service')
+                    logger_users.info(response, 'service');
                     reject(response);
-                })
+                });
             }).catch((err: any) => {
 
                 response.status = 401;
                 response.message = 'Unauthorized';
 
-                let responseFail = response;
+                const responseFail = response;
                 responseFail.result = err;
-                logger_users.info(responseFail, 'service')
+                logger_users.info(responseFail, 'service');
                 reject(response);
-            })
+            });
         });
     }
 
@@ -62,7 +62,7 @@ export default class AuthService {
      */
     protected userCreate(data: any): Promise<Response_data> {
         return new Promise((resolve, reject) => {
-            let response = response_data();
+            const response = response_data();
 
             const user: User = new USER(data);
 
@@ -88,11 +88,11 @@ export default class AuthService {
                 response.status = 400;
                 response.message = 'BadRequest';
 
-                let responseFail = response;
+                const responseFail = response;
                 responseFail.result = err;
-                logger_users.info(responseFail, 'service')
+                logger_users.info(responseFail, 'service');
                 reject(response);
-            })
+            });
         });
     }
 
@@ -116,18 +116,18 @@ export default class AuthService {
                     response.status = 400;
                     response.message = 'BadRequest';
 
-                    let responseFail = response;
+                    const responseFail = response;
                     responseFail.result = err;
-                    logger_users.info(responseFail, 'service')
+                    logger_users.info(responseFail, 'service');
                     reject(response);
-                })
+                });
 
             }).catch((err: any) => {
 
                 response = err;
-                logger_users.info(response, 'service')
+                logger_users.info(response, 'service');
                 reject(response);
-            })
+            });
         });
     }
 

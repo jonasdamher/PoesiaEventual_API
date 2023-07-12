@@ -1,6 +1,6 @@
 'use strict';
 
-import express, { Router, Application, NextFunction, Request, Response } from 'express';
+import express, { Application, NextFunction, Request, Response } from 'express';
 import compression from 'compression';
 import helmet from 'helmet';
 import cors from 'cors';
@@ -45,11 +45,11 @@ class App {
             .use(helmet())
             .use(cors())
             // Usar configuración de limite de peticiones simultaneas
-            // .use(limit_mongo)
+            .use(limit_mongo)
             // Ruta principal de endpoints de API
             .use(config.app.version, Routes)
             // Mensaje al no encontrar una ruta
-            .use((req: Request, res: Response, next: NextFunction) => {
+            .use((req: Request, res: Response) => {
                 return res.status(404).json({ message: 'Not found' });
             })
             // Mensaje personalizado de csrf token al no tenerlo en el cuerpo de la solicitud del endpoint donde se requiere
@@ -59,7 +59,7 @@ class App {
                     return next(err);
                 }
                 return res.status(403).json({ message: 'Forbidden token' });
-            })
+            });
     }
 }
 

@@ -16,14 +16,14 @@ class EditorialsValidation {
         const data = {
             name: req.body.name,
             description: req.body.description
-        }
+        };
 
         schema.validateAsync(data)
             .then(() => next())
             .catch((err: Error) => {
-                logger_editorials.info({ err }, 'validation')
-                return res.status(400).json(err)
-            })
+                logger_editorials.info({ err }, 'validation');
+                return res.status(400).json(err);
+            });
 
     }
 
@@ -39,14 +39,14 @@ class EditorialsValidation {
             id: req.params.id,
             name: req.body.name,
             description: req.body.description
-        }
+        };
 
         schema.validateAsync(data)
             .then(() => next())
             .catch((err: Error) => {
-                logger_editorials.info({ err }, 'validation')
-                return res.status(400).json(err)
-            })
+                logger_editorials.info({ err }, 'validation');
+                return res.status(400).json(err);
+            });
 
     }
 

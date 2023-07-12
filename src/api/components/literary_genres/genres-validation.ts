@@ -21,11 +21,11 @@ class GenresValidation {
             name: req.body.name,
             description: req.body.description,
             subgenres: req.body.subgenres
-        }
+        };
 
         schema.validateAsync(data)
             .then(() => next())
-            .catch((err: Error) => res.status(400).json(err))
+            .catch((err: Error) => res.status(400).json(err));
     }
 
     public async update(req: Request, res: Response, next: NextFunction) {
@@ -47,11 +47,11 @@ class GenresValidation {
             name: req.body.name,
             description: req.body.description,
             subgenres: req.body.subgenres
-        }
+        };
 
         schema.validateAsync(data)
             .then(() => next())
-            .catch((err: Error) => res.status(400).json(err))
+            .catch((err: Error) => res.status(400).json(err));
     }
 
 }

@@ -12,13 +12,13 @@ import { Schema } from 'mongoose';
 
 export default class RecogService {
 
-    protected get_all_recog(page: number, perpage: number): Promise<Response_data> {
+    protected get_all_recog(page: number, perPage: number): Promise<Response_data> {
         return new Promise((resolve, reject) => {
-            let response = response_data();
+            const response = response_data();
 
-            get_pagination(RECOG, page, perpage).then((pagination: any) => {
+            get_pagination(RECOG, page, perPage).then((pagination: any) => {
 
-                RECOG.find().skip(pagination.page_range).limit(pagination.perpage).sort('name')
+                RECOG.find().skip(pagination.page_range).limit(pagination.perPage).sort('name')
                     .then((authorResponse: any) => {
 
                         response.result = {
@@ -30,7 +30,7 @@ export default class RecogService {
                     }).catch((err: any) => {
 
                         response.status = 400;
-                        response.message = 'BadRequest'
+                        response.message = 'BadRequest';
                         response.result = err;
 
                         reject(response);
@@ -40,7 +40,7 @@ export default class RecogService {
 
 
                 response.status = 400;
-                response.message = 'BadRequest'
+                response.message = 'BadRequest';
                 response.result = err;
 
                 reject(response);
@@ -51,7 +51,7 @@ export default class RecogService {
     protected get_recog_by_id(id: string): Promise<Response_data> {
         return new Promise((resolve, reject) => {
 
-            let response = response_data();
+            const response = response_data();
 
             RECOG.findById(id).populate('author', 'name').then((poem: any) => {
 
@@ -59,54 +59,53 @@ export default class RecogService {
                 resolve(response);
             }).catch((err: any) => {
                 response.status = 400;
-                response.message = 'BadRequest'
+                response.message = 'BadRequest';
                 response.result = err;
                 reject(response);
-            })
-        })
+            });
+        });
     }
 
-    protected search_recogs(page: number, perpage: number, search: string): Promise<Response_data> {
+    protected search_recogs(page: number, perPage: number, search: string): Promise<Response_data> {
         return new Promise((resolve, reject) => {
 
-            let response = response_data();
+            const response = response_data();
 
-            let query = { title: { $regex: '.*' + search + '.*', $options: 'i' } };
+            const query = { title: { $regex: '.*' + search + '.*', $options: 'i' } };
 
-            get_pagination(RECOG, page, perpage, query).then((pagination: any) => {
+            get_pagination(RECOG, page, perPage, query).then((pagination: any) => {
 
-                RECOG.find(query).populate('author').skip(pagination.page_range).limit(pagination.perpage).sort('title')
+                RECOG.find(query).populate('author').skip(pagination.page_range).limit(pagination.perPage).sort('title')
                     .then((poems: any) => {
 
-                        let result = {
+                        const result = {
                             poems: poems,
                             pagination: paginate(pagination)
-                        }
+                        };
 
                         response.result = result;
                         resolve(response);
                     }).catch((err: any) => {
 
                         response.status = 400;
-                        response.message = 'BadRequest'
+                        response.message = 'BadRequest';
                         response.result = err;
                         reject(response);
-                    })
+                    });
 
             }).catch((err: any) => {
 
                 response.status = 400;
-                response.message = 'BadRequest'
+                response.message = 'BadRequest';
                 response.result = err;
                 reject(response);
-            })
-        })
+            });
+        });
     }
 
     public get_recognitions_of_author(id: any) {
         return new Promise((resolve, reject) => {
-            let response = response_data();
-
+ 
             const current_id: Schema.Types.ObjectId = id;
 
             RECOG.findOne({ author: current_id })
@@ -121,14 +120,14 @@ export default class RecogService {
                     resolve([recognitions]);
                 }).catch((err: any) => {
                     logger_recognitions.info(err, 'service');
-                    reject([])
-                })
-        })
+                    reject([]);
+                });
+        });
     }
 
     protected create_recog(data: any): Promise<Response_data> {
         return new Promise((resolve, reject) => {
-            let response = response_data();
+            const response = response_data();
 
             data.url = Text.url(data.author + ' ' + data.title);
 
@@ -142,19 +141,19 @@ export default class RecogService {
             }).catch((err: any) => {
 
                 response.status = 400;
-                response.message = 'BadRequest'
+                response.message = 'BadRequest';
                 response.result = err;
 
                 logger_recognitions.info(err, 'service');
 
                 reject(response);
-            })
-        })
+            });
+        });
     }
 
     protected update_recog(id: any, data: any): Promise<Response_data> {
         return new Promise((resolve, reject) => {
-            let response = response_data();
+            const response = response_data();
 
             RECOG.findById(id).then((recog: any) => {
 
@@ -179,30 +178,30 @@ export default class RecogService {
                 }).catch((err: any) => {
 
                     response.status = 400;
-                    response.message = 'BadRequest'
+                    response.message = 'BadRequest';
                     response.result = err;
 
                     logger_recognitions.info(err, 'service');
 
                     reject(response);
-                })
+                });
             }).catch((err: any) => {
 
                 response.status = 400;
-                response.message = 'BadRequest'
+                response.message = 'BadRequest';
                 response.result = err;
 
                 logger_recognitions.info(err, 'service');
 
                 reject(response);
-            })
-        })
+            });
+        });
     }
 
     protected delete_by_author_all_document(id: string): Promise<Response_data> {
         return new Promise((resolve, reject) => {
 
-            let response = response_data();
+            const response = response_data();
 
             RECOG.deleteMany({ author: id }).then((result: any) => {
                 response.result = result;
@@ -211,20 +210,20 @@ export default class RecogService {
             }).catch((err: any) => {
 
                 response.status = 404;
-                response.message = 'Not found'
+                response.message = 'Not found';
                 response.result = err;
 
                 logger_recognitions.info(err, 'service');
 
                 reject(response);
-            })
-        })
+            });
+        });
     }
 
     protected delete_by_id_document(id: string): Promise<Response_data> {
         return new Promise((resolve, reject) => {
 
-            let response = response_data();
+            const response = response_data();
 
             RECOG.findByIdAndDelete(id).then((result: any) => {
                 response.result = result;
@@ -233,14 +232,14 @@ export default class RecogService {
             }).catch((err: any) => {
 
                 response.status = 404;
-                response.message = 'Not found'
+                response.message = 'Not found';
                 response.result = err;
 
                 logger_recognitions.info(err, 'service');
 
                 reject(response);
-            })
-        })
+            });
+        });
     }
 
 

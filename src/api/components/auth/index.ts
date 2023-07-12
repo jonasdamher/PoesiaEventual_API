@@ -19,8 +19,8 @@ class RouterAuth {
             .post('/login', csrf, validation.login, Auth.login)
             .get('/confirm_account/:token', Auth.confirmAccount)
             .get('/csrf', csrf, (req: Request, res: Response) => {
-                return res.json({ csrfToken: req.csrfToken() })
-            })
+                return res.json({ csrfToken: req.csrfToken() });
+            });
     }
 }
 

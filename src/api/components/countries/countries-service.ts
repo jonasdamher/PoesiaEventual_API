@@ -8,28 +8,28 @@ import { logger_countries } from '../../helpers/logger';
 import Response_data from '../../types/Response_data';
 
 export default class CountriesService {
-    protected getAllCountries(page: number, perpage: number): Promise<Response_data> {
+    protected getAllCountries(page: number, perPage: number): Promise<Response_data> {
         return new Promise((resolve, reject) => {
-            let response = response_data();
+            const response = response_data();
 
-            let current_page = Math.max(0, page)
-            let pageNum = current_page
-            --current_page
+            let current_page = Math.max(0, page);
+            const pageNum = current_page;
+            --current_page;
 
             COUNTRY.find().countDocuments().then((count: any) => {
 
-                const limit = Math.ceil(count / perpage)
+                const limit = Math.ceil(count / perPage);
 
                 COUNTRY.find({ language: 'es' })
-                    .skip(perpage * current_page)
-                    .limit(perpage)
+                    .skip(perPage * current_page)
+                    .limit(perPage)
                     .sort('name')
                     .then((authorResponse: any) => {
 
-                        let data = {
+                        const data = {
                             countries: authorResponse,
                             pagination: {
-                                perPage: perpage,
+                                perPage: perPage,
                                 page: pageNum,
                                 lastPage: limit,
                                 total: count
@@ -59,7 +59,7 @@ export default class CountriesService {
     protected getByIdCountry(id: string): Promise<Response_data> {
         return new Promise((resolve, reject) => {
 
-            let response = response_data();
+            const response = response_data();
 
             COUNTRY.findById({ _id: id }).then((poem: any) => {
 
@@ -68,9 +68,9 @@ export default class CountriesService {
             }).catch((err: any) => {
                 response.status = 400;
                 response.result = err;
-                reject(response)
-            })
-        })
+                reject(response);
+            });
+        });
     }
 
     protected createCountry(data: any): Promise<Response_data> {
@@ -85,16 +85,16 @@ export default class CountriesService {
                 response.status = 201;
 
                 response.result = new_country;
-                resolve(response)
+                resolve(response);
 
             }).catch((err: any) => {
 
                 response.status = 400;
                 response.result = err;
                 logger_countries.info(err, 'service');
-                reject(response)
-            })
-        })
+                reject(response);
+            });
+        });
     }
 
     protected update_country(id: any, data: any): Promise<Response_data> {
@@ -105,16 +105,16 @@ export default class CountriesService {
             COUNTRY.findByIdAndUpdate(id, { $set: data }, { new: true }).then((update_country: any) => {
 
                 response.result = update_country;
-                resolve(response)
+                resolve(response);
 
             }).catch((err: any) => {
 
                 response.status = 400;
                 response.result = err;
                 logger_countries.info(err, 'service');
-                reject(response)
-            })
-        })
+                reject(response);
+            });
+        });
     }
 
 }

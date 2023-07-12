@@ -13,13 +13,13 @@ class Mongo {
      * Se conecta a la base de datos con las credenciales del archivo .env
      * @returns boolean | error - JSON
      */
-    async connect(): Promise<Boolean | Error> {
+    async connect(): Promise<boolean | Error> {
         return new Promise((resolve, reject) => {
 
             mongoose.connect(config.db.mongo_uri)
                 .then(() => resolve(true))
-                .catch((error: Error) => reject(error))
-        })
+                .catch((error: Error) => reject(error));
+        });
     }
 }
 

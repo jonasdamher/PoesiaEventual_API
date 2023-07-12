@@ -17,7 +17,7 @@ export interface User extends Document {
     email: string;
     password: string;
     role?: roles;
-    verified?: Boolean;
+    verified?: boolean;
     expire_at: Date;
     createdAt: number;
     updatedAt: number;
@@ -119,7 +119,7 @@ user_schema.methods.compare_password = async function (password: string) {
             resolve(match);
         });
     });
-}
+};
 
 const USER: Model<User> = model('users', user_schema);
 export default USER;

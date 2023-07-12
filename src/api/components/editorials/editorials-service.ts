@@ -12,7 +12,7 @@ export default class EditorialsService {
 
     protected get_all_editorials(): Promise<Response_data> {
         return new Promise((resolve, reject) => {
-            let response = response_data();
+            const response = response_data();
 
             EDITOR.find().sort('name').then((res: any) => {
 
@@ -31,7 +31,7 @@ export default class EditorialsService {
 
     protected get_editorial_by_id(id: string): Promise<Response_data> {
         return new Promise((resolve, reject) => {
-            let response = response_data();
+            const response = response_data();
 
             EDITOR.findById(id).then((res: any) => {
 
@@ -44,13 +44,13 @@ export default class EditorialsService {
                 response.message = 'BadRequest';
                 response.result = err;
                 reject(response);
-            })
+            });
         });
     }
 
     protected create_editorial(data: any): Promise<Response_data> {
         return new Promise((resolve, reject) => {
-            let response = response_data();
+            const response = response_data();
             const new_genre: Editorial = new EDITOR(data);
 
             new_genre.save().then((res: Editorial) => {
@@ -67,13 +67,13 @@ export default class EditorialsService {
                 response.result = err;
                 logger_editorials.info(err, 'service');
                 reject(response);
-            })
+            });
         });
     }
 
     protected update_editorial(id: any, data: any): Promise<Response_data> {
         return new Promise((resolve, reject) => {
-            let response = response_data();
+            const response = response_data();
 
             EDITOR.findByIdAndUpdate(id, { $set: data }, { new: true }).then((res: any) => {
 
@@ -87,7 +87,7 @@ export default class EditorialsService {
                 response.result = err;
                 logger_editorials.info(err, 'service');
                 reject(response);
-            })
+            });
         });
     }
 }

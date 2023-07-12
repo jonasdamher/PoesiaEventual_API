@@ -12,13 +12,13 @@ import { Schema } from 'mongoose';
 
 export default class PoemsService {
 
-    protected get_all_poems(page: number, perpage: number): Promise<Response_data> {
+    protected get_all_poems(page: number, perPage: number): Promise<Response_data> {
         return new Promise((resolve, reject) => {
-            let response = response_data();
+            const response = response_data();
 
-            get_pagination(POEM, page, perpage).then((pagination: any) => {
+            get_pagination(POEM, page, perPage).then((pagination: any) => {
 
-                POEM.find().populate('author', 'name lastname').skip(pagination.page_range).limit(pagination.perpage).sort('title')
+                POEM.find().populate('author', 'name lastname').skip(pagination.page_range).limit(pagination.perPage).sort('title')
 
                     .then((authorResponse: any) => {
 
@@ -56,25 +56,25 @@ export default class PoemsService {
             }).catch((err: any) => {
                 logger_poems.info(err, 'service');
                 reject([]);
-            })
-        })
+            });
+        });
     }
 
-    protected get_all_poems_of_author_by_id(page: number, perpage: number, id: any): Promise<Response_data> {
+    protected get_all_poems_of_author_by_id(page: number, perPage: number, id: any): Promise<Response_data> {
         return new Promise((resolve, reject) => {
-            let response = response_data();
+            const response = response_data();
             const current_id: Schema.Types.ObjectId = id;
-            let query = { author: current_id };
+            const query = { author: current_id };
 
-            get_pagination(POEM, page, perpage, query).then((pagination: any) => {
+            get_pagination(POEM, page, perPage, query).then((pagination: any) => {
 
-                POEM.find(query).populate('author', 'name lastname').skip(pagination.page_range).limit(pagination.perpage).sort('title')
+                POEM.find(query).populate('author', 'name lastname').skip(pagination.page_range).limit(pagination.perPage).sort('title')
                     .then(poemList => {
 
                         response.result = {
                             poems: poemList,
                             pagination: paginate(pagination)
-                        }
+                        };
                         resolve(response);
 
                     }).catch((err: any) => {
@@ -83,20 +83,20 @@ export default class PoemsService {
                         response.message = 'BadRequest';
                         response.result = err;
                         reject(response);
-                    })
+                    });
             }).catch((err: any) => {
 
                 response.status = 400;
                 response.message = 'BadRequest';
                 response.result = err;
                 reject(response);
-            })
+            });
         });
     }
 
     protected get_poem_by_id_(id: string): Promise<Response_data> {
         return new Promise((resolve, reject) => {
-            let response = response_data();
+            const response = response_data();
 
             POEM.findById({ _id: id }).populate('author', 'name lastname').then((poem: any) => {
 
@@ -109,26 +109,26 @@ export default class PoemsService {
                 response.message = 'BadRequest';
                 response.result = err;
                 reject(response);
-            })
-        })
+            });
+        });
     }
 
-    protected search_poem(page: number, perpage: number, search: string): Promise<Response_data> {
+    protected search_poem(page: number, perPage: number, search: string): Promise<Response_data> {
         return new Promise((resolve, reject) => {
-            let response = response_data();
+            const response = response_data();
 
-            let query = { $text: { $search: search } };
+            const query = { $text: { $search: search } };
 
-            get_pagination(POEM, page, perpage, query)
+            get_pagination(POEM, page, perPage, query)
                 .then((pagination: any) => {
 
-                    POEM.find(query).populate('author', 'name lastname').skip(pagination.page_range).limit(pagination.perpage).sort('title')
+                    POEM.find(query).populate('author', 'name lastname').skip(pagination.page_range).limit(pagination.perPage).sort('title')
                         .then((poems: any) => {
 
                             response.result = {
                                 poems: poems,
                                 pagination: paginate(pagination)
-                            }
+                            };
                             resolve(response);
 
                         }).catch((err: any) => {
@@ -137,7 +137,7 @@ export default class PoemsService {
                             response.message = 'BadRequest';
                             response.result = err;
                             reject(response);
-                        })
+                        });
 
                 }).catch((err: any) => {
 
@@ -145,17 +145,17 @@ export default class PoemsService {
                     response.message = 'BadRequest';
                     response.result = err;
                     reject(response);
-                })
-        })
+                });
+        });
     }
 
     protected random_poem(): Promise<Response_data> {
         return new Promise((resolve, reject) => {
-            let response = response_data();
+            const response = response_data();
 
             POEM.find().countDocuments().then(count => {
 
-                const random = count == 1 ? 1 : Math.floor(Math.random() * count)
+                const random = count == 1 ? 1 : Math.floor(Math.random() * count);
 
                 POEM.findOne().populate('author', 'name lastname').skip(random).then((poem: any) => {
 
@@ -168,7 +168,7 @@ export default class PoemsService {
                     response.message = 'BadRequest';
                     response.result = err;
                     reject(response);
-                })
+                });
 
             }).catch((err: any) => {
 
@@ -176,19 +176,19 @@ export default class PoemsService {
                 response.message = 'BadRequest';
                 response.result = err;
                 reject(response);
-            })
-        })
+            });
+        });
     }
 
     protected create_poem(data: any): Promise<Response_data> {
         return new Promise((resolve, reject) => {
-            let response = response_data();
+            const response = response_data();
 
             data.url = Text.url(data.title);
 
             // si es un array de poemas
             if (data.poems) {
-                let results: any = [];
+                const results: any = [];
 
                 data.poems.forEach((current_poem: any) => {
 
@@ -208,7 +208,7 @@ export default class PoemsService {
                         response.message = 'BadRequest multiply';
                         response.result = err;
                         reject(response);
-                    })
+                    });
 
                 });
 
@@ -233,14 +233,14 @@ export default class PoemsService {
                     response.message = 'BadRequest only';
                     response.result = err;
                     reject(response);
-                })
+                });
             }
-        })
+        });
     }
 
     protected update_poem(id: any, data: any): Promise<Response_data> {
         return new Promise((resolve, reject) => {
-            let response = response_data();
+            const response = response_data();
 
             if (data.title && data.title.length) {
                 data.url = Text.url(data.title);
@@ -277,7 +277,7 @@ export default class PoemsService {
                     response.message = 'BadRequest only';
                     response.result = err;
                     reject(response);
-                })
+                });
 
             }).catch((err: any) => {
 
@@ -285,9 +285,9 @@ export default class PoemsService {
                 response.message = 'BadRequest only';
                 response.result = err;
                 reject(response);
-            })
+            });
 
-        })
+        });
     }
 
 }

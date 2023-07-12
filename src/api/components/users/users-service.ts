@@ -17,21 +17,21 @@ export default class UsersService {
      */
     protected getUserById(id: string): Promise<Response_data> {
         return new Promise((resolve, reject) => {
-            let response = response_data();
+            const response = response_data();
 
             USER.findById(id).select('name lastname email').then((res: any) => {
 
                 response.result = res;
-                resolve(response)
+                resolve(response);
             }).catch((err: any) => {
                 response.message = 'Dont found';
                 response.status = 404;
 
-                let responseFail = response;
+                const responseFail = response;
                 responseFail.result = err;
-                logger_users.info(responseFail, 'service')
+                logger_users.info(responseFail, 'service');
                 reject(response);
-            })
+            });
         });
     }
 
@@ -43,12 +43,13 @@ export default class UsersService {
      */
     protected updateUserById(id: string, data: any): Promise<Response_data> {
         return new Promise((resolve, reject) => {
-            let response = response_data();
-
+            
+            const response = response_data();
 
             USER.findByIdAndUpdate(id, data, { new: true }).select('name lastname email ').then((res: any) => {
 
                 response.message = 'Update';
+                response.result = res;
                 resolve(response);
 
             }).catch((err: any) => {
@@ -56,18 +57,18 @@ export default class UsersService {
                 response.status = 400;
                 response.message = 'BadRequest';
 
-                let responseFail = response;
+                const responseFail = response;
                 responseFail.result = err;
-                logger_users.info(responseFail, 'service')
+                logger_users.info(responseFail, 'service');
                 reject(response);
-            })
+            });
         });
     }
 
     protected deleteUserById(id: string): Promise<Response_data> {
         return new Promise((resolve, reject) => {
 
-            let response = response_data();
+            const response = response_data();
 
             USER.findByIdAndDelete(id).then((res: any) => {
 
@@ -81,11 +82,11 @@ export default class UsersService {
                 response.status = 400;
                 response.message = 'BadRequest';
 
-                let responseFail = response;
+                const responseFail = response;
                 responseFail.result = err;
-                logger_users.info(responseFail, 'service')
+                logger_users.info(responseFail, 'service');
                 reject(response);
-            })
+            });
         });
     }
 }

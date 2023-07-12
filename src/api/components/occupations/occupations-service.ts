@@ -12,7 +12,7 @@ export default class OccupationService {
 
     protected get_all_occupations(): Promise<Response_data> {
         return new Promise((resolve, reject) => {
-            let response = response_data();
+            const response = response_data();
 
             OCCUPATION.find().sort('name').then((res: any) => {
 
@@ -31,7 +31,7 @@ export default class OccupationService {
 
     protected get_occupation_by_id(id: string): Promise<Response_data> {
         return new Promise((resolve, reject) => {
-            let response = response_data();
+            const response = response_data();
 
             OCCUPATION.findById(id).then((res: any) => {
 
@@ -44,13 +44,13 @@ export default class OccupationService {
                 response.message = 'BadRequest';
                 response.result = err;
                 reject(response);
-            })
+            });
         });
     }
 
     protected create_occupation(data: any): Promise<Response_data> {
         return new Promise((resolve, reject) => {
-            let response = response_data();
+            const response = response_data();
             const new_occupation: Occupation = new OCCUPATION(data);
 
             new_occupation.save().then((occupation_created: Occupation) => {
@@ -67,13 +67,13 @@ export default class OccupationService {
                 response.result = err;
                 logger_occupation.info(err, 'service');
                 reject(response);
-            })
+            });
         });
     }
 
     protected update_occupation(id: any, data: any): Promise<Response_data> {
         return new Promise((resolve, reject) => {
-            let response = response_data();
+            const response = response_data();
 
             OCCUPATION.findByIdAndUpdate(id, { $set: data }, { new: true }).then((res: any) => {
 
@@ -87,7 +87,7 @@ export default class OccupationService {
                 response.result = err;
                 logger_occupation.info(err, 'service');
                 reject(response);
-            })
+            });
         });
     }
 

@@ -10,18 +10,18 @@ Mongo.connect().then(() => {
         app.listen(config.app.port);
 
         if (config.app.node_env === 'DEVELOPMENT') {
-            logger_app.info({ url: config.app.url_api() }, 'Up server develop')
+            logger_app.info({ url: config.app.url_api() }, 'Up server develop');
         }
 
     } catch (error: unknown) {
         console.log(error);
 
-        logger_app.info({ error }, 'Error app')
+        logger_app.info({ error }, 'Error app');
         process.exit(1);
     }
 }).catch((error: Error) => {
     console.log(error);
 
-    logger_app.error({ error }, 'Mongoose, connect to db')
+    logger_app.error({ error }, 'Mongoose, connect to db');
     process.exit(1);
-})
+});

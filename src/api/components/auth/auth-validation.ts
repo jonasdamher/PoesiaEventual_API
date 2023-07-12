@@ -20,14 +20,14 @@ class AuthValidation {
         const data = {
             email: req.body.email,
             password: req.body.password
-        }
+        };
 
         schema.validateAsync(data)
             .then(() => next())
             .catch((err: Error) => {
-                logger_users.info({ err }, 'validation')
-                return res.status(400).json(err)
-            })
+                logger_users.info({ err }, 'validation');
+                return res.status(400).json(err);
+            });
     }
 
     public async create(req: Request, res: Response, next: NextFunction) {
@@ -43,14 +43,14 @@ class AuthValidation {
             lastname: req.body.lastname,
             email: req.body.email,
             password: req.body.password
-        }
+        };
 
         schema.validateAsync(data)
             .then(() => next())
             .catch((err: Error) => {
-                logger_users.info({ err }, 'validation')
-                return res.status(400).json(err)
-            })
+                logger_users.info({ err }, 'validation');
+                return res.status(400).json(err);
+            });
     }
 
 }

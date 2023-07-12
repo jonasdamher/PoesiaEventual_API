@@ -12,7 +12,7 @@ export default class GenresService {
 
     protected get_all_genres(): Promise<Response_data> {
         return new Promise((resolve, reject) => {
-            let response = response_data();
+            const response = response_data();
 
             GENRE.find().sort('name').then((res: any) => {
 
@@ -30,7 +30,7 @@ export default class GenresService {
 
     protected get_genre_by_id(id: string): Promise<Response_data> {
         return new Promise((resolve, reject) => {
-            let response = response_data();
+            const response = response_data();
 
             GENRE.findById(id).then((res: any) => {
 
@@ -41,13 +41,13 @@ export default class GenresService {
                 response.message = 'Not found';
                 response.result = err;
                 reject(response);
-            })
+            });
         });
     }
 
     protected create_genre(data: any): Promise<Response_data> {
         return new Promise((resolve, reject) => {
-            let response = response_data();
+            const response = response_data();
 
             const new_genre: Genre = new GENRE(data);
 
@@ -56,7 +56,7 @@ export default class GenresService {
                 response.status = 201;
                 response.message = 'Created';
                 response.result = genreResponse;
-                resolve(response)
+                resolve(response);
 
             }).catch((err: any) => {
 
@@ -65,13 +65,13 @@ export default class GenresService {
                 response.result = err;
                 logger_genre.info({ err }, 'service');
                 reject(response);
-            })
+            });
         });
     }
     protected update_genre(id: any, data: any): Promise<Response_data> {
         return new Promise((resolve, reject) => {
 
-            let response = response_data();
+            const response = response_data();
 
             GENRE.findById(id).then((genreResponse: any) => {
 
@@ -92,7 +92,7 @@ export default class GenresService {
                 GENRE.findByIdAndUpdate(id, { $set: data }, { new: true }).then((res: any) => {
 
                     response.result = res;
-                    resolve(response)
+                    resolve(response);
 
                 }).catch((err: any) => {
 
@@ -101,7 +101,7 @@ export default class GenresService {
                     response.result = err;
                     logger_genre.info({ err }, 'service');
                     reject(response);
-                })
+                });
 
             }).catch((err: any) => {
                 response.status = 400;

@@ -15,12 +15,12 @@ import Response_data from '../../types/Response_data';
 
 export default class AuthorService {
 
-    protected get_all_authors(page: number, perpage: number): Promise<Response_data> {
+    protected get_all_authors(page: number, perPage: number): Promise<Response_data> {
         return new Promise((resolve, reject) => {
-            let response = response_data();
+            const response = response_data();
 
-            get_pagination(AUTHOR, page, perpage).then((pagination: any) => {
-                AUTHOR.find().skip(pagination.page_range).limit(pagination.perpage)
+            get_pagination(AUTHOR, page, perPage).then((pagination: any) => {
+                AUTHOR.find().skip(pagination.page_range).limit(pagination.perPage)
                     .sort('name')
                     .select('name lastname short_description portrait url')
                     .populate({ path: 'occupations', select: 'name' })
@@ -54,12 +54,12 @@ export default class AuthorService {
 
     protected get_author_by_name(name: string): Promise<Response_data> {
         return new Promise((resolve, reject) => {
-            let response = response_data();
+            const response = response_data();
 
             AUTHOR.findOne({ $text: { $search: name } }).select('name ').populate({ path: 'occupations', select: 'name' }).populate({ path: 'literary_genres', select: 'name' }).populate({ path: 'country', select: 'name' }).then(async (current_author: any) => {
-                let recog = new RecogService();
-                let poems = new PoemsService();
-                let books = new BooksService();
+                const recog = new RecogService();
+                const poems = new PoemsService();
+                const books = new BooksService();
 
                 response.result = {
                     author: current_author,
@@ -75,13 +75,13 @@ export default class AuthorService {
                 response.result = err;
                 logger_authors.info({ ...response }, 'service');
                 reject(response);
-            })
+            });
         });
     }
 
     protected get_author_by_id(id: string): Promise<Response_data> {
         return new Promise((resolve, reject) => {
-            let response = response_data();
+            const response = response_data();
 
             AUTHOR.findById(id).then((authorResponse: any) => {
 
@@ -94,18 +94,18 @@ export default class AuthorService {
                 response.result = err;
                 logger_authors.info({ ...response }, 'service');
                 reject(response);
-            })
+            });
         });
     }
 
-    protected search_author(page: number, perpage: number, search: string): Promise<Response_data> {
+    protected search_author(page: number, perPage: number, search: string): Promise<Response_data> {
         return new Promise((resolve, reject) => {
-            let response = response_data();
+            const response = response_data();
             const query = { $text: { $search: search } };
 
 
-            get_pagination(AUTHOR, page, perpage, query).then((pagination: any) => {
-                AUTHOR.find(query).skip(pagination.page_range).limit(pagination.perpage).sort('lastname').select('name lastname short_description').then((authorResponse: any) => {
+            get_pagination(AUTHOR, page, perPage, query).then((pagination: any) => {
+                AUTHOR.find(query).skip(pagination.page_range).limit(pagination.perPage).sort('lastname').select('name lastname short_description').then((authorResponse: any) => {
 
                     response.result = {
                         authors: authorResponse,
@@ -135,7 +135,7 @@ export default class AuthorService {
 
     protected random_author(): Promise<Response_data> {
         return new Promise((resolve, reject) => {
-            let response = response_data();
+            const response = response_data();
 
             AUTHOR.find().countDocuments().then((count: any) => {
 
@@ -152,7 +152,7 @@ export default class AuthorService {
                     response.result = err;
                     logger_authors.info({ ...response }, 'service');
                     reject(response);
-                })
+                });
 
             }).catch((err: any) => {
                 response.status = 400;
@@ -160,13 +160,13 @@ export default class AuthorService {
                 response.result = err;
                 logger_authors.info({ ...response }, 'service');
                 reject(response);
-            })
-        })
+            });
+        });
     }
 
     protected create_author(data: Author): Promise<Response_data> {
         return new Promise((resolve, reject) => {
-            let response = response_data();
+            const response = response_data();
 
             const author: Author = new AUTHOR(data);
 
@@ -175,7 +175,7 @@ export default class AuthorService {
                 response.status = 201;
                 response.message = 'Created';
                 response.result = authorResponse;
-                resolve(response)
+                resolve(response);
             }).catch((err: any) => {
 
                 response.status = 400;
@@ -183,14 +183,14 @@ export default class AuthorService {
                 response.result = err;
                 logger_authors.info({ ...response }, 'service');
                 reject(response);
-            })
+            });
         });
     }
 
     protected update_author(id: any, data: Partial<Author>): Promise<Response_data> {
         return new Promise((resolve, reject) => {
 
-            let response = response_data();
+            const response = response_data();
 
             AUTHOR.findById(id).then((current_user: any) => {
 
@@ -206,7 +206,7 @@ export default class AuthorService {
                     response.result = err;
                     logger_authors.info({ ...response, id: id, data: data }, 'service');
                     reject(response);
-                })
+                });
 
             }).catch((err: any) => {
 
@@ -215,7 +215,7 @@ export default class AuthorService {
                 response.result = err;
                 logger_authors.info({ ...response, id: id, data: data }, 'service');
                 reject(response);
-            })
+            });
 
         });
     }

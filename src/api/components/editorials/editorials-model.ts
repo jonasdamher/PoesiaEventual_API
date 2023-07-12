@@ -1,7 +1,7 @@
 'use strict';
 
 import moment from 'moment';
-import { Model, model, Document, Schema } from 'mongoose';
+import { model, Document, Schema } from 'mongoose';
 import * as regex from '../../utils/regex';
 
 export interface Editorial extends Document {
@@ -9,7 +9,7 @@ export interface Editorial extends Document {
     description: string;
     createdAt: number;
     updatedAt: number;
-};
+}
 
 const editorial_schema = new Schema<Editorial>({
     name: {
@@ -34,4 +34,4 @@ const editorial_schema = new Schema<Editorial>({
     }
 });
 
-export default model<Editorial>('editorials', editorial_schema)
+export default model<Editorial>('editorials', editorial_schema);

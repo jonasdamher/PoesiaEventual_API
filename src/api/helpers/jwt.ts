@@ -37,14 +37,14 @@ function create_token(user: any, type_token: string) {
         iat: current_data_time,
         nbf: current_data_time,
         exp: expire_token
-    }
+    };
 
     const token: string = jwt.sign(data, config.jwt.secret_token);
 
     return {
         token: token,
         expire_token: expire_token
-    }
+    };
 }
 
 /**
@@ -67,7 +67,7 @@ function create_refresh_token(user: any): string {
         iat: current_data_time,
         nbf: current_data_time,
         exp: expire_token
-    }
+    };
 
     return jwt.sign(data, config.jwt.secret_token);
 }

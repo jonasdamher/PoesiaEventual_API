@@ -3,7 +3,7 @@
 type Response_data = {
     message: string;
     status: number;
-    result: any;
+    result: Object | Object[] | null;
  }
 
 export default Response_data;

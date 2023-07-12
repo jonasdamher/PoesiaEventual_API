@@ -23,11 +23,11 @@ class BooksValidation {
             published: req.body.published,
             literary_genre: req.body.literary_genre,
             editorial: req.body.editorial
-        }
+        };
 
         schema.validateAsync(data)
             .then(() => next())
-            .catch((err: Error) => res.status(400).json(err))
+            .catch((err: Error) => res.status(400).json(err));
     }
 
     public async update(req: Request, res: Response, next: NextFunction) {
@@ -50,11 +50,11 @@ class BooksValidation {
             published: req.body.published,
             literary_genre: req.body.literary_genre,
             editorial: req.body.editorial
-        }
+        };
 
         schema.validateAsync(data)
             .then(() => next())
-            .catch((err: Error) => res.status(400).json(err))
+            .catch((err: Error) => res.status(400).json(err));
     }
 }
 export default new BooksValidation();

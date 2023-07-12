@@ -9,12 +9,12 @@ class AuthorController extends AuthorsService {
     public async get_all(req: Request, res: Response) {
         try {
 
-            const { page, perpage } = req.query;
+            const { page, perPage } = req.query;
 
-            let current_page = currentPage(page);
-            let current_perpage = currentPerPage(perpage);
+            const current_page = currentPage(page);
+            const current_perPage = currentPerPage(perPage);
 
-            const result = await super.get_all_authors(current_page, current_perpage);
+            const result = await super.get_all_authors(current_page, current_perPage);
             return res.status(result.status).json(result);
         } catch (error: any) {
             return res.status(error.status).json(error);
@@ -48,13 +48,13 @@ class AuthorController extends AuthorsService {
     public async search(req: Request, res: Response) {
         try {
 
-            const { page, perpage } = req.query;
+            const { page, perPage } = req.query;
             const search = req.params.search.trim().toLowerCase();
 
-            let current_page = Number(page ?? 1);
-            let current_perpage = Number(perpage ?? 10);
+            const current_page = Number(page ?? 1);
+            const current_perPage = Number(perPage ?? 10);
 
-            const result = await super.search_author(current_page, current_perpage, search);
+            const result = await super.search_author(current_page, current_perPage, search);
             return res.status(result.status).json(result);
         } catch (error: any) {
             return res.status(error.status).json(error);

@@ -188,7 +188,7 @@ const author_schema = new Schema<Author>({
 }).index({ 'name': 'text', 'lastname': 'text' });
 
 author_schema.methods.saveAuthor = async function (this: Author) {
-    return new Promise(async (resolve, reject) => {
+    return new Promise((resolve, reject) => {
 
         this.full_name = this.name.trim() + ' ' + this.lastname.trim();
         this.url = Text.url(this.full_name);
@@ -200,10 +200,10 @@ author_schema.methods.saveAuthor = async function (this: Author) {
         }).catch((err: any) => {
 
             reject(err);
-        })
+        });
 
     });
-}
+};
 
 author_schema.methods.updateAuthor = async function (data: Author) {
     return new Promise((resolve, reject) => {
@@ -292,14 +292,14 @@ author_schema.methods.updateAuthor = async function (data: Author) {
             { new: true }
         ).then((authorResponse: any) => {
 
-            resolve(authorResponse)
+            resolve(authorResponse);
         }).catch((err: any) => {
 
             reject(err);
-        })
+        });
 
     });
-}
+};
 
-const AUTHOR = model<Author>('authors', author_schema)
+const AUTHOR = model<Author>('authors', author_schema);
 export default AUTHOR;

@@ -60,6 +60,6 @@ const genres_schema = new Schema<Genre>({
     timestamps: {
         currentTime: () => moment().unix()
     }
-})
+});
 
-export default model<Genre>('literary_genres', genres_schema)
+export default model<Genre>('literary_genres', genres_schema);

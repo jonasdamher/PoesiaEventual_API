@@ -76,7 +76,7 @@ const recognitions_schema: Schema<Recognition> = new Schema({
     timestamps: {
         currentTime: () => moment().unix()
     }
-})
+});
 
 const RECOG: Model<Recognition> = model('recognitions', recognitions_schema);
 export default RECOG;
