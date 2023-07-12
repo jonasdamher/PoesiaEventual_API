@@ -19,6 +19,8 @@ class RouterRecog {
             .get('/search/:search', validate_common.search, recognitions.search)
             .post('/', csrf, auth.user, validation.create, recognitions.create)
             .patch('/:id', csrf, auth.user, validation.update, recognitions.update)
+            .delete('/:id', auth.user, recognitions.delete_by_id)
+            .delete('/author/:id', auth.user, recognitions.delete_by_author)
     }
 }
 

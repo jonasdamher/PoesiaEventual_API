@@ -130,6 +130,8 @@ export default class RecogService {
         return new Promise((resolve, reject) => {
             let response = response_data();
 
+            data.url = Text.url(data.author + ' ' + data.title);
+
             const poem: Recognition = new RECOG(data);
 
             poem.save().then((new_poem: Recognition) => {
@@ -196,5 +198,51 @@ export default class RecogService {
             })
         })
     }
+
+    protected delete_by_author_all_document(id: string): Promise<Response_data> {
+        return new Promise((resolve, reject) => {
+
+            let response = response_data();
+
+            RECOG.deleteMany({ author: id }).then((result: any) => {
+                response.result = result;
+                resolve(response);
+
+            }).catch((err: any) => {
+
+                response.status = 404;
+                response.message = 'Not found'
+                response.result = err;
+
+                logger_recognitions.info(err, 'service');
+
+                reject(response);
+            })
+        })
+    }
+
+    protected delete_by_id_document(id: string): Promise<Response_data> {
+        return new Promise((resolve, reject) => {
+
+            let response = response_data();
+
+            RECOG.findByIdAndDelete(id).then((result: any) => {
+                response.result = result;
+                resolve(response);
+
+            }).catch((err: any) => {
+
+                response.status = 404;
+                response.message = 'Not found'
+                response.result = err;
+
+                logger_recognitions.info(err, 'service');
+
+                reject(response);
+            })
+        })
+    }
+
+
 
 }
