@@ -105,7 +105,7 @@ export default class RecogService {
 
     public get_recognitions_of_author(id: any) {
         return new Promise((resolve, reject) => {
- 
+
             const current_id: Schema.Types.ObjectId = id;
 
             RECOG.findOne({ author: current_id })
@@ -129,13 +129,11 @@ export default class RecogService {
         return new Promise((resolve, reject) => {
             const response = response_data();
 
-            data.url = Text.url(data.author + ' ' + data.title);
-
             const poem: Recognition = new RECOG(data);
 
-            poem.save().then((new_poem: Recognition) => {
+            poem.save().then((res: Recognition) => {
                 response.status = 201;
-                response.result = new_poem;
+                response.result = res;
                 resolve(response);
 
             }).catch((err: any) => {
@@ -155,36 +153,10 @@ export default class RecogService {
         return new Promise((resolve, reject) => {
             const response = response_data();
 
-            RECOG.findById(id).then((recog: any) => {
+            RECOG.findByIdAndUpdate(id, { $set: data }, { new: true }).then((update: any) => {
+                response.result = update;
+                resolve(response);
 
-                if (data.keywords && Array.isArray(data.keywords) && data.keywords.length) {
-
-                    recog.keywords.forEach((word: any) => {
-
-                        // Filtrar libros existentes para actualizar
-                        const existing = data.keywords.findIndex((exists: any) => exists._id === word._id.toString());
-
-                        if (existing === -1) {
-                            data.keywords.push(word);
-                        }
-
-                    });
-                }
-
-                RECOG.findByIdAndUpdate(id, { $set: data }, { new: true }).then((new_poem: any) => {
-                    response.result = new_poem;
-                    resolve(response);
-
-                }).catch((err: any) => {
-
-                    response.status = 400;
-                    response.message = 'BadRequest';
-                    response.result = err;
-
-                    logger_recognitions.info(err, 'service');
-
-                    reject(response);
-                });
             }).catch((err: any) => {
 
                 response.status = 400;
@@ -195,6 +167,7 @@ export default class RecogService {
 
                 reject(response);
             });
+
         });
     }
 
