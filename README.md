@@ -13,11 +13,26 @@ API para obtener información sobre editoriales, poesía, libros y sus autores.
 ### :page_with_curl: Archivo .env.
 Renombrar archivo ```.dev-env``` a ```.env``` y añadir credenciales necesarias.
 
-### :gear: Compilar proyecto.
+### :gear: Transpilar proyecto de typescript a javascript.
 ```npm run build```
 
 ### :heavy_check_mark: Iniciar proyecto.
 ```npm run start```
+
+### Iniciar proyecto en modo desarrollo.
+```npm run dev```
+
+### Ejecutar test
+```npm run test```
+
+### Crear imagen de docker
+```npm run docker```
+
+### Ejecutar lint en el proyecto
+```npm run lint```
+
+### Ejecutar lint en el proyecto y tratar de solucionar posibles errores
+```npm run lint:fix```
 
 ### Documentation - spanish
 [Documentación v2](https://documenter.getpostman.com/view/8382203/TzmCgYL3)
