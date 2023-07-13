@@ -28,44 +28,25 @@ class PoemsValidation {
         let schema = null;
         let data = {};
 
-        if (req.body.poems) {
+        schema = Joi.object({
+            title: Joi.string().required(),
+            text: Joi.string().required(),
+            author: Joi.string().hex().required(),
+            description: Joi.string().max(250),
+            keywords: Joi.array().items(
+                Joi.object({
+                    word: Joi.string().required(),
+                })
+            ).max(25).optional()
+        });
 
-            schema = Joi.object({
-                poems: Joi.array().items(Joi.object({
-                    title: Joi.string().required(),
-                    text: Joi.string().required(),
-                    author: Joi.string().hex().required(),
-                    description: Joi.string().max(250),
-                    keywords: Joi.array().items(
-                        Joi.object({
-                            word: Joi.string().required(),
-                        })
-                    ).max(25).optional()
-                }))
-            });
-
-            data = {
-                poems: req.body.poems,
-            };
-        } else {
-
-            schema = Joi.object({
-                title: Joi.string().required(),
-                text: Joi.string().required(),
-                author: Joi.string().hex().required(),
-                description: Joi.string().max(250),
-                keywords: Joi.array().items(
-                    Joi.object({
-                        word: Joi.string().required(),
-                    })
-                ).max(25).optional()
-            });
-
-            data = {
-                title: req.body.title,
-                text: req.body.text,
-            };
-        }
+        data = {
+            title: req.body.title,
+            text: req.body.text,
+            author: req.body.author,
+            description: req.body.description,
+            keywords: req.body.keywords,
+        };
 
         schema.validateAsync(data)
             .then(() => next())
@@ -76,48 +57,28 @@ class PoemsValidation {
         let schema = null;
         let data = {};
 
-        if (req.body.poems) {
+        schema = Joi.object({
+            id: Joi.string().hex().required(),
+            title: Joi.string(),
+            text: Joi.string(),
+            author: Joi.string().hex(),
+            description: Joi.string().max(250),
+            keywords: Joi.array().items(
+                Joi.object({
+                    _id: Joi.string().hex().optional(),
+                    word: Joi.string().required(),
+                })
+            ).max(25).optional()
+        });
 
-            schema = Joi.object({
-                poems: Joi.array().items(Joi.object({
-                    id: Joi.string().hex().required(),
-                    title: Joi.string(),
-                    text: Joi.string(),
-                    author: Joi.string().hex(),
-                    description: Joi.string().max(250),
-                    keywords: Joi.array().items(
-                        Joi.object({
-                            _id: Joi.string().hex().optional(),
-                            word: Joi.string().required(),
-                        })
-                    ).max(25).optional()
-                }))
-            });
-
-            data = {
-                poems: req.body.poems,
-            };
-        } else {
-
-            schema = Joi.object({
-                id: Joi.string().hex().required(),
-                title: Joi.string(),
-                text: Joi.string(),
-                author: Joi.string().hex(),
-                description: Joi.string().max(250),
-                keywords: Joi.array().items(
-                    Joi.object({
-                        _id: Joi.string().hex().optional(),
-                        word: Joi.string().required(),
-                    })
-                ).max(25).optional()
-            });
-
-            data = {
-                title: req.body.title,
-                text: req.body.text,
-            };
-        }
+        data = {
+            id: req.params.id,
+            title: req.body.title,
+            text: req.body.text,
+            author: req.body.author,
+            description: req.body.description,
+            keywords: req.body.keywords,
+        };
 
         schema.validateAsync(data)
             .then(() => next())

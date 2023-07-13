@@ -187,54 +187,24 @@ export default class PoemsService {
             data.url = Text.url(data.title);
 
             // si es un array de poemas
-            if (data.poems) {
-                const results: any = [];
 
-                data.poems.forEach((current_poem: any) => {
+            const poem: Poem = new POEM(data);
 
-                    const current_data = {
-                        title: current_poem.title,
-                        text: current_poem.text,
-                        author: data.author
-                    };
-
-                    const poem: Poem = new POEM(current_data);
-                    poem.save().then((new_poem: Poem) => {
-
-                        results.push(new_poem);
-                    }).catch((err: any) => {
-
-                        response.status = 400;
-                        response.message = 'BadRequest multiply';
-                        response.result = err;
-                        reject(response);
-                    });
-
-                });
+            poem.save().then((new_poem: Poem) => {
 
                 response.status = 201;
                 response.message = 'Created';
-                response.result = results;
+                response.result = new_poem;
                 resolve(response);
 
-            } else { // si es un unico poema
-                const poem: Poem = new POEM(data);
+            }).catch((err: any) => {
 
-                poem.save().then((new_poem: Poem) => {
-
-                    response.status = 201;
-                    response.message = 'Created';
-                    response.result = new_poem;
-                    resolve(response);
-
-                }).catch((err: any) => {
-
-                    response.status = 400;
-                    response.message = 'BadRequest only';
-                    response.result = err;
-                    reject(response);
-                });
-            }
+                response.status = 400;
+                response.message = 'BadRequest only';
+                response.result = err;
+                reject(response);
+            });
+            
         });
     }
 

@@ -33,7 +33,7 @@ class AuthorValidation {
             gender: Joi.string().required(),
             country: Joi.string().hex(),
             short_description: Joi.string().max(300).required(),
-            biography: Joi.string().max(1200).required(),
+            biography: Joi.string().max(2000).required(),
             portrait: Joi.string(),
             description: Joi.string().max(250),
             occupations: Joi.array().items(
@@ -93,7 +93,7 @@ class AuthorValidation {
             gender: Joi.string(),
             country: Joi.string().hex(),
             short_description: Joi.string().max(300),
-            biography: Joi.string().max(1200),
+            biography: Joi.string().max(2000),
             portrait: Joi.string(),
             description: Joi.string().max(250),
             occupations: Joi.array().items(

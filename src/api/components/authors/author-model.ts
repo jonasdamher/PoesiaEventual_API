@@ -108,7 +108,7 @@ const author_schema = new Schema<Author>({
     },
     biography: {
         type: String,
-        maxLength: 1200,
+        maxLength: 2000,
         validate: {
             validator: (v: any) => {
                 return regex.text_only.test(v);
