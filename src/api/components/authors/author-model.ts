@@ -4,6 +4,7 @@ import moment from 'moment';
 import mongoose, { model, Document, Schema } from 'mongoose';
 import * as regex from '../../utils/regex';
 import Text from '../../helpers/Text';
+import { array_filter } from '../../utils/filter';
 
 import RECOG from '../recognitions/recognitions-model';
 import POEM from '../poems/poems-model';
@@ -236,61 +237,17 @@ author_schema.methods.updateAuthor = async function (data: Author) {
             }
         }
 
-        if (data.literary_genres && Array.isArray(data.literary_genres) && data.literary_genres.length) {
+        let other_literary_genres = array_filter(this.literary_genres, data.literary_genres);
+        data.literary_genres = data.literary_genres.concat(other_literary_genres);
 
-            this.literary_genres.forEach((word: any) => {
+        let other_occupations = array_filter(this.occupations, data.occupations);
+        data.occupations = data.occupations.concat(other_occupations);
 
-                // Filtrar libros existentes para actualizar
-                const existing = data.literary_genres.findIndex((exists: any) => exists === word.toString());
+        let other_photos = array_filter(this.photos, data.photos, '_id');
+        data.photos = data.photos.concat(other_photos);
 
-                if (existing === -1) {
-                    data.literary_genres.push(word);
-                }
-
-            });
-        }
-
-        if (data.occupations && Array.isArray(data.occupations) && data.occupations.length) {
-
-            this.occupations.forEach((word: any) => {
-
-                // Filtrar libros existentes para actualizar
-                const existing = data.occupations.findIndex((exists: any) => exists === word.toString());
-
-                if (existing === -1) {
-                    data.occupations.push(word);
-                }
-
-            });
-        }
-
-        if (data.photos && Array.isArray(data.photos) && data.photos.length) {
-
-            this.photos.forEach((photography: any) => {
-
-                // Filtrar libros existentes para actualizar
-                const existing = data.photos.findIndex((exists: any) => exists._id === photography._id.toString());
-
-                if (existing === -1) {
-                    data.photos.push(photography);
-                }
-
-            });
-        }
-
-        if (data.keywords && Array.isArray(data.keywords) && data.keywords.length) {
-
-            this.keywords.forEach((word: any) => {
-
-                // Filtrar libros existentes para actualizar
-                const existing = data.keywords.findIndex((exists: any) => exists._id === word._id.toString());
-
-                if (existing === -1) {
-                    data.keywords.push(word);
-                }
-
-            });
-        }
+        let other_keywords = array_filter(this.keywords, data.keywords, '_id');
+        data.keywords = data.keywords.concat(other_keywords);
 
         AUTHOR.findByIdAndUpdate(
             id,

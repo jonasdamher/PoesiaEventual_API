@@ -5,6 +5,7 @@ import GENRE, { Genre } from './genres-model';
 // Ayudantes
 import response_data from '../../utils/response_data';
 import { logger_genre } from '../../helpers/logger';
+import { array_filter } from '../../utils/filter';
 // Tipos
 import Response_data from '../../types/Response_data';
 
@@ -75,19 +76,8 @@ export default class GenresService {
 
             GENRE.findById(id).then((genreResponse: any) => {
 
-                if (data.subgenres && Array.isArray(data.subgenres) && data.subgenres.length) {
-
-                    genreResponse.subgenres.forEach((updatedBook: any) => {
-
-                        // Filtrar libros existentes para actualizar
-                        const existing = data.subgenres.findIndex((exists: any) => exists._id === updatedBook._id.toString());
-
-                        if (existing === -1) {
-                            data.subgenres.push(updatedBook);
-                        }
-
-                    });
-                }
+                let other_subgenres = array_filter(genreResponse.subgenres, data.subgenres, '_id');
+                data.subgenres = data.subgenres.concat(other_subgenres);
 
                 GENRE.findByIdAndUpdate(id, { $set: data }, { new: true }).then((res: any) => {
 

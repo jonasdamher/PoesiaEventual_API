@@ -6,6 +6,7 @@ import { logger_poems } from '../../helpers/logger';
 import Text from '../../helpers/Text';
 import { get_pagination, paginate } from '../../utils/pagination';
 import response_data from '../../utils/response_data';
+import { array_filter } from '../../utils/filter';
 // Tipos
 import Response_data from '../../types/Response_data';
 import { Schema } from 'mongoose';
@@ -204,7 +205,7 @@ export default class PoemsService {
                 response.result = err;
                 reject(response);
             });
-            
+
         });
     }
 
@@ -218,19 +219,8 @@ export default class PoemsService {
 
             POEM.findById(id).then((poem: any) => {
 
-                if (data.keywords && Array.isArray(data.keywords) && data.keywords.length) {
-
-                    poem.keywords.forEach((word: any) => {
-
-                        // Filtrar libros existentes para actualizar
-                        const existing = data.keywords.findIndex((exists: any) => exists._id === word._id.toString());
-
-                        if (existing === -1) {
-                            data.keywords.push(word);
-                        }
-
-                    });
-                }
+                let other_keywords = array_filter(poem.keywords, data.keywords, '_id');
+                data.keywords = data.keywords.concat(other_keywords);
 
                 POEM.findByIdAndUpdate(
                     id,
