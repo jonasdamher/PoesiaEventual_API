@@ -3,7 +3,6 @@
 import RECOG, { Recognition } from './recognitions-model';
 // Ayudantes
 import { logger_recognitions } from '../../helpers/logger';
-import Text from '../../helpers/Text';
 import response_data from '../../utils/response_data';
 import { get_pagination, paginate } from '../../utils/pagination';
 // Tipos

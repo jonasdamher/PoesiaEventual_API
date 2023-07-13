@@ -45,9 +45,9 @@ occupations_schema.methods.deleteOccupation = async function (this: Occupation) 
     try {
         session.startTransaction();
 
-        const del: any = await OCUP.findByIdAndDelete(this._id)
+        const del: any = await OCUP.findByIdAndDelete(this._id);
         // borrar el registro asociado a los autores tambien
-        await AUTHOR.updateMany({}, { $pull: { occupations: this._id } })
+        await AUTHOR.updateMany({}, { $pull: { occupations: this._id } });
 
         await session.commitTransaction();
 

@@ -1,9 +1,13 @@
 'use strict';
 
 import moment from 'moment';
-import { model, Document, Schema } from 'mongoose';
+import mongoose, { model, Document, Schema } from 'mongoose';
 import * as regex from '../../utils/regex';
 import Text from '../../helpers/Text';
+
+import RECOG from '../recognitions/recognitions-model';
+import POEM from '../poems/poems-model';
+import BOOK from '../books/books-model';
 
 enum genders {
     'Hombre', 'Mujer', 'No binario'
@@ -43,6 +47,8 @@ export interface Author extends Document {
 
     saveAuthor(): Promise<Author>;
     updateAuthor(data: Partial<Author>): Promise<Author>;
+    deleteAuthor(): Promise<any>;
+
 }
 
 const author_schema = new Schema<Author>({
@@ -299,6 +305,32 @@ author_schema.methods.updateAuthor = async function (data: Author) {
         });
 
     });
+};
+
+author_schema.methods.deleteAuthor = async function (this: Author) {
+
+    const session = await mongoose.startSession();
+
+    try {
+        session.startTransaction();
+
+        const del: any = await AUTHOR.findByIdAndDelete(this._id);
+        // borrar el registro asociado a del autor 
+        await RECOG.deleteMany({ author: this._id });
+        await BOOK.deleteMany({ author: this._id });
+        await POEM.deleteMany({ author: this._id });
+
+        await session.commitTransaction();
+
+        return del;
+
+    } catch (error: any) {
+        await session.abortTransaction();
+        return error;
+    } finally {
+        // Finaliza la sesión
+        session.endSession();
+    }
 };
 
 const AUTHOR = model<Author>('authors', author_schema);

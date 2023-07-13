@@ -224,8 +224,9 @@ export default class AuthorService {
         return new Promise((resolve, reject) => {
 
             const response = response_data();
+            const author: Author = new AUTHOR({ _id: id });
 
-            AUTHOR.findByIdAndDelete(id).then((result: any) => {
+            author.deleteAuthor().then((result: any) => {
                 response.result = result;
                 resolve(response);
 
