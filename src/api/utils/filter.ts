@@ -20,4 +20,4 @@ export const array_filter = (actual: Array<any> | [], nuevo: Array<any> | [], ke
         });
     }
     return filter;
-} 
+}; 

@@ -237,16 +237,16 @@ author_schema.methods.updateAuthor = async function (data: Author) {
             }
         }
 
-        let other_literary_genres = array_filter(this.literary_genres, data.literary_genres);
+        const other_literary_genres = array_filter(this.literary_genres, data.literary_genres);
         data.literary_genres = data.literary_genres.concat(other_literary_genres);
 
-        let other_occupations = array_filter(this.occupations, data.occupations);
+        const other_occupations = array_filter(this.occupations, data.occupations);
         data.occupations = data.occupations.concat(other_occupations);
 
-        let other_photos = array_filter(this.photos, data.photos, '_id');
+        const other_photos = array_filter(this.photos, data.photos, '_id');
         data.photos = data.photos.concat(other_photos);
 
-        let other_keywords = array_filter(this.keywords, data.keywords, '_id');
+        const other_keywords = array_filter(this.keywords, data.keywords, '_id');
         data.keywords = data.keywords.concat(other_keywords);
 
         AUTHOR.findByIdAndUpdate(

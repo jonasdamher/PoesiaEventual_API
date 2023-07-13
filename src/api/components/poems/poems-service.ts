@@ -219,7 +219,7 @@ export default class PoemsService {
 
             POEM.findById(id).then((poem: any) => {
 
-                let other_keywords = array_filter(poem.keywords, data.keywords, '_id');
+                const other_keywords = array_filter(poem.keywords, data.keywords, '_id');
                 data.keywords = data.keywords.concat(other_keywords);
 
                 POEM.findByIdAndUpdate(

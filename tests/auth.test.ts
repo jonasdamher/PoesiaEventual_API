@@ -22,20 +22,45 @@ afterAll(async () => {
     await mongod.stop();
 });
 
-describe("POST /api/v2/auth/", () => {
-    it("Crear usuario", async () => {
+describe("POST /auth/", () => {
+
+    it("Crear usuario correctamente", async () => {
 
         const response = await request(app)
             .post('/api/v2/auth/')
             .send({
-                "name": "Jonás",
-                "lastname": "Damián Hernández",
-                "email": "pepeluis@gmail.com",
+                "name": "John",
+                "lastname": "Doe",
+                "email": "johndoe@example.com",
                 "password": "XXXXXeeeeeee12Q*",
                 "role": 1
             });
 
         expect(response.status).toBe(201);
+        expect(response.header['content-type']).toContain('application/json');
+        expect(response.body.result).toBeInstanceOf(Object);
+
         expect(response.body.result).toHaveProperty('_id');
     });
+
+    it("Crear usuario sin campo obligatorio", async () => {
+
+        const response = await request(app)
+            .post('/api/v2/auth/')
+            .send({
+                "name": "John",
+                "lastname": "Doe",
+                "email": "johndoe@example.com",
+                "password": "",
+                "role": 1
+            });
+
+        expect(response.status).toBe(400);
+        expect(response.header['content-type']).toContain('application/json');
+        expect(response.body.details).toBeInstanceOf(Object);
+
+        expect(response.body.details[0]).toHaveProperty('message');
+        expect(response.body.details[0].message).toBe("\"password\" is not allowed to be empty");
+    });
+
 });
