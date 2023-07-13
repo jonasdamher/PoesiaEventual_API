@@ -96,8 +96,11 @@ export default class OccupationService {
 
             const response = response_data();
 
-            OCCUPATION.findByIdAndDelete(id).then((result: any) => {
+            const occup: Occupation = new OCCUPATION({ _id: id });
+
+            occup.deleteOccupation().then((result: any) => {
                 response.result = result;
+
                 resolve(response);
 
             }).catch((err: any) => {
