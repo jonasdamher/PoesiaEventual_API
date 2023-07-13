@@ -219,4 +219,25 @@ export default class AuthorService {
 
         });
     }
+
+    protected delete_by_id_document(id: string): Promise<Response_data> {
+        return new Promise((resolve, reject) => {
+
+            const response = response_data();
+
+            AUTHOR.findByIdAndDelete(id).then((result: any) => {
+                response.result = result;
+                resolve(response);
+
+            }).catch((err: any) => {
+
+                response.status = 404;
+                response.message = 'Not found';
+                response.result = err;
+
+                reject(response);
+            });
+        });
+    }
+
 }

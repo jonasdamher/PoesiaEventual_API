@@ -310,5 +310,4 @@ export default class PoemsService {
         });
     }
 
-
 }

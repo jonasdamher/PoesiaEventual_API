@@ -94,6 +94,19 @@ class AuthorController extends AuthorsService {
             return res.status(error.status).json(error);
         }
     }
+
+    public async delete_by_id(req: Request, res: Response) {
+        try {
+            const id = req.params.id;
+
+            const result = await super.delete_by_id_document(id);
+            return res.status(result.status).json(result);
+
+        } catch (error: any) {
+            res.status(error.status).json(error);
+        }
+    }
+
 }
 
 export default new AuthorController();
