@@ -8,7 +8,7 @@
     "dev": "nodemon ./src/server.ts",
     "build": "tsc",
     "test": "jest",
-    "docker": "docker build -t jonasdamher/poesiaeventual_api .",
+    "docker": "docker build -t jonasdamher/poesiaeventual_api:2.0.0 .",
     "lint": "eslint ./src/**",
     "lint:fix": "eslint ./src/** --fix"
   },
