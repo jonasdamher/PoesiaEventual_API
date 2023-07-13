@@ -43,7 +43,7 @@ describe("POST /auth/", () => {
         expect(response.body.result).toHaveProperty('_id');
     });
 
-    it("Crear usuario sin campo obligatorio", async () => {
+    it("Intentar crear usuario con campo obligatorio vacío", async () => {
 
         const response = await request(app)
             .post('/api/v2/auth/')
