@@ -9,8 +9,8 @@ import mongoose from 'mongoose';
  */
 
 const opts = {
-    points: 700, // Número de puntos permitidos
-    duration: 60, // Por segundo(s)
+    points: 60, // Número de puntos permitidos
+    duration: 120, // Por segundo(s)
     storeClient: mongoose.connection, // Cliente de la base de datos de MongoDB
     dbName: 'poesiaeventual', // Nombre de la base de datos
     keyPrefix: 'ratelimit', // Prefijo para las claves en la base de datos
