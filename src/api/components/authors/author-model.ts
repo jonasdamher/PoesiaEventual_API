@@ -294,17 +294,14 @@ author_schema.methods.deleteAuthor = async function (this: Author) {
 author_schema.methods.getDataAuthor = async function (_id: Schema.Types.ObjectId) {
     try {
 
-        const del: any = await AUTHOR.findByIdAndDelete(_id);
-        // borrar el registro asociado a del autor 
-
-        const books = await BOOK.findOne({ author: _id })
+        const books = await BOOK.find({ author: _id })
             .select('title published')
             .populate({ path: 'editorial', select: 'name' })
             .populate({ path: 'literary_genre', select: 'name' })
 
-        const poems = await POEM.findOne({ author: _id }).select('title text');
+        const poems = await POEM.find({ author: _id }).select('title text');
 
-        const recognitions = await RECOG.findOne({ author: _id }).select('title age')
+        const recognitions = await RECOG.find({ author: _id }).select('title age')
 
         return {
             books,
@@ -313,6 +310,7 @@ author_schema.methods.getDataAuthor = async function (_id: Schema.Types.ObjectId
         };
 
     } catch (error: any) {
+        console.log(error)
         return error;
     }
 };
