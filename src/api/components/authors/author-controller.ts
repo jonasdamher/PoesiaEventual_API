@@ -33,12 +33,12 @@ class AuthorController extends AuthorsService {
         }
     }
 
-    public async get_by_name(req: Request, res: Response) {
+    public async get_by_url(req: Request, res: Response) {
         try {
 
-            const name = req.params.name;
+            const url = req.params.url;
 
-            const result = await super.get_author_by_name(name);
+            const result = await super.get_author_by_url(url);
             return res.status(result.status).json(result);
         } catch (error: any) {
             return res.status(error.status).json(error);

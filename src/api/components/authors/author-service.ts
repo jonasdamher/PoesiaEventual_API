@@ -18,8 +18,8 @@ export default class AuthorService {
             get_pagination(AUTHOR, page, perPage).then((pagination: any) => {
 
                 AUTHOR.find().skip(pagination.page_range).limit(pagination.perPage)
-                    .sort('name')
-                    .select('name lastname short_description portrait url')
+                    .sort('full_name')
+                    .select('full_name short_description url')
                     .populate({ path: 'occupations', select: 'name' })
                     .populate({ path: 'literary_genres', select: 'name' })
                     .then((authorResponse: any) => {
@@ -49,12 +49,12 @@ export default class AuthorService {
         });
     }
 
-    protected get_author_by_name(name: string): Promise<Response_data> {
+    protected get_author_by_url(url: string): Promise<Response_data> {
         return new Promise((resolve, reject) => {
             const response = response_data();
 
-            AUTHOR.findOne({ $text: { $search: name } })
-                .select('name ')
+            AUTHOR.findOne({ $text: { $search: url } })
+                // .select('full_name')
                 .populate({ path: 'occupations', select: 'name' })
                 .populate({ path: 'literary_genres', select: 'name' })
                 .populate({ path: 'country', select: 'name' })

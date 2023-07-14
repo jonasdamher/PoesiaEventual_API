@@ -8,13 +8,13 @@ import { logger_authors } from '../../helpers/logger';
 class AuthorValidation {
 
 
-    async get_by_name(req: Request, res: Response, next: NextFunction) {
+    async get_by_url(req: Request, res: Response, next: NextFunction) {
 
         const schema = Joi.object({
-            name: Joi.string().regex(regex.url_name).required()
+            url: Joi.string().regex(regex.url_name).required()
         });
 
-        const param = { name: req.params.name };
+        const param = { url: req.params.url };
 
         schema.validateAsync(param)
             .then(() => next())
