@@ -2,10 +2,6 @@
 
 // Modelos
 import AUTHOR, { Author } from './author-model';
-// Otros servicios
-import BooksService from '../books/books-service';
-import PoemsService from '../poems/poems-service';
-import RecogService from '../recognitions/recognitions-service';
 // Ayudantes 
 import response_data from '../../utils/response_data';
 import { logger_authors } from '../../helpers/logger';
@@ -17,9 +13,11 @@ export default class AuthorService {
 
     protected get_all_authors(page: number, perPage: number): Promise<Response_data> {
         return new Promise((resolve, reject) => {
+
             const response = response_data();
 
             get_pagination(AUTHOR, page, perPage).then((pagination: any) => {
+
                 AUTHOR.find().skip(pagination.page_range).limit(pagination.perPage)
                     .sort('name')
                     .select('name lastname short_description portrait url')
@@ -54,28 +52,32 @@ export default class AuthorService {
 
     protected get_author_by_name(name: string): Promise<Response_data> {
         return new Promise((resolve, reject) => {
+
             const response = response_data();
 
-            AUTHOR.findOne({ $text: { $search: name } }).select('name ').populate({ path: 'occupations', select: 'name' }).populate({ path: 'literary_genres', select: 'name' }).populate({ path: 'country', select: 'name' }).then(async (current_author: any) => {
-                const recog = new RecogService();
-                const poems = new PoemsService();
-                const books = new BooksService();
+            AUTHOR.findOne({ $text: { $search: name } })
+                .select('name ').
+                populate({ path: 'occupations', select: 'name' })
+                .populate({ path: 'literary_genres', select: 'name' })
+                .populate({ path: 'country', select: 'name' })
+                .then(async (current_author: any) => {
 
-                response.result = {
-                    author: current_author,
-                    books: await books.get_books_of_author(current_author._id),
-                    poems: await poems.get_poems_of_author(current_author._id),
-                    recognitions: await recog.get_recognitions_of_author(current_author._id)
-                };
-                resolve(response);
-            }).catch((err: any) => {
+                    const data_author = await current_author.getDataAuthor(current_author._id);
 
-                response.status = 400;
-                response.message = 'BadRequest';
-                response.result = err;
-                logger_authors.info({ ...response }, 'service');
-                reject(response);
-            });
+                    response.result = {
+                        author: current_author,
+                        ...data_author
+                    };
+
+                    resolve(response);
+                }).catch((err: any) => {
+
+                    response.status = 400;
+                    response.message = 'BadRequest';
+                    response.result = err;
+                    logger_authors.info({ ...response }, 'service');
+                    reject(response);
+                });
         });
     }
 
@@ -102,7 +104,6 @@ export default class AuthorService {
         return new Promise((resolve, reject) => {
             const response = response_data();
             const query = { $text: { $search: search } };
-
 
             get_pagination(AUTHOR, page, perPage, query).then((pagination: any) => {
                 AUTHOR.find(query).skip(pagination.page_range).limit(pagination.perPage).sort('lastname').select('name lastname short_description').then((authorResponse: any) => {

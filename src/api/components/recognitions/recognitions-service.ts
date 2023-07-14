@@ -102,28 +102,6 @@ export default class RecogService {
         });
     }
 
-    public get_recognitions_of_author(id: any) {
-        return new Promise((resolve, reject) => {
-
-            const current_id: Schema.Types.ObjectId = id;
-
-            RECOG.findOne({ author: current_id })
-                .select('title age url')
-                .then((recognitions: any) => {
-                    if (!recognitions) {
-                        resolve([]);
-                    }
-                    if (recognitions.length > 1) {
-                        resolve(recognitions);
-                    }
-                    resolve([recognitions]);
-                }).catch((err: any) => {
-                    logger_recognitions.info(err, 'service');
-                    reject([]);
-                });
-        });
-    }
-
     protected create_recog(data: any): Promise<Response_data> {
         return new Promise((resolve, reject) => {
             const response = response_data();

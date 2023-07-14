@@ -49,6 +49,7 @@ export interface Author extends Document {
     saveAuthor(): Promise<Author>;
     updateAuthor(data: Partial<Author>): Promise<Author>;
     deleteAuthor(): Promise<any>;
+    getDataAuthor(_id: Schema.Types.ObjectId): Promise<any>;
 
 }
 
@@ -289,6 +290,33 @@ author_schema.methods.deleteAuthor = async function (this: Author) {
         session.endSession();
     }
 };
+
+author_schema.methods.getDataAuthor = async function (_id: Schema.Types.ObjectId) {
+    try {
+
+        const del: any = await AUTHOR.findByIdAndDelete(_id);
+        // borrar el registro asociado a del autor 
+
+        const books = await BOOK.findOne({ author: _id })
+            .select('title published')
+            .populate({ path: 'editorial', select: 'name' })
+            .populate({ path: 'literary_genre', select: 'name' })
+
+        const poems = await POEM.findOne({ author: _id }).select('title text');
+
+        const recognitions = await RECOG.findOne({ author: _id }).select('title age')
+
+        return {
+            books,
+            poems,
+            recognitions
+        };
+
+    } catch (error: any) {
+        return error;
+    }
+};
+
 
 const AUTHOR = model<Author>('authors', author_schema);
 export default AUTHOR;

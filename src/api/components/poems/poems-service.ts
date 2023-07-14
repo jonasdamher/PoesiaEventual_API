@@ -45,22 +45,6 @@ export default class PoemsService {
         });
     }
 
-    public get_poems_of_author(id: any) {
-        return new Promise((resolve, reject) => {
-
-            const current_id: Schema.Types.ObjectId = id;
-
-            POEM.findOne({ author: current_id }).select('title text').then((poems: any) => {
-                if (!poems) resolve([]);
-                if (poems.length > 1) resolve(poems);
-                resolve([poems]);
-            }).catch((err: any) => {
-                logger_poems.info(err, 'service');
-                reject([]);
-            });
-        });
-    }
-
     protected get_all_poems_of_author_by_id(page: number, perPage: number, id: any): Promise<Response_data> {
         return new Promise((resolve, reject) => {
             const response = response_data();

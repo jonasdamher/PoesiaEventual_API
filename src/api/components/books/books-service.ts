@@ -75,30 +75,6 @@ export default class BooksService {
         });
     }
 
-    public get_books_of_author(id: any) {
-        return new Promise((resolve, reject) => {
-            const current_id: Schema.Types.ObjectId = id;
-
-            BOOK.findOne({ author: current_id })
-                .select('title url published posthumous')
-                .populate({ path: 'editorial', select: 'name' })
-                .populate({ path: 'literary_genre', select: 'name' })
-                .then((books: any) => {
-                    if (!books) {
-                        resolve([]);
-                    }
-                    if (books.length > 1) {
-                        resolve(books);
-                    }
-                    resolve([books]);
-
-                }).catch((err: any) => {
-                    logger_books.info(err, 'service');
-                    reject([]);
-                });
-        });
-    }
-
     protected search_book(page: number, perPage: number, search: string): Promise<Response_data> {
         return new Promise((resolve, reject) => {
 
