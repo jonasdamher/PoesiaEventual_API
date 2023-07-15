@@ -203,9 +203,11 @@ export default class PoemsService {
 
             POEM.findById(id).then((poem: any) => {
 
-                const other_keywords = array_filter(poem.keywords, data.keywords, '_id');
-                data.keywords = data.keywords.concat(other_keywords);
-
+                if (data.keywords) {
+                    const other_keywords = array_filter(poem.keywords, data.keywords, '_id');
+                    data.keywords = data.keywords.concat(other_keywords);
+                }
+                
                 POEM.findByIdAndUpdate(
                     id,
                     { $set: data },

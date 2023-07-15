@@ -76,9 +76,11 @@ export default class GenresService {
 
             GENRE.findById(id).then((genreResponse: any) => {
 
-                const other_subgenres = array_filter(genreResponse.subgenres, data.subgenres, '_id');
-                data.subgenres = data.subgenres.concat(other_subgenres);
-
+                if (data.subgenres) {
+                    const other_subgenres = array_filter(genreResponse.subgenres, data.subgenres, '_id');
+                    data.subgenres = data.subgenres.concat(other_subgenres);
+                }
+                
                 GENRE.findByIdAndUpdate(id, { $set: data }, { new: true }).then((res: any) => {
 
                     response.result = res;

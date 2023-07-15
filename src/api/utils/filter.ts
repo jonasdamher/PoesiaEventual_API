@@ -1,10 +1,11 @@
 'use strict';
 
-export const array_filter = (actual: Array<any> | [], nuevo: Array<any> | [], key_filter: any = ''): Array<any> => {
+export const array_filter = (actual: Array<any>, nuevo: Array<any> | undefined, key_filter: any = ''): Array<any> => {
 
     let filter: Array<any> = [];
 
-    if (nuevo && Array.isArray(nuevo) && nuevo.length) {
+    if (nuevo !== undefined && Array.isArray(nuevo) && nuevo.length &&
+        actual !== undefined && Array.isArray(actual) && actual.length) {
 
         actual.forEach((word: any) => {
 

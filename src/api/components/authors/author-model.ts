@@ -47,7 +47,7 @@ export interface Author extends Document {
     updatedAt: number;
 
     saveAuthor(): Promise<Author>;
-    updateAuthor(data: Partial<Author>): Promise<Author>;
+    updateAuthor(data: any): Promise<Author>;
     deleteAuthor(): Promise<any>;
     getDataAuthor(_id: Schema.Types.ObjectId): Promise<any>;
 
@@ -213,7 +213,7 @@ author_schema.methods.saveAuthor = async function (this: Author) {
     });
 };
 
-author_schema.methods.updateAuthor = async function (data: Author) {
+author_schema.methods.updateAuthor = async function (data: any) {
     return new Promise((resolve, reject) => {
 
         const id = this._id;
@@ -238,17 +238,22 @@ author_schema.methods.updateAuthor = async function (data: Author) {
             }
         }
 
-        const other_literary_genres = array_filter(this.literary_genres, data.literary_genres);
-        data.literary_genres = data.literary_genres.concat(other_literary_genres);
-
-        const other_occupations = array_filter(this.occupations, data.occupations);
-        data.occupations = data.occupations.concat(other_occupations);
-
-        const other_photos = array_filter(this.photos, data.photos, '_id');
-        data.photos = data.photos.concat(other_photos);
-
-        const other_keywords = array_filter(this.keywords, data.keywords, '_id');
-        data.keywords = data.keywords.concat(other_keywords);
+        if (data.literary_genres) {
+            const other_literary_genres = array_filter(this.literary_genres, data.literary_genres);
+            data.literary_genres = data.literary_genres.concat(other_literary_genres);
+        }
+        if (data.occupations) {
+            const other_occupations = array_filter(this.occupations, data.occupations);
+            data.occupations = data.occupations.concat(other_occupations);
+        } 
+        if (data.photos) {
+            const other_photos = array_filter(this.photos, data.photos, '_id');
+            data.photos = data.photos.concat(other_photos);
+        } 
+        if (data.keywords) {
+            const other_keywords = array_filter(this.keywords, data.keywords, '_id');
+            data.keywords = data.keywords.concat(other_keywords);
+        }
 
         AUTHOR.findByIdAndUpdate(
             id,
