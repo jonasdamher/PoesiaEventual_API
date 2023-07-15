@@ -48,7 +48,6 @@ class App {
                 }
                 next();
             })
-            .use(express.json())
             .use(express.urlencoded({ extended: false }))
             .use(cookieParser())
             .use(compression())
