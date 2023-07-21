@@ -10,7 +10,7 @@ import timeout from 'connect-timeout';
 
 import config from './config';
 import { logger_app } from './helpers/logger';
-import limit_mongo from './middlewares/limit-mongo';
+import { rate_limit } from './middlewares/limit-mongo';
 
 import Routes from './routes';
 
@@ -31,15 +31,12 @@ class App {
         // Configuración fecha formato Español
         moment.locale('es');
 
-        if (config.app.node_env !== 'test') {
-            // Usar configuración de limite de peticiones simultaneas
-            this.app.use(limit_mongo);
-        }
-
         this.app
             .enable('strict routing')
             // Configurar el middleware de tiempo de espera
             .use(timeout('7s'))
+            // Usar configuración de limite de peticiones simultaneas
+            .use(rate_limit)
             // Limitar los KB de las peticiones
             .use(express.json({ strict: true, limit: '500kb' }), (err: Error, req: Request, res: Response, next: NextFunction) => {
                 if (err) {
