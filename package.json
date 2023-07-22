@@ -10,7 +10,10 @@
     "test": "cross-env NODE_ENV=test jest --coverage",
     "docker": "docker build -t jonasdamher/poesiaeventual_api:2.0.0 .",
     "lint": "eslint ./src/**",
-    "lint:fix": "eslint ./src/** --fix"
+    "lint:fix": "eslint ./src/** --fix",
+    "migrate": "mongodb-migrations -f migrations/mongodb-migrations-config.ts",
+    "migrate:up": "npm run migrate up",
+    "migrate:down": "npm run migrate down"
   },
   "repository": {
     "type": "git",
@@ -44,6 +47,7 @@
     "jsonwebtoken": "^9.0.1",
     "moment": "^2.29.4",
     "mongodb": "^5.7.0",
+    "mongodb-migrations": "^0.8.5",
     "mongoose": "^7.3.2",
     "nodemailer": "^6.9.3",
     "passport": "^0.6.0",

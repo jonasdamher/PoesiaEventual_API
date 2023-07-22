@@ -13,30 +13,14 @@ export default class AuthorService {
 
     protected get_all_authors(page: number, perPage: number): Promise<Response_data> {
         return new Promise((resolve, reject) => {
+
             const response = response_data();
+            const author: Author = new AUTHOR();
 
-            get_pagination(AUTHOR, page, perPage).then((pagination: any) => {
+            author.all_authors(page, perPage).then((result: any) => {
 
-                AUTHOR.find().skip(pagination.page_range).limit(pagination.perPage)
-                    .sort('full_name')
-                    .select('full_name short_description url')
-                    .populate({ path: 'occupations', select: 'name' })
-                    .populate({ path: 'literary_genres', select: 'name' })
-                    .then((authorResponse: any) => {
-
-                        response.result = {
-                            authors: authorResponse,
-                            pagination: paginate(pagination)
-                        };
-                        resolve(response);
-                    }).catch((err: any) => {
-
-                        response.status = 400;
-                        response.message = 'BadRequest';
-                        response.result = err;
-                        logger_authors.info({ ...response }, 'service');
-                        reject(response);
-                    });
+                response.result = result;
+                resolve(response);
 
             }).catch((err: any) => {
 
@@ -53,29 +37,21 @@ export default class AuthorService {
         return new Promise((resolve, reject) => {
             const response = response_data();
 
-            AUTHOR.findOne({ $text: { $search: url } })
-                // .select('full_name')
-                .populate({ path: 'occupations', select: 'name' })
-                .populate({ path: 'literary_genres', select: 'name' })
-                .populate({ path: 'country', select: 'name' })
-                .then(async (current_author: any) => {
+            const author: Author = new AUTHOR();
 
-                    const data_author = await current_author.getDataAuthor(current_author._id);
+            author.getDataAuthor(url).then(async (current_author: any) => {
 
-                    response.result = {
-                        author: current_author,
-                        ...data_author
-                    };
+                response.result = current_author[0];
 
-                    resolve(response);
-                }).catch((err: any) => {
+                resolve(response);
+            }).catch((err: any) => {
 
-                    response.status = 400;
-                    response.message = 'BadRequest';
-                    response.result = err;
-                    logger_authors.info({ ...response }, 'service');
-                    reject(response);
-                });
+                response.status = 400;
+                response.message = 'BadRequest';
+                response.result = err;
+                logger_authors.info({ ...response }, 'service');
+                reject(response);
+            });
         });
     }
 
@@ -103,24 +79,27 @@ export default class AuthorService {
             const response = response_data();
             const query = { $text: { $search: search } };
 
-
             get_pagination(AUTHOR, page, perPage, query).then((pagination: any) => {
-                AUTHOR.find(query).skip(pagination.page_range).limit(pagination.perPage).sort('lastname').select('name lastname short_description').then((authorResponse: any) => {
+                AUTHOR.find(query).skip(pagination.page_range)
+                    .limit(pagination.perPage)
+                    .sort('lastname')
+                    .select('name lastname short_description')
+                    .then((authorResponse: any) => {
 
-                    response.result = {
-                        authors: authorResponse,
-                        pagination: paginate(pagination)
-                    };
-                    resolve(response);
+                        response.result = {
+                            authors: authorResponse,
+                            pagination: paginate(pagination)
+                        };
+                        resolve(response);
 
-                }).catch((err: any) => {
+                    }).catch((err: any) => {
 
-                    response.status = 400;
-                    response.message = 'BadRequest';
-                    response.result = err;
-                    logger_authors.info({ ...response }, 'service');
-                    reject(response);
-                });
+                        response.status = 400;
+                        response.message = 'BadRequest';
+                        response.result = err;
+                        logger_authors.info({ ...response }, 'service');
+                        reject(response);
+                    });
 
             }).catch((err: any) => {
 

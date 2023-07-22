@@ -5,6 +5,7 @@ import mongoose, { model, Document, Schema } from 'mongoose';
 import * as regex from '../../utils/regex';
 import Text from '../../helpers/Text';
 import { array_filter } from '../../utils/filter';
+import { get_pagination, paginate } from '../../utils/pagination';
 
 import RECOG from '../recognitions/recognitions-model';
 import POEM from '../poems/poems-model';
@@ -49,7 +50,8 @@ export interface Author extends Document {
     saveAuthor(): Promise<Author>;
     updateAuthor(data: any): Promise<Author>;
     deleteAuthor(): Promise<any>;
-    getDataAuthor(_id: Schema.Types.ObjectId): Promise<any>;
+    getDataAuthor(url: string): Promise<any>;
+    all_authors(page: number, perPage: number): Promise<any>;
 
 }
 
@@ -117,7 +119,7 @@ const author_schema = new Schema<Author>({
             },
             message: (props: any) => `(${props.value}) no tiene el formato adecuado.`
         },
-        // required: [true, 'Es obligatorio introducir un texto.'],
+        required: [true, 'Es obligatorio introducir un texto.'],
     },
     portrait: {
         type: String,
@@ -245,11 +247,11 @@ author_schema.methods.updateAuthor = async function (data: any) {
         if (data.occupations) {
             const other_occupations = array_filter(this.occupations, data.occupations);
             data.occupations = data.occupations.concat(other_occupations);
-        } 
+        }
         if (data.photos) {
             const other_photos = array_filter(this.photos, data.photos, '_id');
             data.photos = data.photos.concat(other_photos);
-        } 
+        }
         if (data.keywords) {
             const other_keywords = array_filter(this.keywords, data.keywords, '_id');
             data.keywords = data.keywords.concat(other_keywords);
@@ -267,6 +269,94 @@ author_schema.methods.updateAuthor = async function (data: any) {
             reject(err);
         });
 
+    });
+};
+
+author_schema.methods.all_authors = async function (page: number, perPage: number) {
+    return new Promise((resolve, reject) => {
+
+        get_pagination(AUTHOR, page, perPage).then((pagination: any) => {
+
+            AUTHOR.aggregate([
+                {
+                    $sort: {
+                        full_name: 1,
+                    },
+                },
+                {
+                    $lookup: {
+                        from: 'occupations',
+                        localField: 'occupations',
+                        foreignField: '_id',
+                        as: 'occupations',
+                    },
+                },
+                {
+                    $lookup: {
+                        from: 'literary_genres',
+                        localField: 'literary_genres',
+                        foreignField: '_id',
+                        as: 'literary_genres',
+                    },
+                },
+                {
+                    $lookup: {
+                        from: 'books',
+                        localField: '_id',
+                        foreignField: 'author',
+                        as: 'books',
+                    },
+                },
+                {
+                    $addFields: {
+                        total_books: { $size: '$books' },
+                    },
+                },
+                {
+                    $lookup: {
+                        from: 'poems',
+                        localField: '_id',
+                        foreignField: 'author',
+                        as: 'poems',
+                    },
+                },
+                {
+                    $addFields: {
+                        total_poems: { $size: '$poems' },
+                    },
+                },
+                {
+                    $project: {
+                        _id: 0,
+                        full_name: 1,
+                        short_description: 1,
+                        url: 1,
+                        portrait: 1,
+                        total_books: 1,
+                        total_poems: 1,
+                        occupations: '$occupations.name',
+                        literary_genres: '$literary_genres.name',
+                    },
+                },
+                { $skip: pagination.page_range },
+                { $limit: pagination.perpage },
+            ]).exec().then((authorResponse: any) => {
+
+                const result = {
+                    authors: authorResponse,
+                    pagination: paginate(pagination)
+                };
+                resolve(result);
+
+            }).catch((err: any) => {
+
+                reject(err);
+            });
+
+        }).catch((err: any) => {
+
+            reject(err);
+        });
     });
 };
 
@@ -296,30 +386,118 @@ author_schema.methods.deleteAuthor = async function (this: Author) {
     }
 };
 
-author_schema.methods.getDataAuthor = async function (_id: Schema.Types.ObjectId) {
+author_schema.methods.getDataAuthor = async function (url: string) {
     try {
 
-        const books = await BOOK.find({ author: _id })
-            .select('title published')
-            .populate({ path: 'editorial', select: 'name' })
-            .populate({ path: 'literary_genre', select: 'name' })
+        const data = await AUTHOR.aggregate([
+            {
+                $match: {
+                    url: url,
+                },
+            },
+            {
+                $lookup: {
+                    from: 'countries',
+                    localField: 'country',
+                    foreignField: '_id',
+                    as: 'country',
+                },
+            },
+            {
+                $lookup: {
+                    from: 'occupations',
+                    localField: 'occupations',
+                    foreignField: '_id',
+                    as: 'occupations',
+                },
+            },
+            {
+                $lookup: {
+                    from: 'literary_genres',
+                    localField: 'literary_genres',
+                    foreignField: '_id',
+                    as: 'literary_genres',
+                },
+            },
+            {
+                $lookup: {
+                    from: 'poems',
+                    localField: '_id',
+                    foreignField: 'author',
+                    as: 'poems',
+                },
+            },
+            {
+                $lookup: {
+                    from: 'recognitions',
+                    localField: '_id',
+                    foreignField: 'author',
+                    as: 'recognitions',
+                },
+            },
+            {
+                $lookup: {
+                    from: 'books',
+                    let: { authorId: '$_id' },
+                    pipeline: [
+                        {
+                            $sort: {
+                                published: 1,
+                            },
+                        },
+                        {
+                            $match: {
+                                $expr: {
+                                    $eq: ['$author', '$$authorId'],
+                                },
+                            },
+                        },
+                        {
+                            $lookup: {
+                                from: 'editorials',
+                                localField: 'editorial',
+                                foreignField: '_id',
+                                as: 'editorial',
+                            },
+                        },
+                        {
+                            $project: {
+                                _id: 0,
+                                title: '$title',
+                                synopsis: '$synopsis',
+                                published: '$published',
+                                editorial: { $arrayElemAt: ['$editorial.name', 0] },
+                            },
+                        },
+                    ],
+                    as: 'books'
+                }
+            },
+            {
+                $project: {
+                    _id: 0,
+                    full_name: 1,
+                    short_description: 1,
+                    biography: 1,
+                    url: 1,
+                    portrait: 1,
+                    books: 1,
+                    poems: { $map: { input: '$poems', as: 'poems', in: { title: '$$poems.title', text: '$$poems.text' } } },
+                    recognitions: { $map: { input: '$recognitions', as: 'recognitions', in: { title: '$$recognitions.title', text: '$$recognitions.text', age: '$$recognitions.age' } } },
+                    occupations: '$occupations.name',
+                    literary_genres: '$literary_genres.name',
+                    country: { $arrayElemAt: ['$country.name', 0] }
+                },
+            },
+        ]).exec();
 
-        const poems = await POEM.find({ author: _id }).select('title text');
-
-        const recognitions = await RECOG.find({ author: _id }).select('title age')
-
-        return {
-            books,
-            poems,
-            recognitions
-        };
+        return data;
 
     } catch (error: any) {
         console.log(error)
         return error;
     }
 };
-
 
 const AUTHOR = model<Author>('authors', author_schema);
 export default AUTHOR;
