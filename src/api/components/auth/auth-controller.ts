@@ -2,6 +2,7 @@
 
 import { Request, Response } from 'express';
 import AuthService from './auth-service';
+import { FailsByEmailAndIP } from '../../middlewares/rate_limit';
 
 /**
  * Para crear usuarios, confirmar cuenta y autenticar usuarios por Json Web Token
@@ -15,9 +16,15 @@ class AuthController extends AuthService {
 
             const result = await super.userLogin(email, password);
 
+            const email_ip = req.body.email + '_' + req.ip;
+
+            const limiterSlowBruteByIP = await FailsByEmailAndIP();
+            await limiterSlowBruteByIP.delete(email_ip);
+
             return res.status(result.status).json(result);
 
         } catch (error: any) {
+
             return res.status(error.status).json(error);
         }
     }

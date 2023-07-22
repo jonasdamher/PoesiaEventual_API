@@ -10,7 +10,7 @@ import timeout from 'connect-timeout';
 
 import config from './config';
 import { logger_app } from './helpers/logger';
-import { rate_limit } from './middlewares/limit-mongo';
+import { limit_general } from './middlewares/rate_limit';
 
 import Routes from './routes';
 
@@ -36,7 +36,7 @@ class App {
             // Configurar el middleware de tiempo de espera
             .use(timeout('7s'))
             // Usar configuración de limite de peticiones simultaneas
-            .use(rate_limit)
+            .use(limit_general)
             // Limitar los KB de las peticiones
             .use(express.json({ strict: true, limit: '500kb' }), (err: Error, req: Request, res: Response, next: NextFunction) => {
                 if (err) {
