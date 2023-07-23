@@ -14,7 +14,7 @@ export default class OccupationService {
         return new Promise((resolve, reject) => {
             const response = response_data();
 
-            OCCUPATION.find().sort('name').then((res: any) => {
+            OCCUPATION.find().sort('name').then((res: Occupation[] | null) => {
 
                 response.result = res;
                 resolve(response);
@@ -33,7 +33,7 @@ export default class OccupationService {
         return new Promise((resolve, reject) => {
             const response = response_data();
 
-            OCCUPATION.findById(id).then((res: any) => {
+            OCCUPATION.findById(id).then((res: Occupation | null) => {
 
                 response.result = res;
                 resolve(response);
@@ -48,7 +48,7 @@ export default class OccupationService {
         });
     }
 
-    protected create_occupation(data: any): Promise<Response_data> {
+    protected create_occupation(data: Partial<Occupation>): Promise<Response_data> {
         return new Promise((resolve, reject) => {
             const response = response_data();
             const new_occupation: Occupation = new OCCUPATION(data);
@@ -71,11 +71,11 @@ export default class OccupationService {
         });
     }
 
-    protected update_occupation(id: any, data: any): Promise<Response_data> {
+    protected update_occupation(id: string, data: Partial<Occupation>): Promise<Response_data> {
         return new Promise((resolve, reject) => {
             const response = response_data();
 
-            OCCUPATION.findByIdAndUpdate(id, { $set: data }, { new: true }).then((res: any) => {
+            OCCUPATION.findByIdAndUpdate(id, { $set: data }, { new: true }).then((res: Occupation | null) => {
 
                 response.result = res;
                 resolve(response);
@@ -98,7 +98,7 @@ export default class OccupationService {
 
             const occup: Occupation = new OCCUPATION({ _id: id });
 
-            occup.deleteOccupation().then((result: any) => {
+            occup.deleteOccupation().then((result: Occupation | null) => {
                 response.result = result;
 
                 resolve(response);

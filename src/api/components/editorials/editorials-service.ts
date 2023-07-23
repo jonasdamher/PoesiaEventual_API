@@ -14,7 +14,7 @@ export default class EditorialsService {
         return new Promise((resolve, reject) => {
             const response = response_data();
 
-            EDITOR.find().sort('name').then((res: any) => {
+            EDITOR.find().sort('name').then((res: Editorial[] | null) => {
 
                 response.result = res;
                 resolve(response);
@@ -33,7 +33,7 @@ export default class EditorialsService {
         return new Promise((resolve, reject) => {
             const response = response_data();
 
-            EDITOR.findById(id).then((res: any) => {
+            EDITOR.findById(id).then((res: Editorial | null) => {
 
                 response.result = res;
                 resolve(response);
@@ -48,7 +48,7 @@ export default class EditorialsService {
         });
     }
 
-    protected create_editorial(data: any): Promise<Response_data> {
+    protected create_editorial(data: Partial<Editorial>): Promise<Response_data> {
         return new Promise((resolve, reject) => {
             const response = response_data();
             const new_genre: Editorial = new EDITOR(data);
@@ -71,11 +71,11 @@ export default class EditorialsService {
         });
     }
 
-    protected update_editorial(id: any, data: any): Promise<Response_data> {
+    protected update_editorial(id: string, data: Partial<Editorial>): Promise<Response_data> {
         return new Promise((resolve, reject) => {
             const response = response_data();
 
-            EDITOR.findByIdAndUpdate(id, { $set: data }, { new: true }).then((res: any) => {
+            EDITOR.findByIdAndUpdate(id, { $set: data }, { new: true }).then((res: Editorial | null) => {
 
                 response.result = res;
                 resolve(response);
@@ -96,7 +96,7 @@ export default class EditorialsService {
 
             const response = response_data();
 
-            EDITOR.findByIdAndDelete(id).then((result: any) => {
+            EDITOR.findByIdAndDelete(id).then((result: Editorial | null) => {
                 response.result = result;
                 resolve(response);
 

@@ -8,6 +8,7 @@ import { get_pagination, paginate } from '../../utils/pagination';
 // Tipos
 import Response_data from '../../types/Response_data';
 import { Schema } from 'mongoose';
+import Pagination from '../../types/Pagination';
 
 export default class RecogService {
 
@@ -15,7 +16,7 @@ export default class RecogService {
         return new Promise((resolve, reject) => {
             const response = response_data();
 
-            get_pagination(RECOG, page, perPage).then((pagination: any) => {
+            get_pagination(RECOG, page, perPage).then((pagination: Pagination) => {
 
                 RECOG.find().skip(pagination.page_range).limit(pagination.perPage).sort('name')
                     .then((authorResponse: any) => {
@@ -72,7 +73,7 @@ export default class RecogService {
 
             const query = { title: { $regex: '.*' + search + '.*', $options: 'i' } };
 
-            get_pagination(RECOG, page, perPage, query).then((pagination: any) => {
+            get_pagination(RECOG, page, perPage, query).then((pagination: Pagination) => {
 
                 RECOG.find(query).populate('author').skip(pagination.page_range).limit(pagination.perPage).sort('title')
                     .then((poems: any) => {

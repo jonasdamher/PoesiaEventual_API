@@ -11,8 +11,8 @@ class RecogController extends RecogService {
 
             const { page, perPage } = req.query;
 
-            const current_page = currentPage(page);
-            const current_perPage = currentPerPage(perPage);
+            const current_page: number = currentPage(page);
+            const current_perPage: number = currentPerPage(perPage);
 
             const result = await super.get_all_recog(current_page, current_perPage);
             return res.status(result.status).json(result);
@@ -43,8 +43,8 @@ class RecogController extends RecogService {
             const { page, perPage } = req.query;
             const search = req.params.search.trim().toLowerCase();
 
-            const current_page = Number(page ?? 1);
-            const current_perPage = Number(perPage ?? 10);
+            const current_page: number = currentPage(page);
+            const current_perPage: number = currentPerPage(perPage);
 
             const result = await super.search_recogs(current_page, current_perPage, search);
             return res.status(result.status).json(result);
@@ -79,7 +79,7 @@ class RecogController extends RecogService {
             res.status(error.status).json(error);
         }
     }
-    
+
     public async delete_by_id(req: Request, res: Response) {
         try {
             const id = req.params.id;

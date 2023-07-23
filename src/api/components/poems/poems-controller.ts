@@ -10,8 +10,8 @@ class PoemsController extends PoemsService {
         try {
             const { page, perPage } = req.query;
 
-            const current_page = currentPage(page);
-            const current_perPage = currentPerPage(perPage);
+            const current_page: number = currentPage(page);
+            const current_perPage: number = currentPerPage(perPage);
 
             const result = await super.get_all_poems(current_page, current_perPage);
             return res.status(result.status).json(result);
@@ -39,8 +39,8 @@ class PoemsController extends PoemsService {
             const { page, perPage } = req.query;
             const search = req.params.search.trim().toLowerCase();
 
-            const current_page = Number(page ?? 1);
-            const current_perPage = Number(perPage ?? 10);
+            const current_page: number = currentPage(page);
+            const current_perPage: number = currentPerPage(perPage);
 
             const result = await super.search_poem(current_page, current_perPage, search);
             return res.status(result.status).json(result);
@@ -67,8 +67,8 @@ class PoemsController extends PoemsService {
             const { page, perPage } = req.query;
             const id = req.params.id;
 
-            const current_page = Number(page ?? 1);
-            const current_perPage = Number(perPage ?? 10);
+            const current_page: number = currentPage(page);
+            const current_perPage: number = currentPerPage(perPage);
 
             const result = await super.get_all_poems_of_author_by_id(current_page, current_perPage, id);
             return res.status(result.status).json(result);

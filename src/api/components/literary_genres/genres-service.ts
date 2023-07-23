@@ -15,7 +15,7 @@ export default class GenresService {
         return new Promise((resolve, reject) => {
             const response = response_data();
 
-            GENRE.find().sort('name').then((res: any) => {
+            GENRE.find().sort('name').then((res: Genre[] | null) => {
 
                 response.result = res;
                 resolve(response);
@@ -33,7 +33,7 @@ export default class GenresService {
         return new Promise((resolve, reject) => {
             const response = response_data();
 
-            GENRE.findById(id).then((res: any) => {
+            GENRE.findById(id).then((res: Genre | null) => {
 
                 response.result = res;
                 resolve(response);
@@ -46,7 +46,7 @@ export default class GenresService {
         });
     }
 
-    protected create_genre(data: any): Promise<Response_data> {
+    protected create_genre(data: Partial<Genre>): Promise<Response_data> {
         return new Promise((resolve, reject) => {
             const response = response_data();
 
@@ -69,7 +69,7 @@ export default class GenresService {
             });
         });
     }
-    protected update_genre(id: any, data: any): Promise<Response_data> {
+    protected update_genre(id: string, data: Partial<Genre>): Promise<Response_data> {
         return new Promise((resolve, reject) => {
 
             const response = response_data();
@@ -80,8 +80,8 @@ export default class GenresService {
                     const other_subgenres = array_filter(genreResponse.subgenres, data.subgenres, '_id');
                     data.subgenres = data.subgenres.concat(other_subgenres);
                 }
-                
-                GENRE.findByIdAndUpdate(id, { $set: data }, { new: true }).then((res: any) => {
+
+                GENRE.findByIdAndUpdate(id, { $set: data }, { new: true }).then((res: Genre | null) => {
 
                     response.result = res;
                     resolve(response);
@@ -111,7 +111,7 @@ export default class GenresService {
 
             const response = response_data();
 
-            GENRE.findByIdAndDelete(id).then((result: any) => {
+            GENRE.findByIdAndDelete(id).then((result: Genre | null) => {
                 response.result = result;
                 resolve(response);
 

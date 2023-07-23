@@ -10,8 +10,8 @@ class BooksController extends BooksService {
         try {
             const { page, perPage } = req.query;
 
-            const current_page = currentPage(page);
-            const current_perPage = currentPerPage(perPage);
+            const current_page: number = currentPage(page);
+            const current_perPage: number = currentPerPage(perPage);
 
             const result = await super.get_all_books(current_page, current_perPage);
             res.status(result.status).json(result);
@@ -36,8 +36,8 @@ class BooksController extends BooksService {
             const { page, perPage } = req.query;
             const search = req.params.search.trim().toLowerCase();
 
-            const current_page = Number(page ?? 1);
-            const current_perPage = Number(perPage ?? 10);
+            const current_page: number = currentPage(page);
+            const current_perPage: number = currentPerPage(perPage);
 
             const result = await super.search_book(current_page, current_perPage, search);
             res.status(result.status).json(result);

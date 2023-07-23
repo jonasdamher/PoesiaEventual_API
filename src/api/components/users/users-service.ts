@@ -19,7 +19,7 @@ export default class UsersService {
         return new Promise((resolve, reject) => {
             const response = response_data();
 
-            USER.findById(id).select('name lastname email').then((res: any) => {
+            USER.findById(id).select('name lastname email').then((res: User | null) => {
 
                 response.result = res;
                 resolve(response);
@@ -41,12 +41,12 @@ export default class UsersService {
      * @param data 
      * @returns string || object
      */
-    protected updateUserById(id: string, data: any): Promise<Response_data> {
+    protected updateUserById(id: string, data: Partial<User>): Promise<Response_data> {
         return new Promise((resolve, reject) => {
-            
+
             const response = response_data();
 
-            USER.findByIdAndUpdate(id, data, { new: true }).select('name lastname email ').then((res: any) => {
+            USER.findByIdAndUpdate(id, data, { new: true }).select('name lastname email ').then((res: User | null) => {
 
                 response.message = 'Update';
                 response.result = res;
@@ -70,10 +70,10 @@ export default class UsersService {
 
             const response = response_data();
 
-            USER.findByIdAndDelete(id).then((res: any) => {
+            USER.findByIdAndDelete(id).then((res: User | null) => {
 
                 response.message = '';
-                response.result = res._id;
+                response.result = res;
 
                 resolve(response);
 

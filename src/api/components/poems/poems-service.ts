@@ -10,6 +10,7 @@ import { array_filter } from '../../utils/filter';
 // Tipos
 import Response_data from '../../types/Response_data';
 import { Schema } from 'mongoose';
+import Pagination from '../../types/Pagination';
 
 export default class PoemsService {
 
@@ -17,11 +18,10 @@ export default class PoemsService {
         return new Promise((resolve, reject) => {
             const response = response_data();
 
-            get_pagination(POEM, page, perPage).then((pagination: any) => {
+            get_pagination(POEM, page, perPage).then((pagination: Pagination) => {
 
                 POEM.find().populate('author', 'name lastname').skip(pagination.page_range).limit(pagination.perPage).sort('title')
-
-                    .then((authorResponse: any) => {
+                    .then((authorResponse: Poem[] | null) => {
 
                         response.result = {
                             authors: authorResponse,
@@ -45,16 +45,15 @@ export default class PoemsService {
         });
     }
 
-    protected get_all_poems_of_author_by_id(page: number, perPage: number, id: any): Promise<Response_data> {
+    protected get_all_poems_of_author_by_id(page: number, perPage: number, id: string): Promise<Response_data> {
         return new Promise((resolve, reject) => {
             const response = response_data();
-            const current_id: Schema.Types.ObjectId = id;
-            const query = { author: current_id };
+            const query = { author: id };
 
-            get_pagination(POEM, page, perPage, query).then((pagination: any) => {
+            get_pagination(POEM, page, perPage, query).then((pagination: Pagination) => {
 
                 POEM.find(query).populate('author', 'name lastname').skip(pagination.page_range).limit(pagination.perPage).sort('title')
-                    .then(poemList => {
+                    .then((poemList: Poem[] | null) => {
 
                         response.result = {
                             poems: poemList,
@@ -83,7 +82,7 @@ export default class PoemsService {
         return new Promise((resolve, reject) => {
             const response = response_data();
 
-            POEM.findById({ _id: id }).populate('author', 'name lastname').then((poem: any) => {
+            POEM.findById(id).populate('author', 'name lastname').then((poem: Poem | null) => {
 
                 response.result = poem;
                 resolve(response);
@@ -105,10 +104,10 @@ export default class PoemsService {
             const query = { $text: { $search: search } };
 
             get_pagination(POEM, page, perPage, query)
-                .then((pagination: any) => {
+                .then((pagination: Pagination) => {
 
                     POEM.find(query).populate('author', 'name lastname').skip(pagination.page_range).limit(pagination.perPage).sort('title')
-                        .then((poems: any) => {
+                        .then((poems: Poem[] | null) => {
 
                             response.result = {
                                 poems: poems,
@@ -142,7 +141,7 @@ export default class PoemsService {
 
                 const random = count == 1 ? 1 : Math.floor(Math.random() * count);
 
-                POEM.findOne().populate('author', 'name lastname').skip(random).then((poem: any) => {
+                POEM.findOne().populate('author', 'name lastname').skip(random).then((poem: Poem | null) => {
 
                     response.result = poem;
                     resolve(response);
@@ -165,7 +164,7 @@ export default class PoemsService {
         });
     }
 
-    protected create_poem(data: any): Promise<Response_data> {
+    protected create_poem(data: Poem): Promise<Response_data> {
         return new Promise((resolve, reject) => {
             const response = response_data();
 
@@ -193,7 +192,7 @@ export default class PoemsService {
         });
     }
 
-    protected update_poem(id: any, data: any): Promise<Response_data> {
+    protected update_poem(id: string, data: Partial<Poem>): Promise<Response_data> {
         return new Promise((resolve, reject) => {
             const response = response_data();
 
@@ -207,12 +206,12 @@ export default class PoemsService {
                     const other_keywords = array_filter(poem.keywords, data.keywords, '_id');
                     data.keywords = data.keywords.concat(other_keywords);
                 }
-                
+
                 POEM.findByIdAndUpdate(
                     id,
                     { $set: data },
                     { new: true }
-                ).then((update: any) => {
+                ).then((update: Poem | null) => {
 
                     response.result = update;
                     resolve(response);
@@ -241,7 +240,7 @@ export default class PoemsService {
 
             const response = response_data();
 
-            POEM.findByIdAndDelete(id).then((result: any) => {
+            POEM.findByIdAndDelete(id).then((result: Poem | null) => {
                 response.result = result;
                 resolve(response);
 

@@ -9,8 +9,8 @@ class CountriesController extends CountriesService {
         try {
             const { page, perPage } = req.query;
 
-            const current_page = currentPage(page);
-            const current_perPage = currentPerPage(perPage);
+            const current_page: number = currentPage(page);
+            const current_perPage: number = currentPerPage(perPage);
 
             const result = await super.getAllCountries(current_page, current_perPage);
 

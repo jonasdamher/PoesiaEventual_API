@@ -8,6 +8,8 @@ import { logger_authors } from '../../helpers/logger';
 import { get_pagination, paginate } from '../../utils/pagination';
 // Tipos
 import Response_data from '../../types/Response_data';
+import Pagination from '../../types/Pagination';
+import { Schema } from 'mongoose';
 
 export default class AuthorService {
 
@@ -59,7 +61,7 @@ export default class AuthorService {
         return new Promise((resolve, reject) => {
             const response = response_data();
 
-            AUTHOR.findById(id).then((authorResponse: any) => {
+            AUTHOR.findById(id).then((authorResponse: Author | null) => {
 
                 response.result = authorResponse;
                 resolve(response);
@@ -79,12 +81,12 @@ export default class AuthorService {
             const response = response_data();
             const query = { $text: { $search: search } };
 
-            get_pagination(AUTHOR, page, perPage, query).then((pagination: any) => {
+            get_pagination(AUTHOR, page, perPage, query).then((pagination: Pagination) => {
                 AUTHOR.find(query).skip(pagination.page_range)
                     .limit(pagination.perPage)
                     .sort('lastname')
                     .select('name lastname short_description')
-                    .then((authorResponse: any) => {
+                    .then((authorResponse: Author[] | null) => {
 
                         response.result = {
                             authors: authorResponse,
@@ -120,7 +122,7 @@ export default class AuthorService {
 
                 const random = Math.floor(Math.random() * count);
 
-                AUTHOR.findOne().skip(random).then((author: any) => {
+                AUTHOR.findOne().skip(random).then((author: Author | null) => {
 
                     response.result = author;
                     resolve(response);
@@ -143,13 +145,13 @@ export default class AuthorService {
         });
     }
 
-    protected create_author(data: Author): Promise<Response_data> {
+    protected create_author(data: Partial<Author>): Promise<Response_data> {
         return new Promise((resolve, reject) => {
             const response = response_data();
 
             const author: Author = new AUTHOR(data);
 
-            author.saveAuthor().then((authorResponse: any) => {
+            author.saveAuthor().then((authorResponse: Author) => {
 
                 response.status = 201;
                 response.message = 'Created';
@@ -166,14 +168,14 @@ export default class AuthorService {
         });
     }
 
-    protected update_author(id: any, data: Partial<Author>): Promise<Response_data> {
+    protected update_author(id: string, data: Partial<Author>): Promise<Response_data> {
         return new Promise((resolve, reject) => {
 
             const response = response_data();
 
             AUTHOR.findById(id).then((current_user: any) => {
 
-                current_user.updateAuthor(data).then((authorResponse: Author) => {
+                current_user.updateAuthor(data).then((authorResponse: Author | null) => {
 
                     response.result = authorResponse;
                     resolve(response);
@@ -205,7 +207,7 @@ export default class AuthorService {
             const response = response_data();
             const author: Author = new AUTHOR({ _id: id });
 
-            author.deleteAuthor().then((result: any) => {
+            author.deleteAuthor().then((result: Author | null) => {
                 response.result = result;
                 resolve(response);
 

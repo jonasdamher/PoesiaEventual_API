@@ -10,6 +10,7 @@ import { get_pagination, paginate } from '../../utils/pagination';
 import RECOG from '../recognitions/recognitions-model';
 import POEM from '../poems/poems-model';
 import BOOK from '../books/books-model';
+import Pagination from '../../types/Pagination';
 
 enum genders {
     'Hombre', 'Mujer', 'No binario'
@@ -261,7 +262,7 @@ author_schema.methods.updateAuthor = async function (data: any) {
             id,
             { $set: data },
             { new: true }
-        ).then((authorResponse: any) => {
+        ).then((authorResponse: Author | null) => {
 
             resolve(authorResponse);
         }).catch((err: any) => {
@@ -275,7 +276,7 @@ author_schema.methods.updateAuthor = async function (data: any) {
 author_schema.methods.all_authors = async function (page: number, perPage: number) {
     return new Promise((resolve, reject) => {
 
-        get_pagination(AUTHOR, page, perPage).then((pagination: any) => {
+        get_pagination(AUTHOR, page, perPage).then((pagination: Pagination) => {
 
             AUTHOR.aggregate([
                 {
@@ -339,8 +340,8 @@ author_schema.methods.all_authors = async function (page: number, perPage: numbe
                     },
                 },
                 { $skip: pagination.page_range },
-                { $limit: pagination.perpage },
-            ]).exec().then((authorResponse: any) => {
+                { $limit: pagination.perPage },
+            ]).exec().then((authorResponse: Author[] | null) => {
 
                 const result = {
                     authors: authorResponse,
@@ -494,7 +495,7 @@ author_schema.methods.getDataAuthor = async function (url: string) {
         return data;
 
     } catch (error: any) {
-        console.log(error)
+        console.log(error);
         return error;
     }
 };

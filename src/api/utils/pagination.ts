@@ -1,6 +1,8 @@
 'use strict';
 
-export async function get_pagination(model: any, page: number, perpage: number, data: any = {}) {
+import Pagination from '../types/Pagination';
+
+export async function get_pagination(model: any, page: number, perPage: number, data: any = {}): Promise<Pagination> {
     return new Promise((resolve, reject) => {
 
         let current_page = Math.max(0, page);
@@ -9,15 +11,15 @@ export async function get_pagination(model: any, page: number, perpage: number, 
 
         model.find(data).countDocuments().then((total: any) => {
 
-            const lastPage = Math.ceil(total / perpage);
-
-            resolve({
+            const lastPage = Math.ceil(total / perPage);
+            const pagination: Pagination = {
                 page: pageNum,
                 lastPage: lastPage,
-                perpage: perpage,
+                perPage: perPage,
                 total: total,
-                page_range: perpage * current_page
-            });
+                page_range: perPage * current_page
+            };
+            resolve(pagination);
 
         }).catch((err: any) => {
             reject(err);
@@ -34,18 +36,18 @@ export function currentPage(pageNumber: any) {
 }
 
 export function currentPerPage(perPageNumber: any) {
-    let perpage = 10;
+    let perPage = 10;
     if (perPageNumber > 0 && perPageNumber <= 30) {
-        perpage = Number(perPageNumber ?? 10);
+        perPage = Number(perPageNumber ?? 10);
     }
-    return perpage;
+    return perPage;
 }
 
-export function paginate(pagination: any) {
+export function paginate(pagination: Pagination) {
     return {
         page: pagination.page,
         lastPage: pagination.lastPage,
-        perPage: pagination.perpage,
+        perPage: pagination.perPage,
         total: pagination.total
     };
 }

@@ -8,6 +8,7 @@ import response_data from '../../utils/response_data';
 // Tipos
 import Response_data from '../../types/Response_data';
 import { Schema } from 'mongoose';
+import Pagination from '../../types/Pagination';
 
 export default class BooksService {
 
@@ -16,7 +17,7 @@ export default class BooksService {
 
             const response = response_data();
 
-            get_pagination(BOOK, page, perPage).then((pagination: any) => {
+            get_pagination(BOOK, page, perPage).then((pagination: Pagination) => {
 
                 BOOK.find()
                     .skip(pagination.page_range)
@@ -26,7 +27,7 @@ export default class BooksService {
                     .populate({ path: 'author', select: 'full_name url' })
                     .populate({ path: 'editorial', select: 'name' })
                     .populate({ path: 'literary_genre', select: 'name' })
-                    .then((book_list: any) => {
+                    .then((book_list: Book[] | null) => {
 
                         const data = {
                             books: book_list,
@@ -63,9 +64,9 @@ export default class BooksService {
                 .populate({ path: 'author', select: 'full_name url' })
                 .populate({ path: 'editorial', select: 'name' })
                 .populate({ path: 'literary_genre', select: 'name' })
-                .then((poem: any) => {
+                .then((book: Book | null) => {
 
-                    response.result = poem;
+                    response.result = book;
                     resolve(response);
                 }).catch((err: any) => {
                     response.status = 400;
@@ -81,12 +82,12 @@ export default class BooksService {
             const response = response_data();
             const query = { title: { $regex: '.*' + search + '.*', $options: 'i' } };
 
-            get_pagination(BOOK, page, perPage, query).then((pagination: any) => {
+            get_pagination(BOOK, page, perPage, query).then((pagination: Pagination) => {
 
-                BOOK.find(query).skip(pagination.page_range).limit(pagination.perPage).sort('title').populate('author editorial literary_genre').then((poems: any) => {
+                BOOK.find(query).skip(pagination.page_range).limit(pagination.perPage).sort('title').populate('author editorial literary_genre').then((books: Book[] | null) => {
 
                     const data = {
-                        poems: poems,
+                        books: books,
                         pagination: paginate(pagination)
                     };
                     response.result = data;
@@ -108,15 +109,15 @@ export default class BooksService {
         });
     }
 
-    protected create_book(data: any): Promise<Response_data> {
+    protected create_book(data: Partial<Book>): Promise<Response_data> {
         return new Promise((resolve, reject) => {
 
             const response = response_data();
             const book: Book = new BOOK(data);
 
-            book.save().then((poem: any) => {
+            book.save().then((result: Book) => {
 
-                response.result = poem;
+                response.result = result;
                 resolve(response);
             }).catch((err: any) => {
                 response.status = 400;
@@ -127,14 +128,14 @@ export default class BooksService {
         });
     }
 
-    protected update_book(id: any, data: any): Promise<Response_data> {
+    protected update_book(id: string, data: Partial<Book>): Promise<Response_data> {
         return new Promise((resolve, reject) => {
 
             const response = response_data();
 
-            BOOK.findByIdAndUpdate(id, { $set: data }, { new: true }).then((poem: any) => {
+            BOOK.findByIdAndUpdate(id, { $set: data }, { new: true }).then((result: Book | null) => {
 
-                response.result = poem;
+                response.result = result;
                 resolve(response);
             }).catch((err: any) => {
                 response.status = 400;
@@ -150,7 +151,7 @@ export default class BooksService {
 
             const response = response_data();
 
-            BOOK.findByIdAndDelete(id).then((result: any) => {
+            BOOK.findByIdAndDelete(id).then((result: Book | null) => {
                 response.result = result;
                 resolve(response);
 

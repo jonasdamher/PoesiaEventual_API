@@ -2,7 +2,7 @@
 
 export const array_filter = (actual: Array<any>, nuevo: Array<any> | undefined, key_filter: any = ''): Array<any> => {
 
-    let filter: Array<any> = [];
+    const filter: Array<any> = [];
 
     if (nuevo !== undefined && Array.isArray(nuevo) && nuevo.length &&
         actual !== undefined && Array.isArray(actual) && actual.length) {

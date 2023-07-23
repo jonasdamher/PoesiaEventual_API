@@ -107,7 +107,7 @@ export default class AuthService {
 
             jwt.confirm_token_new_account(token).then((user: any) => {
 
-                USER.findByIdAndUpdate(user._id, { verified: true, $unset: { expire_at: 1 } }).then((res: any) => {
+                USER.findByIdAndUpdate(user._id, { verified: true, $unset: { expire_at: 1 } }).then((res: User | null) => {
 
                     response.message = 'Account verified!!';
                     resolve(response);

@@ -3,6 +3,7 @@
 import { Request, Response } from 'express';
 import AuthorsService from './author-service';
 import { currentPage, currentPerPage } from '../../utils/pagination';
+import { Schema } from 'mongoose';
 
 class AuthorController extends AuthorsService {
 
@@ -11,8 +12,8 @@ class AuthorController extends AuthorsService {
 
             const { page, perPage } = req.query;
 
-            const current_page = currentPage(page);
-            const current_perPage = currentPerPage(perPage);
+            const current_page: number = currentPage(page);
+            const current_perPage: number = currentPerPage(perPage);
 
             const result = await super.get_all_authors(current_page, current_perPage);
             return res.status(result.status).json(result);
@@ -24,7 +25,7 @@ class AuthorController extends AuthorsService {
     public async get_by_id(req: Request, res: Response) {
         try {
 
-            const id = req.params.id;
+            const id: string = req.params.id;
 
             const result = await super.get_author_by_id(id);
             return res.status(result.status).json(result);
@@ -36,7 +37,7 @@ class AuthorController extends AuthorsService {
     public async get_by_url(req: Request, res: Response) {
         try {
 
-            const url = req.params.url;
+            const url: string = req.params.url;
 
             const result = await super.get_author_by_url(url);
             return res.status(result.status).json(result);
@@ -49,10 +50,11 @@ class AuthorController extends AuthorsService {
         try {
 
             const { page, perPage } = req.query;
-            const search = req.params.search.trim().toLowerCase();
 
-            const current_page = Number(page ?? 1);
-            const current_perPage = Number(perPage ?? 10);
+            const search: string = req.params.search.trim().toLowerCase();
+
+            const current_page: number = currentPage(page);
+            const current_perPage: number = currentPerPage(perPage);
 
             const result = await super.search_author(current_page, current_perPage, search);
             return res.status(result.status).json(result);
@@ -85,7 +87,7 @@ class AuthorController extends AuthorsService {
 
     public async update(req: Request, res: Response) {
         try {
-            const id = req.params.id;
+            const id: string = req.params.id;
             const data_body = req.body;
 
             const result = await super.update_author(id, data_body);
@@ -97,7 +99,7 @@ class AuthorController extends AuthorsService {
 
     public async delete_by_id(req: Request, res: Response) {
         try {
-            const id = req.params.id;
+            const id: string = req.params.id;
 
             const result = await super.delete_by_id_document(id);
             return res.status(result.status).json(result);

@@ -32,7 +32,7 @@ export const limit_general = async (req: Request, res: Response, next: NextFunct
         // Si se excede el límite, responde con un código de estado 429 (Too Many Requests)
         return res.status(429).send('Too Many Requests');
     }
-}
+};
 
 const bruteByIP = async () => {
 
@@ -43,7 +43,7 @@ const bruteByIP = async () => {
         duration: 60 * 60 * 24,
         blockDuration: 60 * 60 * 24
     });
-}
+};
 
 export const FailsByEmailAndIP = async () => {
 
@@ -54,7 +54,7 @@ export const FailsByEmailAndIP = async () => {
         duration: 60 * 60,
         blockDuration: 60 * 60
     });
-}
+};
 
 export const limit_login = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -92,7 +92,7 @@ export const limit_login = async (req: Request, res: Response, next: NextFunctio
         }
 
         await limiterConsecutiveFailsByEmailAndIP.consume(emailIPkey);
-        await limiterSlowBruteByIP.consume(ipAddr)
+        await limiterSlowBruteByIP.consume(ipAddr);
 
         next();
 
@@ -100,6 +100,6 @@ export const limit_login = async (req: Request, res: Response, next: NextFunctio
         // Si se excede el límite, responde con un código de estado 429 (Too Many Requests)
         return res.status(429).send('Too Many Requests');
     }
-}
+};
 
 

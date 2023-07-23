@@ -6,38 +6,30 @@ import response_data from '../../utils/response_data';
 import { logger_countries } from '../../helpers/logger';
 // Tipos
 import Response_data from '../../types/Response_data';
+import { get_pagination, paginate } from '../../utils/pagination';
+import Pagination from '../../types/Pagination';
 
 export default class CountriesService {
+
     protected getAllCountries(page: number, perPage: number): Promise<Response_data> {
         return new Promise((resolve, reject) => {
+
             const response = response_data();
 
-            let current_page = Math.max(0, page);
-            const pageNum = current_page;
-            --current_page;
+            get_pagination(COUNTRY, page, perPage).then((pagination: Pagination) => {
 
-            COUNTRY.find().countDocuments().then((count: any) => {
-
-                const limit = Math.ceil(count / perPage);
-
-                COUNTRY.find({ language: 'es' })
-                    .skip(perPage * current_page)
-                    .limit(perPage)
+                COUNTRY.find()
+                    .skip(pagination.page_range)
+                    .limit(pagination.perPage)
                     .sort('name')
-                    .then((authorResponse: any) => {
+                    .then((result: Country[] | null) => {
 
                         const data = {
-                            countries: authorResponse,
-                            pagination: {
-                                perPage: perPage,
-                                page: pageNum,
-                                lastPage: limit,
-                                total: count
-                            }
+                            countries: result,
+                            pagination: paginate(pagination)
                         };
 
                         response.result = data;
-
                         resolve(response);
 
                     }).catch((err: any) => {
@@ -50,9 +42,11 @@ export default class CountriesService {
             }).catch((err: any) => {
 
                 response.status = 400;
+                response.message = 'BadRequest';
                 response.result = err;
                 reject(response);
             });
+
         });
     }
 
@@ -61,9 +55,9 @@ export default class CountriesService {
 
             const response = response_data();
 
-            COUNTRY.findById({ _id: id }).then((poem: any) => {
+            COUNTRY.findById(id).then((result: Country | null) => {
 
-                response.result = poem;
+                response.result = result;
                 resolve(response);
             }).catch((err: any) => {
                 response.status = 400;
@@ -73,7 +67,7 @@ export default class CountriesService {
         });
     }
 
-    protected createCountry(data: any): Promise<Response_data> {
+    protected createCountry(data: Partial<Country>): Promise<Response_data> {
         return new Promise((resolve, reject) => {
 
             const response = response_data();
@@ -97,12 +91,12 @@ export default class CountriesService {
         });
     }
 
-    protected update_country(id: any, data: any): Promise<Response_data> {
+    protected update_country(id: string, data: Partial<Country>): Promise<Response_data> {
         return new Promise((resolve, reject) => {
 
             const response = response_data();
 
-            COUNTRY.findByIdAndUpdate(id, { $set: data }, { new: true }).then((update_country: any) => {
+            COUNTRY.findByIdAndUpdate(id, { $set: data }, { new: true }).then((update_country: Country | null) => {
 
                 response.result = update_country;
                 resolve(response);
@@ -122,7 +116,7 @@ export default class CountriesService {
 
             const response = response_data();
 
-            COUNTRY.findByIdAndDelete(id).then((result: any) => {
+            COUNTRY.findByIdAndDelete(id).then((result: Country | null) => {
                 response.result = result;
                 resolve(response);
 
