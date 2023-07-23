@@ -70,13 +70,8 @@ export default class AuthService {
 
                 const verify_token = jwt.create_token(res, 'verify_account');
 
-                const email: any = new Email();
-                email.to = res.email;
-                email.subject = 'Verifica tu cuenta de usuario';
-                email.text = 'Hola,\n' +
-                    'Por favor, verifica tu cuenta de usuario haciendo clic en:\n' +
-                    config.app.url_api() + 'auth\/confirm_account\/' + verify_token.token + '.\n';
-                email.send();
+                const email = new Email();
+                email.send_token(res.email, verify_token.token);
 
                 response.status = 201;
                 response.message = 'Created';

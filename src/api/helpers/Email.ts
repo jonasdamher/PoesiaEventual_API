@@ -25,6 +25,15 @@ export default class Email {
         this.#text = text;
     }
 
+    send_token(email: string, token: string) {
+        this.to = email;
+        this.subject = 'Verifica tu cuenta de usuario';
+        this.text = 'Hola,\n' +
+            'Por favor, verifica tu cuenta de usuario haciendo clic en:\n' +
+            config.app.url_api() + 'auth\/confirm_account\/' + token + '.\n';
+        this.send();
+    }
+
     async send() {
 
         const mail_transporter = nodemailer.createTransport({
