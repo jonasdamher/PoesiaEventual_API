@@ -137,7 +137,7 @@ export default class PoemsService {
         return new Promise((resolve, reject) => {
             const response = response_data();
 
-            POEM.find().countDocuments().then(count => {
+            POEM.find().countDocuments().then((count: number) => {
 
                 const random = count == 1 ? 1 : Math.floor(Math.random() * count);
 

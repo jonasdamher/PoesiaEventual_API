@@ -2,25 +2,18 @@
 
 import mongoose from 'mongoose';
 import config from '../config';
+import { logger_app } from '../helpers/logger';
 
 /**
  * Para conectarnos a una base de datos de MONGODB
  */
+export const connect = mongoose.connect(config.db.mongo_uri);
 
-class Mongo {
+const gracefulExit = async function (err: Error) {
+    await mongoose.connection.close();
+    logger_app.error({ err }, 'Mongoose, connect to db');
+    process.exit(0);
+};
 
-    /**
-     * Se conecta a la base de datos con las credenciales del archivo .env
-     * @returns boolean | error - JSON
-     */
-    async connect(): Promise<boolean | Error> {
-        return new Promise((resolve, reject) => {
-
-            mongoose.connect(config.db.mongo_uri)
-                .then(() => resolve(true))
-                .catch((error: Error) => reject(error));
-        });
-    }
-}
-
-export default new Mongo();
+// Si node se cierra, también cierra la conexion mongo
+process.on('SIGINT', gracefulExit).on('SIGTERM', gracefulExit);

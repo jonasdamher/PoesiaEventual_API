@@ -9,7 +9,6 @@ import cookieParser from 'cookie-parser';
 import timeout from 'connect-timeout';
 
 import config from './config';
-import { logger_app } from './helpers/logger';
 import { limit_general } from './middlewares/rate_limit';
 
 import Routes from './routes';
@@ -40,7 +39,6 @@ class App {
             // Limitar los KB de las peticiones
             .use(express.json({ strict: true, limit: '500kb' }), (err: Error, req: Request, res: Response, next: NextFunction) => {
                 if (err) {
-                    logger_app.info({ err }, 'limit kb body request');
                     return res.sendStatus(400);
                 }
                 next();
@@ -52,10 +50,11 @@ class App {
             .use(cors())
             // Ruta principal de endpoints de API
             .use(config.app.version, Routes)
+            // midleware de tiempo de espera
             .use((err: any, req: Request, res: Response, next: NextFunction) => {
                 if (err) {
                     if (err.timeout) {
-                        res.status(503).send('Request timeout');
+                        return res.status(503).send('Request timeout');
                     } else {
                         next(err);
                     }

@@ -51,7 +51,7 @@ export default class Email {
             text: this.#text
         };
 
-        mail_transporter.sendMail(mail_details, function (err, data) {
+        mail_transporter.sendMail(mail_details, function (err: Error | unknown) {
             if (err) {
                 logger_email.info({ err }, 'error to send');
             }

@@ -118,7 +118,7 @@ export default class AuthorService {
         return new Promise((resolve, reject) => {
             const response = response_data();
 
-            AUTHOR.find().countDocuments().then((count: any) => {
+            AUTHOR.find().countDocuments().then((count: number) => {
 
                 const random = Math.floor(Math.random() * count);
 

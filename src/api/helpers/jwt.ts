@@ -7,7 +7,7 @@ import jwt from 'jsonwebtoken';
 import moment from 'moment';
 import config from '../config';
 
-import USER from '../components/users/users-model';
+import USER, { User } from '../components/users/users-model';
 
 export {
     create_token,
@@ -152,7 +152,7 @@ function confirm_token_new_account(token: string) {
     return new Promise((resolve, reject) => {
 
         if (token) {
-            jwt.verify(token, config.jwt.secret_token, (err: any, data: any) => {
+            jwt.verify(token, config.jwt.secret_token, (err: Error | unknown, data: any) => {
 
                 if (err) reject({ status: 401, message: 'TokenExpired' });
 
@@ -160,14 +160,14 @@ function confirm_token_new_account(token: string) {
                     reject({ status: 400, message: 'BadRequest' });
                 }
 
-                USER.findById(data.sub).select('verified').then((user: any) => {
+                USER.findById(data.sub).select('verified').then((user: User | null) => {
 
-                    if (!user) reject({ status: 401, message: 'TokenExpired' });
-                    if (user.verified) reject({ status: 401, message: 'User verified' });
+                    if (!user) reject({ status: 400, message: 'BadRequest' });
+                    if (user && user.verified) reject({ status: 401, message: 'User verified' });
 
                     resolve(user);
 
-                }).catch((err: any) => {
+                }).catch((err: Error) => {
                     reject({ status: 401, message: 'TokenExpired', result: err });
                 });
             });

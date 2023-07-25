@@ -9,7 +9,7 @@ export async function get_pagination(model: any, page: number, perPage: number, 
         const pageNum = current_page;
         --current_page;
 
-        model.find(data).countDocuments().then((total: any) => {
+        model.find(data).countDocuments().then((total: number) => {
 
             const lastPage = Math.ceil(total / perPage);
             const pagination: Pagination = {

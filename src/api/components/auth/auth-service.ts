@@ -7,8 +7,6 @@ import * as jwt from '../../helpers/jwt';
 import Email from '../../helpers/Email';
 import { logger_users } from '../../helpers/logger';
 import response_data from '../../utils/response_data';
-// Configuración
-import config from '../../config';
 // Tipos
 import Response_data from '../../types/Response_data';
 
@@ -60,13 +58,13 @@ export default class AuthService {
      * @param data 
      * @returns ID de cuenta de usuario.
      */
-    protected userCreate(data: any): Promise<Response_data> {
+    protected userCreate(data: User): Promise<Response_data> {
         return new Promise((resolve, reject) => {
             const response = response_data();
 
             const user: User = new USER(data);
 
-            user.save().then((res: any) => {
+            user.save().then((res: User) => {
 
                 const verify_token = jwt.create_token(res, 'verify_account');
 
