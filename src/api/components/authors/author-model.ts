@@ -1,7 +1,7 @@
 'use strict';
 
 import moment from 'moment';
-import mongoose, { model, Document, Schema } from 'mongoose';
+import mongoose, { model, Document, Schema, Error } from 'mongoose';
 import * as regex from '../../utils/regex';
 import Text from '../../helpers/Text';
 import { array_filter } from '../../utils/filter';
@@ -29,7 +29,15 @@ interface keywords {
     word: string;
 }
 
-export interface Author extends Document {
+interface DocAuthor extends Document {
+    saveAuthor(): Promise<Author>;
+    updateAuthor(data: Partial<Author>): Promise<Author | null | Error>;
+    deleteAuthor(): Promise<any>;
+    getDataAuthor(url: string): Promise<any>;
+    all_authors(page: number, perPage: number): Promise<any>;
+}
+
+export interface Author extends DocAuthor {
     name: string;
     lastname: string;
     full_name: string;
@@ -47,13 +55,6 @@ export interface Author extends Document {
     keywords: Array<keywords>;
     createdAt: number;
     updatedAt: number;
-
-    saveAuthor(): Promise<Author>;
-    updateAuthor(data: any): Promise<Author>;
-    deleteAuthor(): Promise<any>;
-    getDataAuthor(url: string): Promise<any>;
-    all_authors(page: number, perPage: number): Promise<any>;
-
 }
 
 const author_schema = new Schema<Author>({
@@ -216,7 +217,7 @@ author_schema.methods.saveAuthor = async function (this: Author) {
     });
 };
 
-author_schema.methods.updateAuthor = async function (data: any) {
+author_schema.methods.updateAuthor = async function (data: Partial<Author>): Promise<Author | null | Error> {
     return new Promise((resolve, reject) => {
 
         const id = this._id;
@@ -265,7 +266,7 @@ author_schema.methods.updateAuthor = async function (data: any) {
         ).then((authorResponse: Author | null) => {
 
             resolve(authorResponse);
-        }).catch((err: any) => {
+        }).catch((err: Error) => {
 
             reject(err);
         });
@@ -368,7 +369,7 @@ author_schema.methods.deleteAuthor = async function (this: Author) {
     try {
         session.startTransaction();
 
-        const del: any = await AUTHOR.findByIdAndDelete(this._id);
+        const del: Author | null = await AUTHOR.findByIdAndDelete(this._id);
         // borrar el registro asociado a del autor 
         await RECOG.deleteMany({ author: this._id });
         await BOOK.deleteMany({ author: this._id });
@@ -495,7 +496,6 @@ author_schema.methods.getDataAuthor = async function (url: string) {
         return data;
 
     } catch (error: any) {
-        console.log(error);
         return error;
     }
 };

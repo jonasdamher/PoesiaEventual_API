@@ -7,6 +7,7 @@ import { logger_users } from '../../helpers/logger';
 import response_data from '../../utils/response_data';
 // Tipos
 import Response_data from '../../types/Response_data';
+import { Error } from 'mongoose';
 
 export default class UsersService {
 
@@ -23,7 +24,7 @@ export default class UsersService {
 
                 response.result = res;
                 resolve(response);
-            }).catch((err: any) => {
+            }).catch((err: Error) => {
                 response.message = 'Dont found';
                 response.status = 404;
 
@@ -52,7 +53,7 @@ export default class UsersService {
                 response.result = res;
                 resolve(response);
 
-            }).catch((err: any) => {
+            }).catch((err: Error) => {
 
                 response.status = 400;
                 response.message = 'BadRequest';
@@ -77,7 +78,7 @@ export default class UsersService {
 
                 resolve(response);
 
-            }).catch((err: any) => {
+            }).catch((err: Error) => {
 
                 response.status = 400;
                 response.message = 'BadRequest';

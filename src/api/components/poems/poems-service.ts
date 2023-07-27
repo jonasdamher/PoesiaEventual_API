@@ -9,8 +9,8 @@ import response_data from '../../utils/response_data';
 import { array_filter } from '../../utils/filter';
 // Tipos
 import Response_data from '../../types/Response_data';
-import { Schema } from 'mongoose';
 import Pagination from '../../types/Pagination';
+import { Error } from 'mongoose';
 
 export default class PoemsService {
 
@@ -21,22 +21,22 @@ export default class PoemsService {
             get_pagination(POEM, page, perPage).then((pagination: Pagination) => {
 
                 POEM.find().populate('author', 'name lastname').skip(pagination.page_range).limit(pagination.perPage).sort('title')
-                    .then((authorResponse: Poem[] | null) => {
+                    .then((poems: Poem[] | null) => {
 
                         response.result = {
-                            authors: authorResponse,
+                            poems: poems,
                             pagination: paginate(pagination)
                         };
                         resolve(response);
 
-                    }).catch((err: any) => {
+                    }).catch((err: Error) => {
 
                         response.status = 400;
                         response.message = 'BadRequest';
                         response.result = err;
                         reject(response);
                     });
-            }).catch((err: any) => {
+            }).catch((err: Error) => {
 
                 response.status = 400;
                 response.message = 'BadRequest';
@@ -61,14 +61,14 @@ export default class PoemsService {
                         };
                         resolve(response);
 
-                    }).catch((err: any) => {
+                    }).catch((err: Error) => {
 
                         response.status = 400;
                         response.message = 'BadRequest';
                         response.result = err;
                         reject(response);
                     });
-            }).catch((err: any) => {
+            }).catch((err: Error) => {
 
                 response.status = 400;
                 response.message = 'BadRequest';
@@ -87,7 +87,7 @@ export default class PoemsService {
                 response.result = poem;
                 resolve(response);
 
-            }).catch((err: any) => {
+            }).catch((err: Error) => {
 
                 response.status = 400;
                 response.message = 'BadRequest';
@@ -115,7 +115,7 @@ export default class PoemsService {
                             };
                             resolve(response);
 
-                        }).catch((err: any) => {
+                        }).catch((err: Error) => {
 
                             response.status = 400;
                             response.message = 'BadRequest';
@@ -123,7 +123,7 @@ export default class PoemsService {
                             reject(response);
                         });
 
-                }).catch((err: any) => {
+                }).catch((err: Error) => {
 
                     response.status = 400;
                     response.message = 'BadRequest';
@@ -146,7 +146,7 @@ export default class PoemsService {
                     response.result = poem;
                     resolve(response);
 
-                }).catch((err: any) => {
+                }).catch((err: Error) => {
 
                     response.status = 400;
                     response.message = 'BadRequest';
@@ -154,7 +154,7 @@ export default class PoemsService {
                     reject(response);
                 });
 
-            }).catch((err: any) => {
+            }).catch((err: Error) => {
 
                 response.status = 400;
                 response.message = 'BadRequest';
@@ -181,7 +181,7 @@ export default class PoemsService {
                 response.result = new_poem;
                 resolve(response);
 
-            }).catch((err: any) => {
+            }).catch((err: Error) => {
 
                 response.status = 400;
                 response.message = 'BadRequest only';
@@ -216,7 +216,7 @@ export default class PoemsService {
                     response.result = update;
                     resolve(response);
 
-                }).catch((err: any) => {
+                }).catch((err: Error) => {
 
                     response.status = 400;
                     response.message = 'BadRequest only';
@@ -224,7 +224,7 @@ export default class PoemsService {
                     reject(response);
                 });
 
-            }).catch((err: any) => {
+            }).catch((err: Error) => {
 
                 response.status = 400;
                 response.message = 'BadRequest only';
@@ -244,7 +244,7 @@ export default class PoemsService {
                 response.result = result;
                 resolve(response);
 
-            }).catch((err: any) => {
+            }).catch((err: Error) => {
 
                 response.status = 404;
                 response.message = 'Not found';

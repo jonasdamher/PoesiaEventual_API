@@ -7,7 +7,6 @@ import { get_pagination, paginate } from '../../utils/pagination';
 import response_data from '../../utils/response_data';
 // Tipos
 import Response_data from '../../types/Response_data';
-import { Schema } from 'mongoose';
 import Pagination from '../../types/Pagination';
 
 export default class BooksService {

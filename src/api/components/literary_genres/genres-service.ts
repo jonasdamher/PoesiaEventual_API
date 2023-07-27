@@ -8,6 +8,7 @@ import { logger_genre } from '../../helpers/logger';
 import { array_filter } from '../../utils/filter';
 // Tipos
 import Response_data from '../../types/Response_data';
+import { Error } from 'mongoose';
 
 export default class GenresService {
 
@@ -19,7 +20,7 @@ export default class GenresService {
 
                 response.result = res;
                 resolve(response);
-            }).catch((err: any) => {
+            }).catch((err: Error) => {
 
                 response.status = 400;
                 response.message = 'Dont found';
@@ -37,7 +38,7 @@ export default class GenresService {
 
                 response.result = res;
                 resolve(response);
-            }).catch((err: any) => {
+            }).catch((err: Error) => {
                 response.status = 404;
                 response.message = 'Not found';
                 response.result = err;
@@ -59,7 +60,7 @@ export default class GenresService {
                 response.result = genreResponse;
                 resolve(response);
 
-            }).catch((err: any) => {
+            }).catch((err: Error) => {
 
                 response.status = 400;
                 response.message = 'BadRequest';
@@ -86,7 +87,7 @@ export default class GenresService {
                     response.result = res;
                     resolve(response);
 
-                }).catch((err: any) => {
+                }).catch((err: Error) => {
 
                     response.status = 400;
                     response.message = 'BadRequest';
@@ -95,7 +96,7 @@ export default class GenresService {
                     reject(response);
                 });
 
-            }).catch((err: any) => {
+            }).catch((err: Error) => {
                 response.status = 400;
                 response.message = 'BadRequest';
                 response.result = err;
@@ -115,7 +116,7 @@ export default class GenresService {
                 response.result = result;
                 resolve(response);
 
-            }).catch((err: any) => {
+            }).catch((err: Error) => {
 
                 response.status = 404;
                 response.message = 'Not found';

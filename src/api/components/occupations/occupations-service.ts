@@ -7,6 +7,7 @@ import { logger_occupation } from '../../helpers/logger';
 import response_data from '../../utils/response_data';
 // Tipos
 import Response_data from '../../types/Response_data';
+import { Error } from 'mongoose';
 
 export default class OccupationService {
 
@@ -19,7 +20,7 @@ export default class OccupationService {
                 response.result = res;
                 resolve(response);
 
-            }).catch((err: any) => {
+            }).catch((err: Error) => {
 
                 response.status = 400;
                 response.message = 'BadRequest';
@@ -38,7 +39,7 @@ export default class OccupationService {
                 response.result = res;
                 resolve(response);
 
-            }).catch((err: any) => {
+            }).catch((err: Error) => {
 
                 response.status = 400;
                 response.message = 'BadRequest';
@@ -60,7 +61,7 @@ export default class OccupationService {
                 response.result = occupation_created;
                 resolve(response);
 
-            }).catch((err: any) => {
+            }).catch((err: Error) => {
 
                 response.status = 400;
                 response.message = 'BadRequest';
@@ -80,7 +81,7 @@ export default class OccupationService {
                 response.result = res;
                 resolve(response);
 
-            }).catch((err: any) => {
+            }).catch((err: Error) => {
 
                 response.status = 400;
                 response.message = 'BadRequest';
@@ -103,7 +104,7 @@ export default class OccupationService {
 
                 resolve(response);
 
-            }).catch((err: any) => {
+            }).catch((err: Error) => {
 
                 response.status = 404;
                 response.message = 'Not found';

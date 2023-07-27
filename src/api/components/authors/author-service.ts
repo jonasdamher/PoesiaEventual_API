@@ -9,7 +9,7 @@ import { get_pagination, paginate } from '../../utils/pagination';
 // Tipos
 import Response_data from '../../types/Response_data';
 import Pagination from '../../types/Pagination';
-import { Schema } from 'mongoose';
+import { Error } from 'mongoose';
 
 export default class AuthorService {
 
@@ -24,7 +24,7 @@ export default class AuthorService {
                 response.result = result;
                 resolve(response);
 
-            }).catch((err: any) => {
+            }).catch((err: Error) => {
 
                 response.status = 400;
                 response.message = 'BadRequest';
@@ -46,7 +46,7 @@ export default class AuthorService {
                 response.result = current_author[0];
 
                 resolve(response);
-            }).catch((err: any) => {
+            }).catch((err: Error) => {
 
                 response.status = 400;
                 response.message = 'BadRequest';
@@ -65,7 +65,7 @@ export default class AuthorService {
 
                 response.result = authorResponse;
                 resolve(response);
-            }).catch((err: any) => {
+            }).catch((err: Error) => {
 
                 response.status = 404;
                 response.message = 'Not found';
@@ -94,7 +94,7 @@ export default class AuthorService {
                         };
                         resolve(response);
 
-                    }).catch((err: any) => {
+                    }).catch((err: Error) => {
 
                         response.status = 400;
                         response.message = 'BadRequest';
@@ -103,7 +103,7 @@ export default class AuthorService {
                         reject(response);
                     });
 
-            }).catch((err: any) => {
+            }).catch((err: Error) => {
 
                 response.status = 400;
                 response.message = 'BadRequest';
@@ -126,7 +126,7 @@ export default class AuthorService {
 
                     response.result = author;
                     resolve(response);
-                }).catch((err: any) => {
+                }).catch((err: Error) => {
 
                     response.status = 400;
                     response.message = 'BadRequest';
@@ -135,7 +135,7 @@ export default class AuthorService {
                     reject(response);
                 });
 
-            }).catch((err: any) => {
+            }).catch((err: Error) => {
                 response.status = 400;
                 response.message = 'BadRequest';
                 response.result = err;
@@ -157,7 +157,7 @@ export default class AuthorService {
                 response.message = 'Created';
                 response.result = authorResponse;
                 resolve(response);
-            }).catch((err: any) => {
+            }).catch((err: Error) => {
 
                 response.status = 400;
                 response.message = 'BadRequest';
@@ -180,7 +180,7 @@ export default class AuthorService {
                     response.result = authorResponse;
                     resolve(response);
 
-                }).catch((err: any) => {
+                }).catch((err: Error) => {
 
                     response.status = 400;
                     response.message = 'BadRequest';
@@ -189,7 +189,7 @@ export default class AuthorService {
                     reject(response);
                 });
 
-            }).catch((err: any) => {
+            }).catch((err: Error) => {
 
                 response.status = 404;
                 response.message = 'not found';
@@ -211,7 +211,7 @@ export default class AuthorService {
                 response.result = result;
                 resolve(response);
 
-            }).catch((err: any) => {
+            }).catch((err: Error) => {
 
                 response.status = 404;
                 response.message = 'Not found';

@@ -8,6 +8,7 @@ import { logger_countries } from '../../helpers/logger';
 import Response_data from '../../types/Response_data';
 import { get_pagination, paginate } from '../../utils/pagination';
 import Pagination from '../../types/Pagination';
+import { Error } from 'mongoose';
 
 export default class CountriesService {
 
@@ -32,14 +33,14 @@ export default class CountriesService {
                         response.result = data;
                         resolve(response);
 
-                    }).catch((err: any) => {
+                    }).catch((err: Error) => {
 
                         response.status = 400;
                         response.result = err;
                         reject(response);
                     });
 
-            }).catch((err: any) => {
+            }).catch((err: Error) => {
 
                 response.status = 400;
                 response.message = 'BadRequest';
@@ -59,7 +60,7 @@ export default class CountriesService {
 
                 response.result = result;
                 resolve(response);
-            }).catch((err: any) => {
+            }).catch((err: Error) => {
                 response.status = 400;
                 response.result = err;
                 reject(response);
@@ -81,7 +82,7 @@ export default class CountriesService {
                 response.result = new_country;
                 resolve(response);
 
-            }).catch((err: any) => {
+            }).catch((err: Error) => {
 
                 response.status = 400;
                 response.result = err;
@@ -101,7 +102,7 @@ export default class CountriesService {
                 response.result = update_country;
                 resolve(response);
 
-            }).catch((err: any) => {
+            }).catch((err: Error) => {
 
                 response.status = 400;
                 response.result = err;
@@ -120,7 +121,7 @@ export default class CountriesService {
                 response.result = result;
                 resolve(response);
 
-            }).catch((err: any) => {
+            }).catch((err: Error) => {
 
                 response.status = 404;
                 response.message = 'Not found';

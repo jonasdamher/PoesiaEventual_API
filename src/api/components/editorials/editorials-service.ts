@@ -7,6 +7,7 @@ import response_data from '../../utils/response_data';
 import { logger_editorials } from '../../helpers/logger';
 // Tipos
 import Response_data from '../../types/Response_data';
+import { Error } from 'mongoose';
 
 export default class EditorialsService {
 
@@ -19,7 +20,7 @@ export default class EditorialsService {
                 response.result = res;
                 resolve(response);
 
-            }).catch((err: any) => {
+            }).catch((err: Error) => {
 
                 response.status = 400;
                 response.message = 'BadRequest';
@@ -38,7 +39,7 @@ export default class EditorialsService {
                 response.result = res;
                 resolve(response);
 
-            }).catch((err: any) => {
+            }).catch((err: Error) => {
 
                 response.status = 400;
                 response.message = 'BadRequest';
@@ -60,7 +61,7 @@ export default class EditorialsService {
                 response.result = res;
                 resolve(response);
 
-            }).catch((err: any) => {
+            }).catch((err: Error) => {
 
                 response.status = 400;
                 response.message = 'BadRequest';
@@ -80,7 +81,7 @@ export default class EditorialsService {
                 response.result = res;
                 resolve(response);
 
-            }).catch((err: any) => {
+            }).catch((err: Error) => {
 
                 response.status = 400;
                 response.message = 'BadRequest';
@@ -100,7 +101,7 @@ export default class EditorialsService {
                 response.result = result;
                 resolve(response);
 
-            }).catch((err: any) => {
+            }).catch((err: Error) => {
 
                 response.status = 404;
                 response.message = 'Not found';

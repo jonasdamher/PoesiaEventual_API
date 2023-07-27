@@ -7,8 +7,8 @@ import response_data from '../../utils/response_data';
 import { get_pagination, paginate } from '../../utils/pagination';
 // Tipos
 import Response_data from '../../types/Response_data';
-import { Schema } from 'mongoose';
 import Pagination from '../../types/Pagination';
+import { Error } from 'mongoose';
 
 export default class RecogService {
 
@@ -19,15 +19,15 @@ export default class RecogService {
             get_pagination(RECOG, page, perPage).then((pagination: Pagination) => {
 
                 RECOG.find().skip(pagination.page_range).limit(pagination.perPage).sort('name')
-                    .then((authorResponse: any) => {
+                    .then((result: Recognition[]) => {
 
                         response.result = {
-                            authors: authorResponse,
+                            recognitions: result,
                             pagination: paginate(pagination)
                         };
 
                         resolve(response);
-                    }).catch((err: any) => {
+                    }).catch((err: Error) => {
 
                         response.status = 400;
                         response.message = 'BadRequest';
@@ -36,8 +36,7 @@ export default class RecogService {
                         reject(response);
                     });
 
-            }).catch((err: any) => {
-
+            }).catch((err: Error) => {
 
                 response.status = 400;
                 response.message = 'BadRequest';
@@ -53,11 +52,12 @@ export default class RecogService {
 
             const response = response_data();
 
-            RECOG.findById(id).populate('author', 'name').then((poem: any) => {
+            RECOG.findById(id).populate('author', 'name').then((result: Recognition | null) => {
 
-                response.result = poem;
+                response.result = result;
                 resolve(response);
-            }).catch((err: any) => {
+            }).catch((err: Error) => {
+
                 response.status = 400;
                 response.message = 'BadRequest';
                 response.result = err;
@@ -76,16 +76,16 @@ export default class RecogService {
             get_pagination(RECOG, page, perPage, query).then((pagination: Pagination) => {
 
                 RECOG.find(query).populate('author').skip(pagination.page_range).limit(pagination.perPage).sort('title')
-                    .then((poems: any) => {
+                    .then((recognitions: Recognition[]) => {
 
                         const result = {
-                            poems: poems,
+                            recognitions: recognitions,
                             pagination: paginate(pagination)
                         };
 
                         response.result = result;
                         resolve(response);
-                    }).catch((err: any) => {
+                    }).catch((err: Error) => {
 
                         response.status = 400;
                         response.message = 'BadRequest';
@@ -93,7 +93,7 @@ export default class RecogService {
                         reject(response);
                     });
 
-            }).catch((err: any) => {
+            }).catch((err: Error) => {
 
                 response.status = 400;
                 response.message = 'BadRequest';
@@ -103,7 +103,7 @@ export default class RecogService {
         });
     }
 
-    protected create_recog(data: any): Promise<Response_data> {
+    protected create_recog(data: Recognition): Promise<Response_data> {
         return new Promise((resolve, reject) => {
             const response = response_data();
 
@@ -114,7 +114,7 @@ export default class RecogService {
                 response.result = res;
                 resolve(response);
 
-            }).catch((err: any) => {
+            }).catch((err: Error) => {
 
                 response.status = 400;
                 response.message = 'BadRequest';
@@ -127,15 +127,15 @@ export default class RecogService {
         });
     }
 
-    protected update_recog(id: any, data: any): Promise<Response_data> {
+    protected update_recog(id: string, data: Partial<Recognition>): Promise<Response_data> {
         return new Promise((resolve, reject) => {
             const response = response_data();
 
-            RECOG.findByIdAndUpdate(id, { $set: data }, { new: true }).then((update: any) => {
+            RECOG.findByIdAndUpdate(id, { $set: data }, { new: true }).then((update: Recognition | null) => {
                 response.result = update;
                 resolve(response);
 
-            }).catch((err: any) => {
+            }).catch((err: Error) => {
 
                 response.status = 400;
                 response.message = 'BadRequest';
@@ -154,11 +154,11 @@ export default class RecogService {
 
             const response = response_data();
 
-            RECOG.findByIdAndDelete(id).then((result: any) => {
+            RECOG.findByIdAndDelete(id).then((result: Recognition | null) => {
                 response.result = result;
                 resolve(response);
 
-            }).catch((err: any) => {
+            }).catch((err: Error) => {
 
                 response.status = 404;
                 response.message = 'Not found';
