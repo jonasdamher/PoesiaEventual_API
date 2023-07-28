@@ -24,7 +24,7 @@ class RouterAuthor {
             .get('/:id', validate_common.get_by_id, author.get_by_id)
             .post('/', csrf, auth.user, validation.create, author.create)
             .patch('/:id', csrf, auth.user, validation.update, author.update)
-            .delete('/:id', auth.user, author.delete_by_id);
+            .delete('/:id', csrf, auth.user, author.delete_by_id);
     }
 }
 

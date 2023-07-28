@@ -21,7 +21,7 @@ class RouterPoem {
             .get('/:id', validate_common.get_by_id, poems.get_by_id)
             .post('/', csrf, auth.user, validation.create, poems.create)
             .patch('/:id', csrf, auth.user, validation.update, poems.update)
-            .delete('/:id', auth.user, poems.delete_by_id);
+            .delete('/:id', csrf,  auth.user, poems.delete_by_id);
     }
 }
 

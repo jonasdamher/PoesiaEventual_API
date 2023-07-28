@@ -18,7 +18,7 @@ class RouterCountries {
             .get('/:id', validate_common.get_by_id, countries.getWithId)
             .post('/', csrf, auth.user, validation.create, countries.create)
             .patch('/:id', csrf, auth.user, validation.update, countries.update)
-            .delete('/:id', auth.user, countries.delete_by_id);
+            .delete('/:id', csrf, auth.user, countries.delete_by_id);
     }
 }
 

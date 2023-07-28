@@ -19,37 +19,34 @@ export default class AuthService {
      * @returns JSON web token
      */
     protected userLogin(email: string, password: string): Promise<Response_data> {
-        return new Promise((resolve, reject) => {
+        return new Promise(async (resolve, reject) => {
             const response = response_data();
 
-            USER.findOne({ email: email }).then((current_user: any) => {
+            try {
+
+                const current_user: User = await USER.findOne({ email: email }).select('_id name lastname role verified password');
 
                 if (!current_user.verified) throw new Error('user not verified');
 
-                current_user.compare_password(password).then((match: boolean) => {
+                current_user.compare_password(password).then(() => {
 
                     const token = jwt.create_token(current_user, 'user');
-
-                    response.status = 200;
                     response.result = token;
                     resolve(response);
+
                 }).catch((not_match: any) => {
-                    response.status = 401;
-                    response.message = 'Unauthorized';
 
-                    logger_users.info(response, 'service');
+                    response.status = 400;
+                    response.message = 'BadRequest';
                     reject(response);
+
                 });
-            }).catch((err: any) => {
-
-                response.status = 401;
-                response.message = 'Unauthorized';
-
-                const responseFail = response;
-                responseFail.result = err;
-                logger_users.info(responseFail, 'service');
+            } catch (err: any) {
+                
+                response.status = 400;
+                response.message = 'BadRequest';
                 reject(response);
-            });
+            }
         });
     }
 

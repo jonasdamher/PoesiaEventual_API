@@ -11,7 +11,7 @@ connect.then(() => {
 
     } catch (error: Error | unknown) {
 
-        logger_app.info({ error }, 'Error app');
+        logger_app.error({ error }, 'Error app');
         process.exit(1);
     }
 }).catch(async (error: Error) => {

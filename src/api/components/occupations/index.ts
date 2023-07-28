@@ -18,7 +18,7 @@ class RouterOcup {
             .get('/:id', validate_common.get_by_id, occupations.get_with_id)
             .post('/', csrf, auth.user, validation.create, occupations.create)
             .patch('/:id', csrf, auth.user, validation.update, occupations.update)
-            .delete('/:id', auth.user, occupations.delete_by_id);
+            .delete('/:id', csrf, auth.user, occupations.delete_by_id);
     }
 }
 

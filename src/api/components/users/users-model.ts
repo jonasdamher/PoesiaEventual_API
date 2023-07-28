@@ -22,6 +22,7 @@ export interface User extends Document {
     createdAt: number;
     updatedAt: number;
 
+    compare_password(password: string): Promise<any>;
 }
 
 const user_schema: Schema<User> = new Schema({
@@ -109,7 +110,7 @@ user_schema.pre<User>('save', function (this: User, next: any) {
     });
 });
 
-user_schema.methods.compare_password = async function (password: string) {
+user_schema.methods.compare_password = async function (password: string): Promise<any> {
     return new Promise((resolve, reject) => {
 
         bcrypt.compare(password, this.password, (err: any, match: boolean) => {

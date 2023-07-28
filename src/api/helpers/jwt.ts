@@ -8,6 +8,7 @@ import moment from 'moment';
 import config from '../config';
 
 import USER, { User } from '../components/users/users-model';
+import { Error } from 'mongoose';
 
 export {
     create_token,
@@ -23,7 +24,7 @@ export {
  * @param user 
  * @returns Objeto con json web token y tiempo de expiración.
  */
-function create_token(user: any, type_token: string) {
+function create_token(user: User, type_token: string) {
 
     const expire_token: number = moment().add(1, 'days').unix();
     const current_data_time: number = moment().unix();
@@ -53,7 +54,7 @@ function create_token(user: any, type_token: string) {
  * @param user 
  * @returns Token renovado.
  */
-function create_refresh_token(user: any): string {
+function create_refresh_token(user: User): string {
 
     const expire_token: number = moment().add(2, 'days').unix();
     const current_data_time: number = moment().unix();
@@ -79,12 +80,12 @@ function create_refresh_token(user: any): string {
  * @param USER modelo de tipo de usuario
  * @returns Objecto con token, expiración.
  */
-async function refresh_token(refresh_token: string, grant_type: string, USER: any) {
+async function refresh_token(refresh_token: string, grant_type: string) {
     return new Promise((resolve, reject) => {
 
         if (refresh_token && grant_type === 'refresh_token') {
 
-            jwt.verify(refresh_token, config.jwt.secret_refresh_token, (err: any, data: any) => {
+            jwt.verify(refresh_token, config.jwt.secret_refresh_token, async (err: any, data: any) => {
 
                 if (err) reject({ status: 400, message: 'TokenExpired' });
 
@@ -92,21 +93,16 @@ async function refresh_token(refresh_token: string, grant_type: string, USER: an
                     reject({ status: 400, message: 'BadRequest' });
                 }
 
-                USER.findById(data.sub).select('email name lastname role').then((user: any) => {
+                const user: User = await USER.findById(data.sub).select('email name lastname role');
 
-                    if (!user) reject({ status: 401, message: 'TokenExpired' });
+                const { token, expire_token } = create_token(user, 'user');
 
-                    const { token, expire_token } = create_token(user, 'user');
-
-                    resolve({
-                        access_token: token,
-                        refresh_token: create_refresh_token(user),
-                        expires_in: expire_token
-                    });
-
-                }).catch((err: any) => {
-                    reject({ status: 401, message: 'TokenExpired' });
+                resolve({
+                    access_token: token,
+                    refresh_token: create_refresh_token(user),
+                    expires_in: expire_token
                 });
+
             });
         }
         reject({ status: 400, message: 'BadRequest' });
@@ -118,7 +114,7 @@ async function refresh_token(refresh_token: string, grant_type: string, USER: an
  * @param token JSON Web Token
  * @returns Información del usuario verificado.
  */
-function confirm_token(token: string) {
+function confirm_token(token: string): Promise<User | null> {
     return new Promise((resolve, reject) => {
 
         if (token) {
@@ -128,7 +124,7 @@ function confirm_token(token: string) {
 
                 if (data.type_token !== 'user') reject({ status: 400, message: 'BadRequest' });
 
-                USER.findById(data.sub).select('email role').then((user: any) => {
+                USER.findById(data.sub).select('email role').then((user: User | null) => {
 
                     if (!user) reject({ status: 401, message: 'TokenExpired' });
                     resolve(user);

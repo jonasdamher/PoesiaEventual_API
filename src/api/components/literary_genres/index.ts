@@ -18,7 +18,7 @@ class RouterGenres {
             .get('/:id', validate_common.get_by_id, genres.get_with_id)
             .post('/', csrf, auth.user, validation.create, genres.create)
             .patch('/:id', csrf, auth.user, validation.update, genres.update)
-            .delete('/:id', auth.user, genres.delete_by_id);
+            .delete('/:id', csrf, auth.user, genres.delete_by_id);
     }
 
 }

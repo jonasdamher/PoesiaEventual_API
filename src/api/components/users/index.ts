@@ -16,7 +16,7 @@ class RouterUsers {
         return this.router
             .get('/', auth.user, Users.getById)
             .patch('/update', csrf, auth.user, validation.update, Users.update)
-            .delete('/delete', auth.user, Users.delete);
+            .delete('/delete', csrf, auth.user, Users.delete);
     }
 }
 

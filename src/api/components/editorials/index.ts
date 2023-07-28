@@ -18,7 +18,7 @@ class RouterEditorial {
             .get('/:id', validate_common.get_by_id, editorials.get_with_id)
             .post('/', csrf, auth.user, validation.create, editorials.create)
             .patch('/:id', csrf, auth.user, validation.update, editorials.update)
-            .delete('/:id', auth.user, editorials.delete_by_id);
+            .delete('/:id', csrf, auth.user, editorials.delete_by_id);
     }
 }
 

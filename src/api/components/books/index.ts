@@ -19,7 +19,7 @@ class RouterBooks {
             .get('/search/:search', validate_common.search, books.search)
             .post('/', csrf, auth.user, validation.create, books.create)
             .patch('/:id', csrf, auth.user, validation.update, books.update)
-            .delete('/:id', auth.user, books.delete_by_id);
+            .delete('/:id', csrf, auth.user, books.delete_by_id);
     }
 
 }
